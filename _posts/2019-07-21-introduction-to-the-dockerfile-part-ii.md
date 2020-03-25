@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Introduction to the Dockerfile Part II
-date: 2019-07-21 05:02:00 +0000
+date: 2019-07-21 05:01:00 +0000
 categories: docker dockerfile
 
 ---
