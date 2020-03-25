@@ -1,8 +1,9 @@
 ---
 layout: post
 title: Cara Membuat Banner di Linux
-date: 2020-03-21 17:00:00 +0000
+date: 2020-03-21T17:00:00.000+00:00
 categories: linux
+comments: 'true'
 
 ---
 Kali ini kita akan membuat banner di linux
@@ -32,4 +33,3 @@ Langkah-langkahnya yaitu:
        #####################################
        Ini adalah contoh banner
        #####################################
-       
