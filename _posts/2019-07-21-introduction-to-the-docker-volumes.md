@@ -62,6 +62,6 @@ view nginx container detail
 
 ***
 
-Let’s move on to [part 2 volume driver ](https://medium.com/@ahakimx/use-volume-driver-on-docker-4b6df3d78a80)is here.
+Let’s move on to [part 2 volume driver ](https://ahakimx.github.io/docker/volume/2020/03/21/use-volume-driver-on-docker.html)is here.
 
 reference : [https://docs.docker.com/storage/volumes/](https://docs.docker.com/storage/volumes/ "https://docs.docker.com/storage/volumes/")
