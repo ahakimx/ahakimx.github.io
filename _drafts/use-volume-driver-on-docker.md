@@ -86,4 +86,4 @@ I use two instance for volume driver
 
 ***
 
-let’s back to [part 1](https://medium.com/@ahakimx/introduction-to-the-docker-volumes-248e1d98948f), introduction to docker volumes
+let’s back to [part 1](https://ahakimx.github.io/docker/volume/2019/07/21/introduction-to-the-docker-volumes.html), introduction to docker volumes
