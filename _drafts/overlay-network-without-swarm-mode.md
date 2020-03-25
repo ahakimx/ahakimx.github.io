@@ -2,11 +2,9 @@
 layout: post
 title: Overlay Network without Swarm mode
 date: 2019-07-22 05:02:00 +0000
-categories: docker docker networking
+categories: docker networking
 
 ---
-Overlay network without swarm mode
-
 > _The `overlay` network driver creates a distributed network among multiple Docker daemon hosts. This network sits on top of (overlays) the host-specific networks, allowing containers connected to it (including swarm service containers) to communicate securely. Docker transparently handles routing of each packet to and from the correct Docker daemon host and the correct destination container. see detail_ [_https://docs.docker.com/network/overlay/_](https://docs.docker.com/network/overlay/ "https://docs.docker.com/network/overlay/")
 
 This way of using overlay networks is not recommended for most Docker users. It can be used with standalone swarms and may be useful to system developers building solutions on top of Docker. It may be deprecated in the future. source: [https://docs.docker.com/v17.09/engine/userguide/networking/#an-overlay-network-without-swarm-mode](https://docs.docker.com/network/overlay/ "https://docs.docker.com/network/overlay/")
@@ -18,11 +16,13 @@ This way of using overlay networks is not recommended for most Docker users. It 
 
 **On pod67-node1 and pod67-node2 disable docker service and run docker from CLI**
 
-    sudo systemctl stop dockersudo systemctl status dockersudo dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-advertise ens3:2375 --cluster-store consul://10.1.67.100:8500 &
+    sudo systemctl stop docker
+    sudo systemctl status docker
+    sudo dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-advertise ens3:2375 --cluster-store consul://10.1.67.100:8500 &
 
 **On pod67-node1 create overlay network**
 
-    sudo docker network create -d overlay — subnet=192.168.67.0/24 my-overlay
+    sudo docker network create -d overlay --subnet=192.168.67.0/24 my-overlay
 
 **View networks**
 
