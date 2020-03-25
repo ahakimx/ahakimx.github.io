@@ -4,6 +4,9 @@ title: Intoduction to the Dockerfile
 date: 2019-07-19T05:01:00.000+00:00
 categories: docker linux
 comments: 'true'
+categorie:
+- docker
+- dockerfile
 
 ---
 > _Docker can build images automatically by reading the instructions from a `Dockerfile`. A `Dockerfile` is a text document that contains all the commands a user could call on the command line to assemble an image. source:_ [_Dockerfile_](https://docs.docker.com/engine/reference/builder/)
