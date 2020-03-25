@@ -4,6 +4,8 @@ title: User Defined Bridge on Docker Network
 date: 2019-07-22T05:02:00.000+00:00
 categories: docker networking
 comments: 'true'
+categorie:
+- docker networking
 
 ---
 Differences between user-defined bridges and the default bridge
