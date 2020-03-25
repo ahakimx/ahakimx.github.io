@@ -28,7 +28,9 @@ layout: default
           </ul>
           <div class="post-date">
             <i class="icon-calendar"></i>
-            {{ post.date | date: date_format }}</div>
+            {{ post.date | date: date_format }} 
+             <a href="{{ post.url | relative_url }}#disqus_thread"></a>
+          </div>
         </div>
         <div class="post">
           {%- if site.show_excerpts -%}
