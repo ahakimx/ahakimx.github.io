@@ -4,6 +4,9 @@ title: Default Bridge Network on Docker Networking
 date: 2019-07-22T05:01:00.000+00:00
 categories: docker network
 comments: 'true'
+categorie:
+- docker
+- docker networking
 
 ---
 > _In terms of networking, a bridge network is a Link Layer device which forwards traffic between network segments. A bridge can be a hardware device or a software device running within a host machine’s kernel._
