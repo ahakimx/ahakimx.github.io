@@ -1,12 +1,10 @@
 ---
 layout: post
 title: Introduction to the Dockerfile Part II
-date: 2019-07-20 17:02:00 +0000
+date: 2019-07-21 05:02:00 +0000
 categories: docker dockerfile
 
 ---
-![](/uploads/1_OOUJ3NyR6CbK368ImSbo8A.png "Source : deploybot.com")
-
 Create Dockerfile
 
     vim Dockerfile
