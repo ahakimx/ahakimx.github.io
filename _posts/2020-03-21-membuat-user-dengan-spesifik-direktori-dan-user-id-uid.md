@@ -5,9 +5,7 @@ date: 2020-03-21 17:00:00 +0000
 categories: linux
 
 ---
-Kali ini kita akan membuat sebuah user baru di linux dengan direktori yang spesifik dan UID yang spesifik
-
-Kita akan membuat user dengan nama yousuf, kemudian kita akan mengeset `UID` nya menjadi `1656` dan home direktorinya di `/var/www/yousuf`
+Kali ini kita akan membuat user dengan nama yousuf, kemudian kita akan mengeset `UID` nya menjadi `1656` dan home direktorinya di `/var/www/yousuf`
 
 1. Buat terlebih dahulu direktori `/var/www/yousuf`
 
@@ -19,3 +17,4 @@ Kita akan membuat user dengan nama yousuf, kemudian kita akan mengeset `UID` nya
 
        cat /etc/passwd | grep yousuf
        yousuf:x:1656:1656::/var/www/yousuf/:/bin/bash
+       
