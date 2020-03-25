@@ -4,6 +4,8 @@ title: Cara Membuat Banner di Linux
 date: 2020-03-21T17:00:00.000+00:00
 categories: linux
 comments: 'true'
+categorie:
+- linux
 
 ---
 Kali ini kita akan membuat banner di linux
