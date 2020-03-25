@@ -4,6 +4,8 @@ title: Membuat User dengan Spesifik Home Direktori dan User ID (UID)
 date: 2020-03-22T06:00:00.000+00:00
 categories: linux
 comments: 'true'
+categorie:
+- linux
 
 ---
 Kali ini kita akan membuat user dengan nama yousuf, kemudian kita akan mengeset `UID` nya menjadi `1656` dan home direktorinya di `/var/www/yousuf`
