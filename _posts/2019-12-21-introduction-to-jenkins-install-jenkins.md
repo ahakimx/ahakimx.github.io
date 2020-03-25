@@ -1,8 +1,9 @@
 ---
 layout: post
 title: Introduction to Jenkins - Install Jenkins
-date: 2019-12-21 05:01:00 +0000
+date: 2019-12-21T05:01:00.000+00:00
 categories: ci jenkins
+comments: 'true'
 
 ---
 **install docker on centos**
