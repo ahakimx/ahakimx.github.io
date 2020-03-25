@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Default Bridge Network on Docker Networking
-date: 2020-03-22 05:01:00 +0000
+date: 2019-07-22 05:01:00 +0000
 categories: docker network
 
 ---
