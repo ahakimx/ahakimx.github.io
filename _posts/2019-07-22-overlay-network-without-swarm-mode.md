@@ -1,8 +1,9 @@
 ---
 layout: post
 title: Overlay Network without Swarm mode
-date: 2019-07-22 05:03:00 +0000
+date: 2019-07-22T05:03:00.000+00:00
 categories: docker networking
+comments: 'true'
 
 ---
 > _The `overlay` network driver creates a distributed network among multiple Docker daemon hosts. This network sits on top of (overlays) the host-specific networks, allowing containers connected to it (including swarm service containers) to communicate securely. Docker transparently handles routing of each packet to and from the correct Docker daemon host and the correct destination container. see detail_ [_https://docs.docker.com/network/overlay/_](https://docs.docker.com/network/overlay/ "https://docs.docker.com/network/overlay/")
