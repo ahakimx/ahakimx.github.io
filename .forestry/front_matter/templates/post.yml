@@ -21,7 +21,7 @@ pages:
 - _posts/2019-07-22-default-bridge-network-on-docker-networking.md
 - _posts/2019-07-22-overlay-network-without-swarm-mode.md
 - _posts/2019-07-22-user-defined-bridge-on-docker-network.md
+- _posts/2019-12-21-introduction-to-jenkins-install-jenkins.md
 - _posts/2020-03-21-cara-membuat-banner-di-linux.md
 - _posts/2020-03-21-membuat-user-dengan-spesifik-direktori-dan-user-id-uid.md
 - _posts/2020-03-21-use-volume-driver-on-docker.md
-- _posts/introduction-to-jenkins-install-jenkins.md
