@@ -11,13 +11,10 @@ fields:
 - type: datetime
   name: date
   label: date
-- type: text
-  name: categories
-  label: categories
 - name: categorie
   type: tag_list
   default: []
-  label: categorie
+  label: categories
 - name: comments
   type: text
   config:
