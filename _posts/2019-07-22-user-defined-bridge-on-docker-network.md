@@ -47,7 +47,10 @@ Containers connected to the same user-defined bridge network effectively expose 
 >
 > _3. alpine3 container connect to network default bridge and alpine-net_
 
-    sudo docker run -dit --name alpine1 alpine ashsudo docker run -dit --name alpine2 --network alpine-net alpine ashsudo docker run -dit --name alpine3 alpine ashsudo docker network connect alpine-net alpine3
+    sudo docker run -dit --name alpine1 alpine ash
+    sudo docker run -dit --name alpine2 --network alpine-net alpine ash
+    sudo docker run -dit --name alpine3 alpine ash
+    sudo docker network connect alpine-net alpine3
 
 **View network bridge details**
 
@@ -79,8 +82,7 @@ ping alpine2 name
 
 failed, because different bridge network and subnet
 
-![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585145831/myblog/1_Cf9muXUHghGHQ6Anx4NObA_kns3xf.png)  
-ping internet will be succeed.
+![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585145831/myblog/1_Cf9muXUHghGHQ6Anx4NObA_kns3xf.png)
 
     # ping -c 3 8.8.8.8
 
