@@ -60,6 +60,8 @@ view nginx container detail
 
 ![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585143286/myblog/1_lIznb8Zd4vHDuaOhQW3k4Q_dfrqhv.png)
 
+***
+
 Let’s move on to [part 2 volume driver ](https://medium.com/@ahakimx/use-volume-driver-on-docker-4b6df3d78a80)is here.
 
 reference : [https://docs.docker.com/storage/volumes/](https://docs.docker.com/storage/volumes/ "https://docs.docker.com/storage/volumes/")
