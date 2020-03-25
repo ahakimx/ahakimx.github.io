@@ -11,9 +11,9 @@ sections:
   label: Posts
   create: all
 upload_dir: myblog
-public_path: https://res.cloudinary.com/{{ CLOUD_NAME }}/image/upload
+public_path: https://res.cloudinary.com/dhcy32o8d/image/upload
 front_matter_path: ''
-use_front_matter_path: false
+use_front_matter_path: true
 file_template: ":filename:"
 build:
   preview_env:
