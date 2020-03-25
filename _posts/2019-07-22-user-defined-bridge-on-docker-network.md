@@ -1,8 +1,9 @@
 ---
 layout: post
 title: User Defined Bridge on Docker Network
-date: 2019-07-22 05:02:00 +0000
+date: 2019-07-22T05:02:00.000+00:00
 categories: docker networking
+comments: 'true'
 
 ---
 Differences between user-defined bridges and the default bridge
