@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Membuat User dengan Spesifik Direktori dan User ID (UID)
-date: 2020-03-21 17:00:00 +0000
+date: 2020-03-22 06:00:00 +0000
 categories: linux
 
 ---
