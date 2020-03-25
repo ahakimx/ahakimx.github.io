@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Intoduction to the Dockerfile
+title: Introduction to the Dockerfile
 date: 2019-07-19T05:01:00.000+00:00
 categories: docker linux
 comments: 'true'
