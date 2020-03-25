@@ -19,7 +19,7 @@ pages:
 - _posts/2019-07-21-introduction-to-the-docker-volumes.md
 - _posts/2019-07-21-introduction-to-the-dockerfile-part-ii.md
 - _posts/2019-07-22-default-bridge-network-on-docker-networking.md
+- _posts/2019-07-22-overlay-network-without-swarm-mode.md
 - _posts/2020-03-21-cara-membuat-banner-di-linux.md
 - _posts/2020-03-21-membuat-user-dengan-spesifik-direktori-dan-user-id-uid.md
 - _posts/2020-03-21-use-volume-driver-on-docker.md
-- _posts/overlay-network-without-swarm-mode.md
