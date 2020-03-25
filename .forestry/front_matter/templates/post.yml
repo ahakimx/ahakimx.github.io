@@ -21,3 +21,4 @@ pages:
 - _posts/2020-03-21-cara-membuat-banner-di-linux.md
 - _posts/2020-03-21-membuat-user-dengan-spesifik-direktori-dan-user-id-uid.md
 - _posts/2020-03-21-use-volume-driver-on-docker.md
+- _posts/default-bridge-network-on-docker-networking.md
