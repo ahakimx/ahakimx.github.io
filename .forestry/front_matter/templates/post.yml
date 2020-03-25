@@ -14,15 +14,15 @@ fields:
 - type: text
   name: categories
   label: categories
+- name: categorie
+  type: tag_list
+  default: []
+  label: categorie
 - name: comments
   type: text
   config:
     required: false
   label: comments
-- name: categorie
-  type: tag_list
-  default: []
-  label: categorie
 pages:
 - _posts/2019-07-19-intoduction-to-the-dockerfile.md
 - _posts/2019-07-21-introduction-to-the-docker-volumes.md
