@@ -16,14 +16,20 @@ Langkah-langkahnya yaitu:
        #####################################
 2. Edit configurasi di file `/etc/ssh/ssh_config`
 
-       vi /etc/ssh/ssh_config
+       $ vi /etc/ssh/ssh_config
        ...
        Banner /etc/motd
        ...
-       systemctl restart sshd
-3. Kemudian coba login ke server tersebut
+       
+3. Kemudian restart service sshd
 
+       $ systemctl restart sshd
+4. Kemudian coba login ke server tersebut
+
+       $ ssh alex@192.168.10.10
+       
        Last login: Sun Mar 22 11:31:37 2020 from jump_host.linuxbanner_db_net
        #####################################
        Ini adalah contoh banner
        #####################################
+       
