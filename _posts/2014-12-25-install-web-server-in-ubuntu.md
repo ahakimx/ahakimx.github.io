@@ -3,7 +3,7 @@ categories:
 - webserver
 - apache
 layout: post
-title: INSTALL WEB SERVER IN UBUNTU
+title: Install Web Server on Ubuntu
 date: 2014-12-25 05:01:00 +0000
 comments: 'true'
 
