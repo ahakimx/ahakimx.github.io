@@ -1,7 +1,6 @@
 ---
 categorie:
 - linux
-- firewall
 layout: post
 title: Membuka Port Menggunakan Firewalld Linux
 date: 2020-03-25 05:01:00 +0000
