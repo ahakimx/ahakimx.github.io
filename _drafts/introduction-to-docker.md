@@ -1,5 +1,6 @@
 ---
-categories: []
+categories:
+- docker
 layout: post
 title: Introduction to Docker
 date: 2018-10-27 05:01:00 +0000
