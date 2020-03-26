@@ -1,12 +1,14 @@
 ---
-categorie: []
+categorie:
+- linux
+- firewall
 layout: post
 title: Membuka Port Menggunakan Firewalld Linux
-date: 2020-03-24 05:01:00 +0000
+date: 2020-03-25 05:01:00 +0000
 comments: 'true'
 
 ---
-**`Nautilus`** system admins team just deployed a web UI application for their backup utility running on **`Nautilus backup server`** in **`Stratos Datacenter`**. The application is running on port **`6400`** . They have **`firewalld`** installed on that server. Some requirements have came up as mentioned below:
+**`Octopus`** system admins team just deployed a web UI application for their backup utility running on **`Octopus backup server`** in **`SC Datacenter`**. The application is running on port **`6400`** . They have **`firewalld`** installed on that server. Some requirements have came up as mentioned below:
 
 Open all incoming connection on **`6400/tcp`** port. Zone should be **`public`**.
 
@@ -39,7 +41,6 @@ Maka langkah -langkah yang akan kita lakukan adalah :
        Mar 25 04:53:30 stbkp01 systemd[1]: Enqueued job firewalld.service/start as 96
        Mar 25 04:53:30 stbkp01 systemd[1]: Job firewalld.service/start finished, result=done
        Hint: Some lines were ellipsized, use -l to show in full.
-       
 3. Mengecek port berapa saja yang sudah terbuka
 
        firewall-cmd --list-port
