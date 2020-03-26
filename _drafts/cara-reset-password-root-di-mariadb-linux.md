@@ -66,12 +66,12 @@ comments: 'true'
        
        MariaDB [(none)]>
 
-   ### Jika masih gagal untuk masuk dengan menampilkan pesan error seperti dibawah ini :
+   Jika masih gagal untuk masuk dengan menampilkan pesan error seperti dibawah ini :
 
        ERROR 1698 (28000): Access denied for user 'root'@'localhost'
        
 
-   ### Lakukan proses yang sama hingga langkah 3 diatas kemudian lakukan perintah dibawah ini :
+   Lakukan proses yang sama hingga langkah 3 diatas kemudian lakukan perintah dibawah ini :
 
        MariaDB [(none)]> use mysql;
        Reading table information for completion of table and column names
@@ -89,9 +89,9 @@ comments: 'true'
        MariaDB [mysql]> quit
        Bye
 
-   #### Kemudian coba lagi untuk masuk kedalam MariaDB.
+   Kemudian coba lagi untuk masuk kedalam MariaDB.
 
-   ####   
+      
    Semoga Berhasil...
 
    ***
