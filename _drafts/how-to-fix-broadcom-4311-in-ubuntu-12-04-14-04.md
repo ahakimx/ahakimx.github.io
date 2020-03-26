@@ -9,7 +9,7 @@ date: 2015-01-19 05:01:00 +0000
 comments: 'true'
 
 ---
-PREVIOUSLY YOU CHECK IN TERMINAL,
+Previously You check in terminal
 
     $ lspci | grep BCM
 
