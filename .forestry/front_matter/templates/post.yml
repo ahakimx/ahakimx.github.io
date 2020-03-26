@@ -24,6 +24,7 @@ pages:
 - _posts/2014-12-25-install-web-server-in-ubuntu.md
 - _posts/2015-01-19-how-to-fix-broadcom-4311-in-ubuntu-12-04-14-04.md
 - _posts/2015-05-16-how-to-disable-a-keyboard-key-in-linux.md
+- _posts/2016-09-08-how-to-reset-root-password-on-ubuntu-16-04.md
 - _posts/2019-07-19-intoduction-to-the-dockerfile.md
 - _posts/2019-07-21-introduction-to-the-docker-volumes.md
 - _posts/2019-07-21-introduction-to-the-dockerfile-part-ii.md
@@ -35,4 +36,3 @@ pages:
 - _posts/2020-03-21-membuat-user-dengan-spesifik-direktori-dan-user-id-uid.md
 - _posts/2020-03-21-use-volume-driver-on-docker.md
 - _posts/2020-03-25-membuka-port-menggunakan-firewalld-linux.md
-- _posts/how-to-reset-root-password-on-ubuntu-16-04.md
