@@ -5,6 +5,9 @@ layout: post
 title: Membuka Port Menggunakan Firewalld Linux
 date: 2020-03-25 05:01:00 +0000
 comments: 'true'
+categories:
+- linux
+- firewall
 
 ---
 **`Octopus`** system admins team just deployed a web UI application for their backup utility running on **`Octopus backup server`** in **`SC Datacenter`**. The application is running on port **`6400`** . They have **`firewalld`** installed on that server. Some requirements have came up as mentioned below:
