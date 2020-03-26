@@ -27,6 +27,7 @@ pages:
 - _posts/2016-09-08-how-to-reset-root-password-on-ubuntu-16-04.md
 - _posts/2018-04-25-cara-reset-password-root-di-mariadb-linux.md
 - _posts/2018-10-13-mengatasi-account-locked-di-debian.md
+- _posts/2018-10-27-introduction-to-docker.md
 - _posts/2019-07-19-intoduction-to-the-dockerfile.md
 - _posts/2019-07-21-introduction-to-the-docker-volumes.md
 - _posts/2019-07-21-introduction-to-the-dockerfile-part-ii.md
@@ -38,4 +39,3 @@ pages:
 - _posts/2020-03-21-membuat-user-dengan-spesifik-direktori-dan-user-id-uid.md
 - _posts/2020-03-21-use-volume-driver-on-docker.md
 - _posts/2020-03-25-membuka-port-menggunakan-firewalld-linux.md
-- _posts/introduction-to-docker.md
