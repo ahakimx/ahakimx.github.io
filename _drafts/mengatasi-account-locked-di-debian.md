@@ -18,7 +18,13 @@ Saya coba bertanya kepada diri saya "kenapa tidak mengganti nama user yang baru 
 Kemudian selang beberapa hari muncul lagi masalah yang sama yaitu account saya terkunci, kemudian saya terpikir untuk masuk kedalam console dan coba bertanya kepada diri saya "kenapa tidak masuk saja kedalam console dan mount partisi home nya". Setelah saya coba untuk masuk kedalam console dengan cara masuk ke menu grub kemudian menambahkan beberapa perintah didalamnya, sehingga saya berada dalam console, karena sebelumnya saya tidak bisa masuk kedalam console, dan hanya ada satu cara untuk masuk ke menu consolenya yang saya tahu yaitu dengan mengedit file grubnya.
 
 ![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585199238/myblog/2_hjwx76.jpg)  
-![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585199259/myblog/4_krhmyc.jpg)  
+Kemudian menambahkan script untuk masuk ke console
+
+    rw init=/bin/bash
+
+![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585199259/myblog/4_krhmyc.jpg)
+
+  
 kemudian saya menjalankan perintah mount untuk membuka partisi home saya,
 
 ![](https://res.cloudinary.com/dhcy32o8d/image/upload/v1585199308/myblog/5_e8inca.jpg)  
