@@ -1,0 +1,35 @@
+backend:
+  name: github
+  repo: ahakimx/ahakimx.github.io
+  branch: master
+  base_url: https://sveltia-cms-auth-ahakimx.workers.dev
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Categories", name: "categories", widget: "list", required: false }
+      - { label: "Comments", name: "comments", widget: "string", default: "true", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "drafts"
+    label: "Drafts"
+    folder: "_drafts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Categories", name: "categories", widget: "list", required: false }
+      - { label: "Comments", name: "comments", widget: "string", default: "true", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
