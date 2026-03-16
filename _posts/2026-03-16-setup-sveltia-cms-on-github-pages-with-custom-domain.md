@@ -2,7 +2,8 @@
 layout: post
 title: Setup Sveltia CMS on GitHub Pages with Custom Domain
 date: 2026-03-17T00:01:00
-categories: []
+categories:
+  - github pages
 comments: 'true'
 ---
 
