@@ -12,7 +12,7 @@ title: My Blog
 tagline: Cloud | DevOps Enthusiast
 
 description: >-
-  Abdul Hakim's personal blog about Cloud, DevOps, Docker, Jenkins, and Linux.
+  Abdul Hakim's personal blog about Cloud, DevOps, SRE, Linux and AI.
 
 url: "https://ahakimx.id"
 
@@ -23,9 +23,8 @@ social:
   name: Abdul Hakim
   links:
     - https://github.com/ahakimx
-    - https://twitter.com/a_hakimz
+    - https://twitter.com/a_hakimx
     - https://linkedin.com/in/ahakimx
-    - https://medium.com/@ahakimx
 
 # Web Analytics Settings
 analytics:
@@ -35,7 +34,7 @@ analytics:
 theme_mode: # [light | dark]
 
 avatar:
-
+avatar: "https://github.com/ahakimx.png"
 toc: true
 
 comments:

@@ -1,0 +1,15 @@
+- type: github
+  icon: "fab fa-github"
+  url: "https://github.com/ahakimx"
+
+- type: twitter
+  icon: "fab fa-twitter"
+  url: "https://twitter.com/a_hakimx"
+
+- type: linkedin
+  icon: "fab fa-linkedin"
+  url: "https://linkedin.com/in/ahakimx"
+  
+- type: rss
+  icon: "fas fa-rss"
+  noblank: true
