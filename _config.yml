@@ -19,7 +19,7 @@ plainwhite:
 
   # generate social links in footer
   social_links:
-    twitter: a_hakimz
+    twitter: a_hakimx
     github:  ahakimx
     linkedIn: in/ahakimx
     rss: rss
@@ -41,10 +41,13 @@ include:
   - admin
 
 # Build settings
-theme: plainwhite
+remote_theme: thelehhman/plainwhite-jekyll
 
 plugins:
+  - jekyll-remote-theme
   - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-sitemap
   - jekyll-sitemap
 #  - jekyll-feed
 # Google Analytics
