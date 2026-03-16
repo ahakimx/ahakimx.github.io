@@ -37,6 +37,9 @@ plainwhite:
 header_pages:
  - about.md
 
+include:
+  - admin
+
 # Build settings
 theme: plainwhite
 
