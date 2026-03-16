@@ -139,7 +139,7 @@ If you want to use a custom domain with GitHub Pages:
 
 Add A records pointing to GitHub Pages IPs:
 
-```plain
+```bash
 185.199.108.153
 185.199.109.153
 185.199.110.153
@@ -148,7 +148,7 @@ Add A records pointing to GitHub Pages IPs:
 
 For a subdomain like `www`, add a CNAME record:
 
-```plain
+```bash
 www  CNAME  username.github.io
 ```
 
@@ -159,7 +159,7 @@ www  CNAME  username.github.io
 3. Check **Enforce HTTPS**
 4. Create a `CNAME` file in your project root containing your domain:
 
-```plain
+```bash
 yourdomain.com
 ```
 
@@ -167,7 +167,7 @@ Wait a few minutes for DNS propagation and SSL certificate provisioning.
 
 #### 7. Push and Test
 
-```plain
+```bash
 git add .
 git commit -m "Add Sveltia CMS"
 git push
