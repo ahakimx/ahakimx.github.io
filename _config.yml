@@ -1,54 +1,119 @@
-title: My Blog | Abdul Hakim
-author: ahakimx
-#email: your-email@domain.com
-description: > # this means to ignore newlines until "show_exerpts:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-show_excerpts: true # set to true to show excerpts on the homepage
+# The Site Configuration
 
-# Minima date format
-# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
-sass:
-  sass_dir: _sass
-plainwhite:
+# Import the theme
+theme: jekyll-theme-chirpy
+
+lang: en
+
+timezone: Asia/Jakarta
+
+# jekyll-seo-tag settings
+title: My Blog
+tagline: Cloud | DevOps Enthusiast
+
+description: >-
+  Abdul Hakim's personal blog about Cloud, DevOps, Docker, Jenkins, and Linux.
+
+url: "https://ahakimx.id"
+
+github:
+  username: ahakimx
+
+social:
   name: Abdul Hakim
-  tagline: Cloud | DevOps Enthusiast
-  date_format: "%b %-d, %Y"
-  sitemap: true # set to true to generate sitemap.xml content
+  links:
+    - https://github.com/ahakimx
+    - https://twitter.com/a_hakimz
+    - https://linkedin.com/in/ahakimx
+    - https://medium.com/@ahakimx
 
-  # generate social links in footer
-  social_links:
-    twitter: a_hakimx
-    github:  ahakimx
-    linkedIn: in/ahakimx
-    rss: rss
-    medium: ahakimx
-   
-    # Mastodon instances
-    # mastodon:
-    # - username: jekyll
-    #   instance: example.com
-    # - username: jekyll2
-    #   instance: example.com
+# Web Analytics Settings
+analytics:
+  google:
+    id: UA-161821687-1
 
-# If you want to link only specific pages in your header, uncomment
-# this and add the path to the pages in order as they should show up
-header_pages:
- - about.md
+theme_mode: # [light | dark]
+
+avatar:
+
+toc: true
+
+comments:
+  provider: # [disqus | utterances | giscus]
+
+paginate: 10
+
+baseurl: ""
+
+# ------------ The following options are not recommended to be modified ------------------
+
+kramdown:
+  footnote_backlink: "&#8617;&#xfe0e;"
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      permalink: /posts/:title/
+  - scope:
+      path: _drafts
+    values:
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
+
+sass:
+  style: compressed
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: false
+  blanklines: false
+  ignore:
+    envs: [development]
+
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - docs
+  - tools
+  - README.md
+  - LICENSE
+  - purgecss.js
+  - "*.config.js"
+  - "package*.json"
 
 include:
   - admin
 
-# Build settings
-remote_theme: thelehhman/plainwhite-jekyll
-
-plugins:
-  - jekyll-remote-theme
-  - jekyll-seo-tag
-  - jekyll-sitemap
-  - jekyll-sitemap
-  - jekyll-sitemap
-#  - jekyll-feed
-# Google Analytics
-google_analytics: UA-161821687-1
+jekyll-archives:
+  enabled: [categories, tags]
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /tags/:name/
+    category: /categories/:name/
