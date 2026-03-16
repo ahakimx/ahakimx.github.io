@@ -2,7 +2,7 @@ backend:
   name: github
   repo: ahakimx/ahakimx.github.io
   branch: master
-  base_url: https://sveltia-cms-auth-ahakimx.workers.dev
+  base_url: https://sveltia-cms-auth.sveltia-cms-auth-ahakimx.workers.dev
 
 media_folder: "uploads"
 public_folder: "/uploads"
