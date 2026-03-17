@@ -2,7 +2,7 @@
 layout: post
 title: Building an AI-Powered English Interview Prep App — A Complete Technical Deep Dive
 date: 2026-01-10T11:20:00
-description: ''
+description: There are more opportunities than ever to work abroad — whether remote for international companies or through relocation. Almost all of these require English proficiency, especially during the interview process. As non-native English speakers
 categories:
   - ai
 tags:
@@ -454,24 +454,6 @@ Estimated total for light usage: **< $5/month**, mostly from Bedrock and Transcr
 
 ## 7. Development Process
 
-### Spec-Driven Development
-
-Every major feature follows a spec-driven approach:
-
-```plain
-1. Requirements Document → User stories + acceptance criteria
-2. Design Document → Architecture, correctness properties, error handling
-3. Tasks Document → Implementation checklist
-4. Implementation → Guided by tasks, validated by property tests
-```
-
-Benefits:
-
-- **Clarity before code**: Forces thinking about edge cases before writing code
-- **Correctness properties**: Formal specifications that can be automatically verified
-- **Traceability**: Every test traces back to a specific requirement
-- **Iterative refinement**: Requirements and design can be revised before implementation
-
 ### Development with Kiro IDE
 
 The entire development process for this project used **Kiro IDE** — an AI-powered IDE with native support for spec-driven development. Kiro isn't just a code assistant; it's a development partner that understands the full project context.
@@ -685,8 +667,8 @@ Interview sessions:
 
 ## Resources
 
-- Source code : [Github repo](https://github.com/ahakimx/english-learning-app)
-- Kiro IDE: https://kiro.dev/
-- Amazon Bedrock: https://aws.amazon.com/bedrock/pricing/
-- Amazon Transcibe https://aws.amazon.com/transcribe/
-- AWS Amplify: https://aws.amazon.com/amplify/
+- Source: [Github](https://github.com/ahakimx/english-learning-app)
+- [Kiro IDE](https://kiro.dev/)
+- [Amazon Bedrock](https://aws.amazon.com/bedrock/pricing/)
+- [Amazon Transcibe](https://aws.amazon.com/transcribe/)
+- [AWS Amplify](https://aws.amazon.com/amplify/)
