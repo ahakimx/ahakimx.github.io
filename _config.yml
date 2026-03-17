@@ -28,8 +28,8 @@ social:
 
 # Web Analytics Settings
 analytics:
-  google:
-    id: UA-161821687-1
+  cloudflare:
+    id: 7d0e5f68f6764daba503db40ced6e3cd
 
 theme_mode: # [light | dark]
 
