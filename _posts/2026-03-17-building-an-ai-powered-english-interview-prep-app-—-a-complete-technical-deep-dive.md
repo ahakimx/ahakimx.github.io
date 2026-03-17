@@ -642,15 +642,11 @@ npx cdk diff    # ensure no pending changes
 
 Access the app:
 
-![](blob:https://ahakimx.id/6cf5fd24-1c72-4a22-b6de-49e73b93baa4)
+![](/uploads/Screenshot%202026-03-17%20122616.png)
 
-Speaking Module:
+![](/uploads/Screenshot%202026-03-17%20123416.png)
 
-![](blob:https://ahakimx.id/e6736d14-e984-427e-b567-274e8c422fc7)
-
-Interview sessions:
-
-![](blob:https://ahakimx.id/da604a14-db63-4cfa-ae02-f9c62912b5bf)
+![](/uploads/Screenshot%202026-03-17%20124633.png)
 
 ***
 
