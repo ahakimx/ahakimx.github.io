@@ -27,191 +27,90 @@ Imagine it like an apartment with several rooms. Some rooms have "special rules"
 In Kubernetes:
 
 * **Taints** = "Rejection" labels on Nodes that prevent Pods from being scheduled there
-    
 * **Tolerations** = "Special permissions" on Pods to still be scheduled on Nodes that have Taints
-    
 
 ## Why Do We Need Taints and Tolerations?
 
 ### Problems Without Taints/Tolerations:
 
+![](/uploads/1.png)
 
 Assumptions:
 
 * Node1 (GPU Server): Regular pods can also be scheduled
-    
 * Node2 (Regular Server): GPU pods cannot perform optimally
-    
 * Node3 (Maintenance): Pods can be scheduled on nodes that are under maintenance or problematic
-    
 
 ### Solution With Taints/Tolerations:
 
 * Node1 (GPU + Taint): Only Pods with GPU Toleration
-    
 * Node2 (Regular): Regular pods
-    
 * Node3 (Taint: NoSchedule): No new Pods
-    
 
 ## Types of Taint Effects
 
 * **NoSchedule:** New pods cannot be scheduled on the node
-    
 * **PreferNoSchedule:** Scheduler tries to avoid scheduling new pods on the node
-    
 * **NoExecute:** Existing pods will be evicted from the node
-    
 
 # Diagrams: Taints and Tolerations
 
+![](/uploads/2.png)
 
-#### 1\. **Room 1 (Node 1) - VIP Only**
+#### 1. **Room 1 (Node 1) - VIP Only**
 
 * Marked with blue checkered pattern
-    
 * Exclusive access for VIP guests only (pods with specific tolerations)
-    
 * **"Need VIP keys"** = Pods must have the correct toleration to enter this node
-    
 * **Kubernetes equivalent**: Node with restrictive taints requiring specific tolerations
-    
 
-#### 2\. **Room 2 (Node 2) - Regular**
+#### 2. **Room 2 (Node 2) - Regular**
 
 * Marked with yellow pattern
-    
 * Standard node without any taints
-    
 * **"Everyone can book"** = All pods can be scheduled here
-    
 * **Kubernetes equivalent**: Clean node without any scheduling restrictions
-    
 
-#### 3\. **Room 3 (Node 3) - Maintenance**
+#### 3. **Room 3 (Node 3) - Maintenance**
 
 * Marked with pink pattern
-    
 * Node currently under maintenance
-    
 * **"Don't enter"** = Pods cannot enter (likely has NoSchedule/NoExecute taint)
-    
 * **Kubernetes equivalent**: Node with maintenance taint preventing new pod scheduling
-    
 
 ## Scheduling Flow Diagram
 
+![](/uploads/3.png)
 
 ## Flowchart Process Breakdown
 
-**1\. Pod Creation**
+  **1. Pod Creation**
 
 * **Start Point**: Pod Created
-    
-* A new pod is submitted to the Kubernetes API server and needs to be scheduled
-    
+* A new pod is submitted to the Kubernetes API server and needs to be scheduled\*\*.
 
-**2\. Node Availability Check**
+**2. Node Availability Check**
 
-* **Decision Point**: Check Node Available
-    
-* The scheduler evaluates available nodes in the cluster
-    
-* If no nodes are available, the process loops back to wait for available nodes
-    
+- **Decision Point**: Check Node Available
+- The scheduler evaluates available nodes in the cluster
+- If no nodes are available, the process loops back to wait for available nodes
 
-**3\. Taint Evaluation**
+**3. Taint Evaluation**
 
-* **Decision Point**: Does Node Have Taint?
-    
-* The scheduler checks if the candidate node has any taints applied
-    
-
-#### **Path A: No Taint**
-
-* If the node has no taints, the pod can be scheduled directly
-    
-* **Result**: Schedule to Node
-    
-
-#### **Path B: Has Taint**
-
-* If the node has taints, additional checks are required
-    
-* Proceeds to toleration evaluation
-    
-
-**4\. Toleration Check**
-
-* **Decision Point**: Does Pod Have Toleration?
-    
-* The scheduler checks if the pod has any tolerations defined
-    
-
-#### **Path B1: No Toleration**
-
-* Pod cannot be scheduled on the tainted node
-    
-* **Result**: "Pod Pending"
-    
-* Returns to Find Another Node
-    
-
-#### **Path B2: Has Toleration**
-
-* Pod has tolerations, but they need to match the node's taints
-    
-* Proceeds to matching evaluation
-    
-
-**5\. Toleration Matching**
-
-* **Decision Point**: Does Toleration Match?
-    
-* The scheduler verifies if the pod's tolerations match the node's taints
-    
-
-**Path B2a: Match**
-
-* Toleration matches the taint
-    
-* **Result**: Schedule to Node
-    
-
-**Path B2b: No Match**
-
-* Toleration doesn't match the taint
-    
-* **Result**: Pod Pending
-    
-* Returns to Find Another Node
-    
-
-**6\. Node Search Loop**
-
-* **Process**: Find Another Node
-    
-* When a pod cannot be scheduled, the scheduler continues searching for suitable nodes
-    
-* This creates a continuous loop until a compatible node is found
-    
+- **Decision Point**: Does Node Have Taint?
+- The scheduler checks if the candidate node has any taints applied
 
 ## Toleration Operators Comparison
 
 ### Equal Operator
 
 The `Equal` operator performs exact matching between the toleration and taint.
+  **Characteristics:**
 
-**Characteristics:**
-
-* Requires exact value match
-    
-* Most restrictive matching
-    
-* Precise control over pod placement
-    
-* Default operator if not specified
-    
+- Requires exact value match
+- Most restrictive matching
+- Precise control over pod placement
+- Default operator if not specified
 
 syntax:
 
@@ -223,29 +122,21 @@ tolerations:
   effect: "NoSchedule"
 ```
 
-**Use Cases:**
+  **Use Cases:**
 
-* When you need specific pods on specific nodes
-    
-* Dedicated node pools for particular applications
-    
-* Strict resource isolation requirements
-    
+- When you need specific pods on specific nodes
+- Dedicated node pools for particular applications
+- Strict resource isolation requirements
 
 ### Exists Operator
 
 The `Exists` operator only checks for the presence of the taint key, ignoring the value.
+  **Characteristics:**
 
-**Characteristics:**
-
-* Key-only matching
-    
-* More flexible than Equal
-    
-* Ignores taint values completely
-    
-* Useful for broad tolerance policies
-    
+- Key-only matching
+- More flexible than Equal
+- Ignores taint values completely
+- Useful for broad tolerance policies
 
 syntax:
 
@@ -256,14 +147,13 @@ tolerations:
   effect: "NoSchedule"
 ```
 
-**Use Cases:**
+  **Use Cases:**
 
-* When you want to tolerate any value for a specific key
-    
-* Broader tolerance policies
-    
-* Simplified taint management
----
+- When you want to tolerate any value for a specific key
+- Broader tolerance policies
+- Simplified taint management
+
+***
 
 ## Hands-On Lab: Implementasi Taints and Tolerations
 
@@ -301,14 +191,14 @@ metadata:
     app: demo-no-toleration
 spec:
   containers:
-  - name: nginx
+    - name: nginx
     image: nginx:alpine
     ports:
-    - containerPort: 80
+        - containerPort: 80
 ```
 
 ```bash
-$ kubectl create -f nginx.yaml 
+$ kubectl create -f nginx.yaml
 pod/pod-without-toleration created
 
 $ kubectl get pod
@@ -319,7 +209,7 @@ pod-without-toleration   0/1     Pending   0          2s
 $ kubectl describe pod pod-without-toleration | grep -iA3 events
 Events:
   Type     Reason            Age   From               Message
-  ----     ------            ----  ----               -------
+    ----     ------            ----  ----               -------
   Warning  FailedScheduling  62s   default-scheduler  0/2 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 1 node(s) had untolerated taint {environment: production}. preemption: 0/2 nodes are available: 2 Preemption is not helpful for scheduling.
 
 # Cek status node
@@ -340,15 +230,15 @@ metadata:
     app: demo-with-toleration
 spec:
   tolerations:
-  - key: "environment"
+    - key: "environment"
     operator: "Equal"
     value: "production"
     effect: "NoSchedule"
   containers:
-  - name: nginx
+    - name: nginx
     image: nginx:alpine
     ports:
-    - containerPort: 80
+        - containerPort: 80
 ```
 
 ```bash
@@ -366,17 +256,14 @@ pod-with-toleration      1/1     Running   0          3m21s   172.17.1.2   node0
 pod-without-toleration   0/1     Pending   0          10s     <none>       <none>   <none>           <none>
 ```
 
+![](/uploads/4.png)
 
 ### Lab 4: Taint with NoExecute
 
-* Prevents NEW pods from being scheduled
-    
-* EVICTS existing pods that don't tolerate the taint
-    
-* Most disruptive taint effect
-    
-* Can specify `tolerationSeconds` for graceful eviction
-    
+- Prevents NEW pods from being scheduled
+- EVICTS existing pods that don't tolerate the taint
+- Most disruptive taint effect
+- Can specify `tolerationSeconds` for graceful eviction
 
 ### **Example Scenario: Emergency Node Drain**
 
@@ -390,13 +277,13 @@ app-2       Running   node01
 database    Running   node01
 ```
 
-**Apply NoExecute Taint**
+  **Apply NoExecute Taint**
 
 ```bash
 kubectl taint nodes node01 emergency=hardware-failure:NoExecute
 ```
 
-**Immediate Result**
+  **Immediate Result**
 
 ```bash
 kubectl get pods -o wide
@@ -421,13 +308,13 @@ metadata:
   name: emergency-service
 spec:
   tolerations:
-  - key: "emergency"
+    - key: "emergency"
     operator: "Equal"
     value: "hardware-failure"
     effect: "NoExecute"
     tolerationSeconds: 300  # Tolerate for 5 minutes
   containers:
-  - name: service
+    - name: service
     image: nginx
 ```
 
@@ -449,17 +336,12 @@ emergency-service  Terminating   node01  # Now being evicted
 
 Taints and Tolerations are powerful mechanisms for:
 
-* Controlling pod scheduling with precision
-    
-* Isolating specialized workloads (GPU, database, etc.)
-    
-* Performing node maintenance without downtime
-    
-* Optimizing resource allocation
-    
+- Controlling pod scheduling with precision
+- Isolating specialized workloads (GPU, database, etc.)
+- Performing node maintenance without downtime
+- Optimizing resource allocation
 
 ## Resources
 
-* [Official Kubernetes Documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
-    
-* [Best Practices Guide](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
+- [Official Kubernetes Documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+- [Best Practices Guide](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
