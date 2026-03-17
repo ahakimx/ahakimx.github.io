@@ -38,7 +38,9 @@ avatar: "https://github.com/ahakimx.png"
 toc: true
 
 comments:
-  provider: # [disqus | utterances | giscus]
+  provider: disqus
+  disqus:
+    shortname: ahakimx
 
 paginate: 10
 
