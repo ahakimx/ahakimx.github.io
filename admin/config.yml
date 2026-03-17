@@ -17,8 +17,25 @@ collections:
       - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "string", required: false, hint: "Custom post description for SEO and preview" }
       - { label: "Categories", name: "categories", widget: "list", required: false }
-      - { label: "Comments", name: "comments", widget: "string", default: "true", required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Tag names should be lowercase" }
+      - label: "Preview Image"
+        name: "image"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Image Path", name: "path", widget: "image", required: false }
+          - { label: "Alt Text", name: "alt", widget: "string", required: false }
+          - { label: "LQIP (Low Quality Image Placeholder)", name: "lqip", widget: "string", required: false }
+      - { label: "Pin to Top", name: "pin", widget: "boolean", default: false, required: false, hint: "Pin this post to the top of the home page" }
+      - { label: "Table of Contents", name: "toc", widget: "boolean", default: true, required: false }
+      - { label: "Comments", name: "comments", widget: "boolean", default: true, required: false }
+      - { label: "Math (MathJax)", name: "math", widget: "boolean", default: false, required: false, hint: "Enable LaTeX math expressions" }
+      - { label: "Mermaid Diagrams", name: "mermaid", widget: "boolean", default: false, required: false, hint: "Enable Mermaid diagram rendering" }
+      - { label: "Media Sub Path", name: "media_subpath", widget: "string", required: false, hint: "URL prefix for images/media in this post" }
+      - { label: "Render with Liquid", name: "render_with_liquid", widget: "boolean", default: true, required: false }
       - { label: "Body", name: "body", widget: "markdown" }
 
   - name: "drafts"
@@ -30,6 +47,23 @@ collections:
       - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "string", required: false }
       - { label: "Categories", name: "categories", widget: "list", required: false }
-      - { label: "Comments", name: "comments", widget: "string", default: "true", required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Tag names should be lowercase" }
+      - label: "Preview Image"
+        name: "image"
+        widget: "object"
+        required: false
+        collapsed: true
+        fields:
+          - { label: "Image Path", name: "path", widget: "image", required: false }
+          - { label: "Alt Text", name: "alt", widget: "string", required: false }
+          - { label: "LQIP (Low Quality Image Placeholder)", name: "lqip", widget: "string", required: false }
+      - { label: "Pin to Top", name: "pin", widget: "boolean", default: false, required: false }
+      - { label: "Table of Contents", name: "toc", widget: "boolean", default: true, required: false }
+      - { label: "Comments", name: "comments", widget: "boolean", default: true, required: false }
+      - { label: "Math (MathJax)", name: "math", widget: "boolean", default: false, required: false }
+      - { label: "Mermaid Diagrams", name: "mermaid", widget: "boolean", default: false, required: false }
+      - { label: "Media Sub Path", name: "media_subpath", widget: "string", required: false }
+      - { label: "Render with Liquid", name: "render_with_liquid", widget: "boolean", default: true, required: false }
       - { label: "Body", name: "body", widget: "markdown" }
