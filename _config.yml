@@ -33,7 +33,9 @@ analytics:
 
 theme_mode: # [light | dark]
 
-avatar:
+webmaster_verifications:
+  google: kwyA2jqdgjISfJvWYQ8EOBjgU9PRXYBom2Lhfi5qApQ
+
 avatar: "https://github.com/ahakimx.png"
 toc: true
 
