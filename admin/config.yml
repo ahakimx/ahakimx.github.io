@@ -67,3 +67,23 @@ collections:
       - { label: "Media Sub Path", name: "media_subpath", widget: "string", required: false }
       - { label: "Render with Liquid", name: "render_with_liquid", widget: "boolean", default: true, required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "About"
+        name: "about"
+        file: "_tabs/about.md"
+        fields:
+          - { label: "Layout", name: "layout", widget: "hidden", default: "page" }
+          - { label: "Icon", name: "icon", widget: "hidden", default: "fas fa-info-circle" }
+          - { label: "Order", name: "order", widget: "hidden", default: 4 }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Projects"
+        name: "projects"
+        file: "_tabs/projects.md"
+        fields:
+          - { label: "Layout", name: "layout", widget: "hidden", default: "page" }
+          - { label: "Icon", name: "icon", widget: "hidden", default: "fas fa-project-diagram" }
+          - { label: "Order", name: "order", widget: "hidden", default: 5 }
+          - { label: "Body", name: "body", widget: "markdown" }
