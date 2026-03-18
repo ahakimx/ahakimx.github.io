@@ -61,7 +61,7 @@ A collection of hands-on projects I've built and documented. Each project includ
 
 | Project | Description | Tags |
 |---------|-------------|------|
-| [AI-Powered Interview Prep App](/posts/building-an-ai-powered-english-interview-prep-app-—-a-complete-technical-deep-dive/) | Full-stack AI app for English interview practice with speech recognition and LLM feedback | `AI` `LLM` `Full-Stack` |
+| [AI-Powered Interview Prep App](/posts/building-an-ai-powered-english-interview-prep-app-a-complete-technical-deep-dive/) | Full-stack AI app for English interview practice with speech recognition and LLM feedback | `AI` `LLM` `Full-Stack` |
 
 ## Other
 
