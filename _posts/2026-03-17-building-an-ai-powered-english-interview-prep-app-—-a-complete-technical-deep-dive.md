@@ -640,13 +640,15 @@ cd infra
 npx cdk diff    # ensure no pending changes
 ```
 
-Access the app:
+Access the app on local: http://localhost:5173
 
-![](/uploads/Screenshot%202026-03-17%20122616.png)
+![App Dashboard](/uploads/Screenshot%202026-04-18%20103253.png "App Dashboard")
 
-![](/uploads/Screenshot%202026-03-17%20123416.png)
+![Start speaking session](/uploads/Screenshot%202026-04-18%20103559.png "Start speaking session")
 
-![](/uploads/Screenshot%202026-03-17%20124633.png)
+![select job](/uploads/Screenshot%202026-04-18%20103609.png "select job")
+
+![recording speaking](/uploads/Screenshot%202026-04-18%20103627.png "recording speaking")
 
 ***
 
