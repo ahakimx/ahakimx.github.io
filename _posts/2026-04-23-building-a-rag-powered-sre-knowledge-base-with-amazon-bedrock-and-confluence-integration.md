@@ -402,7 +402,7 @@ python3 ../src/ingest.py \
 
 Expected output:
 
-```plain
+```bash
 🗑️  Deleting index 'sre-runbooks'...
   Deleted index 'sre-runbooks'
 
