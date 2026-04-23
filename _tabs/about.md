@@ -1,5 +1,4 @@
 ---
-# the default layout is 'page'
 icon: fas fa-info-circle
 order: 4
 ---
@@ -41,6 +40,7 @@ This blog is where I document my projects, share technical deep dives, and write
 ## Certifications
 
 <!-- Add your certifications here, for example: -->
+
 - AWS Certified Solutions Architect – Associate
 - Certified Kubernetes Administrator (CKA)
 
@@ -48,4 +48,3 @@ This blog is where I document my projects, share technical deep dives, and write
 
 - GitHub: [ahakimx](https://github.com/ahakimx)
 - LinkedIn: [ahakimx](https://linkedin.com/in/ahakimx)
-- Twitter: [a_hakimx](https://twitter.com/a_hakimx)
