@@ -143,7 +143,7 @@ pip install -r src/requirements.txt
 
 Dependencies:
 
-```plain
+```bash
 beautifulsoup4==4.12.3
 boto3==1.34.100
 opensearch-py==2.5.0
