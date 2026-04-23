@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Building a RAG-Powered SRE Knowledge Base With Amazon Bedrock and Confluence Integration
-date: 2026-04-23T14:29:00
+date: 2026-04-22T15:20:00
 description: This is a full end-to-end RAG (Retrieval-Augmented Generation) system that lets SRE engineers query their operational knowledge base using natural language — through a Slack bot.
 categories:
   - ai
