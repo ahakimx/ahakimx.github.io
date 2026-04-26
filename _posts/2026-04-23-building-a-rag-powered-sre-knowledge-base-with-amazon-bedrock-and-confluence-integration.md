@@ -452,20 +452,7 @@ Results now show both sources:
 
 ## Cleanup
 
-When you're done, destroy everything to stop charges:
-
-```bash
-./scripts/destroy.sh
-```
-
-Or manually:
-
-```bash
-cd terraform
-terraform destroy
-```
-
-Verify in AWS Console that OpenSearch collection, Lambda functions, and API Gateway are deleted.
+When we're done, destroy everything to stop charges. Verify in AWS Console that OpenSearch collection, Lambda functions, and API Gateway are deleted.
 
 ***
 
