@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Building a RAG-Powered SRE Knowledge Base With Amazon Bedrock and Confluence Integration
+title: Building a RAG-Powered SRE Knowledge Base With Amazon Bedrock
 date: 2026-04-22T15:20:00
 description: This is a full end-to-end RAG (Retrieval-Augmented Generation) system that lets SRE engineers query their operational knowledge base using natural language — through a Slack bot.
 categories:
@@ -24,7 +24,7 @@ media_subpath: ''
 render_with_liquid: true
 ---
 
-# Building a RAG-Powered SRE Knowledge Base With Confluence Integration
+# Building a RAG-Powered SRE Knowledge Base With Amazon Bedrock
 
 ## What This Project Does
 
