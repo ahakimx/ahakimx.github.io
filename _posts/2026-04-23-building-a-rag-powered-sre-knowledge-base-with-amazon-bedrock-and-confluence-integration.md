@@ -343,7 +343,7 @@ Each page comes back as:
 }
 ```
 
-The full implementation is \~300 lines. See the [source code](../../../labs/ai-aiops/rag-knowledge-base-sre/src/confluence_client.py) for the complete file.
+The full implementation is \~300 lines.
 
 ### Step 14 — Extend the CLI for Multi-Source Ingestion
 
