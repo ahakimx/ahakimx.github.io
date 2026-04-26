@@ -463,4 +463,3 @@ When we're done, destroy everything to stop charges. Verify in AWS Console that 
 - [Amazon Bedrock Titan Embeddings](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html)
 - [Slack Block Kit Builder](https://app.slack.com/block-kit-builder)
 - [Hypothesis — Property-Based Testing](https://hypothesis.readthedocs.io/)
-- [Source Code — RAG Knowledge Base Lab](../../../labs/ai-aiops/rag-knowledge-base-sre/)
