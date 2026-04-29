@@ -427,7 +427,7 @@ Expected output:
   Created index: sre-runbooks
   Indexed 48 documents into 'sre-runbooks'
 
-✅ Ingestion complete!
+Ingestion complete!
   Runbooks processed: 4
   Confluence pages processed: 4
   Total chunks indexed: 48
