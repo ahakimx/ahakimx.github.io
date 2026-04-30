@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Building an AI-Powered English Interview Prep App on AWS
-date: 2026-01-10T11:20:00
+date: 2025-12-30T11:20:00
 description: There are more opportunities than ever to work abroad — whether remote for international companies or through relocation. Almost all of these require English proficiency, especially during the interview process.
 categories:
   - ai, aws
