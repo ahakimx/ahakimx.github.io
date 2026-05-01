@@ -757,6 +757,25 @@ I'm using EC2 directly because this is a portfolio project — simplicity matter
 
 ### Demo
 
+Access the app on local: http://localhost:5173
+
+![](/uploads/pasted-image-1777651382225.png)
+
+Choose on speaking, click continue.
+
+![](/uploads/pasted-image-1777651500390.png)
+
+Click start practice > choose job position > level > choose type general or technical.
+
+![](/uploads/pasted-image-1777651552506.png)
+
+![](/uploads/pasted-image-1777651814457.png)
+
+Feedback and resume after click End Session
+
+![](/uploads/pasted-image-1777651893292.png)
+
+
 ## 9. Lessons Learned
 
 1. **Nova Sonic changes everything.** Moving from the Polly + Transcribe pipeline to Nova Sonic isn't just an upgrade — it's a fundamental shift. Latency dropped from 3-5 seconds per turn to sub-second. But the architecture also got more complex because you need a persistent server for bidirectional streaming.
