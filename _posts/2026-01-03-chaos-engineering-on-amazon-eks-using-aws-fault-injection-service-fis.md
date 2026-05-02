@@ -22,8 +22,6 @@ render_with_liquid: true
 
 ## Overview
 
-![](/uploads/architecture-diagram.drawio%281%29.png)
-
 AWS FIS is a managed AWS service purpose-built for running controlled fault injection experiments on AWS resources. Unlike third-party tools such as Chaos Mesh or Litmus that require installing controllers inside the cluster, FIS integrates directly with the AWS ecosystem and offers several advantages:
 
 - **No agent installation** — FIS pod actions use ephemeral containers to inject faults, rather than DaemonSets or sidecars that must be deployed on every node
@@ -75,107 +73,7 @@ This lab is **self-contained** — all infrastructure (VPC, EKS cluster, IAM rol
 
 ## Architecture Overview
 
-```mermaid
-graph TB
-    subgraph AWS["AWS Region (ap-southeast-1)"]
-        subgraph IAM["IAM"]
-            FIS_ROLE["FIS Execution Role<br/>Trust: fis.amazonaws.com<br/>Policies:<br/>- AWSFaultInjectionSimulatorEKSAccess<br/>- AWSFaultInjectionSimulatorNetworkAccess"]
-            SA_ROLE["FIS Service Account IAM Role<br/>Trust: OIDC Provider (IRSA)<br/>Policy: pods, ephemeralcontainers"]
-        end
-
-        subgraph FIS["AWS Fault Injection Service"]
-            TPL_POD["Experiment Template<br/>Pod Delete<br/>aws:eks:pod-delete"]
-            TPL_NODE["Experiment Template<br/>Node Termination<br/>aws:eks:terminate-nodegroup-instances"]
-            TPL_NET["Experiment Template<br/>Network Latency<br/>aws:eks:pod-network-latency"]
-        end
-
-        subgraph CW["Amazon CloudWatch"]
-            ALARM_CPU["Alarm: CPU Utilization<br/>> 80% for 2 periods"]
-            ALARM_NODE["Alarm: Failed Node Count<br/>> 1 for 1 period"]
-        end
-
-        subgraph VPC["VPC (10.4.0.0/16)"]
-            subgraph PUB["Public Subnets (3 AZs)"]
-                NAT["NAT Gateway"]
-            end
-            subgraph PRIV["Private Subnets (3 AZs)"]
-                subgraph EKS["EKS Cluster (K8s 1.32+)"]
-                    subgraph NG["Managed Node Group<br/>t3.medium x3"]
-                        subgraph NS["Namespace: fis-lab"]
-                            FE["frontend<br/>nginx x3"]
-                            BE["backend-api<br/>echo x3"]
-                            DB["database<br/>redis x2"]
-                            SA["ServiceAccount<br/>fis-experiment-sa"]
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    FIS_ROLE --> TPL_POD
-    FIS_ROLE --> TPL_NODE
-    FIS_ROLE --> TPL_NET
-    SA_ROLE -.->|IRSA annotation| SA
-    TPL_POD -->|"stop condition"| ALARM_CPU
-    TPL_POD -->|"stop condition"| ALARM_NODE
-    TPL_NODE -->|"stop condition"| ALARM_CPU
-    TPL_NODE -->|"stop condition"| ALARM_NODE
-    TPL_NET -->|"stop condition"| ALARM_CPU
-    TPL_NET -->|"stop condition"| ALARM_NODE
-    TPL_POD -->|"target: app=backend-api"| BE
-    TPL_NODE -->|"target: node group"| NG
-    TPL_NET -->|"target: app=backend-api"| BE
-    TPL_POD -.->|"uses SA"| SA
-    TPL_NET -.->|"uses SA"| SA
-```
-
-```plain
-┌──────────────────────────────────────────────────────────────────────┐
-│                      AWS Region (ap-southeast-1)                      │
-│                                                                       │
-│  ┌──────────────── VPC (10.4.0.0/16) ────────────────────────────┐  │
-│  │                                                                │  │
-│  │  ┌──────────────── EKS Cluster (K8s 1.32+) ───────────────┐  │  │
-│  │  │                                                          │  │  │
-│  │  │  AWS FIS (managed service, no in-cluster agent):         │  │  │
-│  │  │  ├── Experiment: pod-delete (aws:eks:pod-delete)         │  │  │
-│  │  │  ├── Experiment: node-termination (terminate-nodegroup)  │  │  │
-│  │  │  └── Experiment: network-latency (pod-network-latency)   │  │  │
-│  │  │                                                          │  │  │
-│  │  │  fis-lab namespace:                                      │  │  │
-│  │  │  ├── frontend (nginx x3) ─────────┐                     │  │  │
-│  │  │  │                                  │                     │  │  │
-│  │  │  ├── backend-api (echo x3) ◄───────┘                    │  │  │
-│  │  │  │        ▲                                              │  │  │
-│  │  │  │        │ FIS Targets:                                 │  │  │
-│  │  │  │        │ ├── pod-delete (COUNT 1)                     │  │  │
-│  │  │  │        │ └── network-latency (COUNT 3, 200ms)         │  │  │
-│  │  │  │        │                                              │  │  │
-│  │  │  ├── database (redis x2) ◄────────┘                     │  │  │
-│  │  │  │                                                       │  │  │
-│  │  │  └── fis-experiment-sa (ServiceAccount + IRSA)           │  │  │
-│  │  │                                                          │  │  │
-│  │  │  Managed Node Group (t3.medium x3):                      │  │  │
-│  │  │  └── Target: node-termination (34% instances)            │  │  │
-│  │  │                                                          │  │  │
-│  │  └──────────────────────────────────────────────────────────┘  │  │
-│  │                                                                │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                       │
-│  IAM Roles:                                                           │
-│  ├── FIS Execution Role (fis.amazonaws.com trust)                     │
-│  │   ├── AWSFaultInjectionSimulatorEKSAccess                          │
-│  │   └── AWSFaultInjectionSimulatorNetworkAccess                      │
-│  └── FIS SA IAM Role (OIDC/IRSA trust)                               │
-│      └── Pod management permissions (fis-lab namespace)               │
-│                                                                       │
-│  CloudWatch Alarms (Stop Conditions):                                 │
-│  ├── CPU Utilization > 80% (2 periods x 60s)                         │
-│  └── Failed Node Count > 1 (1 period x 60s)                          │
-│                                                                       │
-└───────────────────────────────────────────────────────────────────────┘
-```
+![Architecture Overview](/uploads/architecture-diagram.drawio(1).png "Architecture Overview")
 
 ## Step-by-Step Guide
 
