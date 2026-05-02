@@ -1524,6 +1524,12 @@ aws fis list-experiment-templates --query "experimentTemplates[].{ID:id,Descript
 aws cloudwatch describe-alarms --alarm-name-prefix "aws-fis-chaos-lab" --query "MetricAlarms[].{Name:AlarmName,State:StateValue}" --output table
 ```
 
+![](/uploads/pasted-image-1777697754034.png)
+
+FIS experiment templates
+
+![](/uploads/pasted-image-1777698557208.png)
+
 ### Step 7: Run the Experiment — Pod Delete
 
 This experiment deletes one backend-api pod to test Kubernetes self-healing. We will run each step manually via the AWS CLI so you can see exactly what happens behind the scenes.
@@ -1537,6 +1543,11 @@ kubectl get pods -n fis-lab -l app=backend-api
 Expected output — 3 pods Running:
 
 ```plain
+$ kubectl get pods -n fis-lab -l app=backend-api
+NAME                           READY   STATUS    RESTARTS   AGE
+backend-api-5f887c9798-dl7hp   1/1     Running   0          7m38s
+backend-api-5f887c9798-wqbr5   1/1     Running   0          7m38s
+backend-api-5f887c9798-xwszt   1/1     Running   0          7m38s
 ```
 
 #### 7b. Get the FIS template ID from Terraform output
@@ -1557,6 +1568,8 @@ aws fis get-experiment-template --region ap-southeast-1 \
     --query 'experimentTemplate.{Description: description, Actions: actions, Targets: targets, StopConditions: stopConditions}' \
     --output yaml
 ```
+
+![](/uploads/pasted-image-1777698153606.png)
 
 Note the following:
 
@@ -1604,14 +1617,9 @@ In **terminal 2** — observe the pod lifecycle in real time:
 kubectl get pods -n fis-lab -l app=backend-api -w
 ```
 
-You will see:
+You will see like this:
 
-```plain
-backend-api-xxxxxxxxx-yyyyy    1/1     Terminating   0      10m    # <-- pod deleted by FIS
-backend-api-xxxxxxxxx-aaaaa    0/1     Pending       0      0s     # <-- new pod created
-backend-api-xxxxxxxxx-aaaaa    0/1     ContainerCreating   0   1s
-backend-api-xxxxxxxxx-aaaaa    1/1     Running       0      5s     # <-- recovered!
-```
+![](/uploads/pasted-image-1777698962912.png)
 
 #### 7f. Check the experiment results
 
@@ -1632,6 +1640,8 @@ aws fis get-experiment \
 kubectl get events -n fis-lab --sort-by='.lastTimestamp' | tail -10
 ```
 
+![](/uploads/pasted-image-1777699538256.png)
+
 FIS deleted 1 backend-api pod via the Kubernetes API (using the `fis-experiment-sa` service account through IRSA). The Kubernetes Deployment controller detected that the replica count was below the desired state (3) and created a new pod. Recovery time is typically 5-15 seconds. Since there are 3 replicas and only 1 was deleted, at least 2 pods remain Running at all times — no downtime.
 
 ### Step 8: Run the Experiment — Network Latency
@@ -1649,6 +1659,28 @@ for i in $(seq 1 5); do
     wget -qO- --timeout=5 http://backend-api:8080/
   echo ""
 done
+```
+
+```bash
+--- Request 1 ---
+{"service":"backend-api","status":"healthy","hostname":"backend-api-5f887c9798-b2ghn"}
+kubectl exec -n fis-lab deploy/frontend -- wget -qO- --timeout=5   1.08s user 0.46s system 71% cpu 2.158 total
+
+--- Request 2 ---
+{"service":"backend-api","status":"healthy","hostname":"backend-api-5f887c9798-x9ldt"}
+kubectl exec -n fis-lab deploy/frontend -- wget -qO- --timeout=5   1.02s user 0.27s system 75% cpu 1.697 total
+
+--- Request 3 ---
+{"service":"backend-api","status":"healthy","hostname":"backend-api-5f887c9798-x9ldt"}
+kubectl exec -n fis-lab deploy/frontend -- wget -qO- --timeout=5   1.00s user 0.26s system 81% cpu 1.556 total
+
+--- Request 4 ---
+{"service":"backend-api","status":"healthy","hostname":"backend-api-5f887c9798-x9ldt"}
+kubectl exec -n fis-lab deploy/frontend -- wget -qO- --timeout=5   1.01s user 0.25s system 81% cpu 1.549 total
+
+--- Request 5 ---
+{"service":"backend-api","status":"healthy","hostname":"backend-api-5f887c9798-b2ghn"}
+kubectl exec -n fis-lab deploy/frontend -- wget -qO- --timeout=5   0.99s user 0.25s system 65% cpu 1.890 total
 ```
 
 Note the `total` value from each request. After FIS injects 200ms latency, this number will increase by \~0.2s.
@@ -1673,6 +1705,8 @@ aws fis get-experiment-template \
   }' \
     --output yaml
 ```
+
+![](/uploads/pasted-image-1777699931263.png)
 
 Note the action parameters:
 
@@ -1733,6 +1767,8 @@ kubectl get pods -n fis-lab -l app=backend-api -o wide
 kubectl describe pod -n fis-lab -l app=backend-api | grep -A 5 "Ephemeral"
 ```
 
+![](/uploads/pasted-image-1777700324740.png)
+
 #### 8g. Wait for the experiment to complete
 
 ```bash
@@ -1751,6 +1787,8 @@ while true; do
   sleep 30
 done
 ```
+
+[12:39:00] State: completed
 
 #### 8h. Verify latency returns to normal
 
@@ -1771,7 +1809,7 @@ The `total` value should return to the baseline.
 
 ### Step 9: Run the Experiment — Node Termination
 
-This experiment terminates 34% of instances in the node group (1 out of 3 nodes). This is the most impactful experiment — one node is actually shut down.
+This experiment terminates 34% of instances in the node group (1 out of 3 nodes), one node is actually shut down.
 
 #### 9a. Record the initial state
 
@@ -1782,6 +1820,10 @@ kubectl get nodes -o wide
 # View pod distribution per node
 kubectl get pods -n fis-lab -o wide --sort-by='.spec.nodeName'
 ```
+
+![](/uploads/pasted-image-1777700487614.png)
+
+![](/uploads/pasted-image-1777700526717.png)
 
 Note which node is running which pods — after the experiment, the distribution will change.
 
@@ -1805,6 +1847,8 @@ aws fis get-experiment-template \
   }' \
     --output yaml
 ```
+
+![](/uploads/pasted-image-1777700614074.png)
 
 Note the following:
 
@@ -1850,10 +1894,12 @@ In **terminal 2** — observe node status:
 kubectl get nodes -w
 ```
 
+![](/uploads/pasted-image-1777700724899.png)
+
 You will see one of the nodes transition to `NotReady`:
 
 ```plain
-ip-10-4-16-50.ap-southeast-1.compute.internal   NotReady   <none>   25m   v1.32
+ip-10-4-10-36.ap-southeast-1.compute.internal    NotReady   <none>   57m   v1.32.13-eks-40737a8
 ```
 
 In **terminal 3** — observe pod redistribution:
@@ -1861,6 +1907,8 @@ In **terminal 3** — observe pod redistribution:
 ```bash
 kubectl get pods -n fis-lab -o wide -w
 ```
+
+![](/uploads/pasted-image-1777700785419.png)
 
 #### 9f. Check the results after the experiment completes
 
@@ -1880,6 +1928,10 @@ aws fis get-experiment \
   }' \
     --output yaml
 ```
+
+![](/uploads/pasted-image-1777700833619.png)
+
+![](/uploads/pasted-image-1777700904547.png)
 
 #### 9g. Wait for the new node (Auto Scaling Group recovery)
 
