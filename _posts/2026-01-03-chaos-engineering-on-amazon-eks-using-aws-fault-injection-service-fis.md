@@ -9,7 +9,7 @@ tags:
   - aws, eks, chaos-engineering, fis
 image:
   path: https://picsum.photos/id/797/1920/1280.webp
-  alt: ''
+  alt: Photo by Lorem Picsum
   lqip: ''
 pin: false
 toc: true
