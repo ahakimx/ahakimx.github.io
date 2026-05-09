@@ -1848,7 +1848,7 @@ aws fis get-experiment-template \
     --output yaml
 ```
 
-![](/uploads/pasted-image-1777700614074.png)
+![](/uploads/pasted-image-1778310913412.png)
 
 Note the following:
 
