@@ -87,3 +87,12 @@ collections:
           - { label: "Icon", name: "icon", widget: "hidden", default: "fas fa-project-diagram" }
           - { label: "Order", name: "order", widget: "hidden", default: 5 }
           - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Series"
+        name: "series"
+        file: "_tabs/series.md"
+        fields:
+          - { label: "Layout", name: "layout", widget: "hidden", default: "page" }
+          - { label: "Icon", name: "icon", widget: "hidden", default: "fas fa-book-reader" }
+          - { label: "Order", name: "order", widget: "hidden", default: 6 }
+          - { label: "Title", name: "title", widget: "hidden", default: "Series" }
+          - { label: "Body", name: "body", widget: "markdown" }
