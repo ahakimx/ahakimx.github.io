@@ -132,10 +132,10 @@ flowchart LR
 Salah satu insight paling penting dari SRE: **100% reliability bukanlah target yang benar**.
 
 1. **User tidak bisa membedakan 99.99% vs 100%** — ISP, device, dan network juga punya downtime
-2. **Cost meningkat eksponensial** — dari 99% ($) ke 99.99% ($$$$) ke 100% (∞)
+2. **Cost meningkat eksponensial** — mencapai 99% relatif murah, 99.99% butuh investasi besar (redundancy, multi-region), dan 100% secara praktis tidak mungkin dicapai
 3. **Menghambat innovation** — 100% target berarti tidak boleh ada perubahan
 
-Solusinya adalah **error budget**: SLO 99.9% memberikan error budget 0.1% (43.8 menit/bulan). Selama budget tersedia, tim boleh deploy fitur baru. Budget habis → fokus reliability.
+Solusinya adalah **error budget**: SLO 99.9% memberikan error budget 0.1% (43.8 menit/bulan). Selama budget tersedia, tim boleh deploy fitur baru. Budget habis berarti fokus ke reliability.
 
 ## Reliability Mindset
 
@@ -146,16 +146,19 @@ Transisi dari traditional ops ke SRE dimulai dari perubahan mindset:
 ```bash
 # Traditional Ops approach:
 # "Semoga deployment malam ini tidak break production..."
-# → Manual deployment, no rollback plan
+# Manual deployment, no rollback plan
 
 # SRE approach:
 # "Kita punya automated rollback jika error rate > 1%"
-# → Canary deployment, automated monitoring, defined rollback criteria
+# Canary deployment, automated monitoring, defined rollback criteria
 ```
 
 ### Embrace Risk
 
-SRE tidak berusaha menghilangkan semua risiko — SRE mengelola risiko secara terukur melalui tiga tahap: **Identify** (apa yang bisa fail?), **Measure** (seberapa buruk dampaknya?), dan **Manage** (bagaimana menanganinya?).
+SRE tidak berusaha menghilangkan semua risiko, SRE mengelola risiko secara terukur melalui tiga tahap: 
+- **Identify** (apa yang bisa fail?),
+- **Measure** (seberapa buruk dampaknya?), dan 
+- **Manage** (bagaimana menanganinya?).
 
 ### Measure Everything
 
@@ -207,7 +210,7 @@ Toil adalah pekerjaan yang terkait dengan menjalankan production service yang be
 
 ## SLO dan Error Budget
 
-### Hubungan SLI → SLO → SLA → Error Budget
+### Hubungan SLI > SLO > SLA > Error Budget
 
 ```mermaid
 flowchart TD
@@ -244,21 +247,21 @@ Asumsi 1 bulan = 30 hari = 43.200 menit:
 
 ## Hands-on: Basic Reliability Assessment
 
-Sebelum memperbaiki reliability, Anda perlu tahu posisi saat ini.
+Sebelum memperbaiki reliability, kita perlu tahu posisi saat ini.
 
 ### Service Inventory
 
-```bash
-# Template: Service Inventory
-cat << 'EOF' > service-inventory.csv
-Service Name,Type,Owner,Criticality,Current Monitoring
-api-gateway,Web Service,Platform Team,Critical,Basic health check
-user-service,Microservice,Backend Team,High,Logs only
-payment-service,Microservice,Payment Team,Critical,APM + Logs
-database,PostgreSQL,DBA,Critical,CloudWatch
-cache,Redis,Platform Team,Medium,None
-EOF
-```
+Langkah pertama: buat daftar semua service yang dikelola beserta status monitoring-nya saat ini.
+
+| Service | Type | Owner | Criticality | Current Monitoring |
+|---------|------|-------|-------------|-------------------|
+| api-gateway | Web Service | Platform Team | Critical | Basic health check |
+| user-service | Microservice | Backend Team | High | Logs only |
+| payment-service | Microservice | Payment Team | Critical | APM + Logs |
+| database | PostgreSQL | DBA | Critical | CloudWatch |
+| cache | Redis | Platform Team | Medium | None |
+
+> Dari tabel ini langsung terlihat gap: service critical seperti database hanya punya CloudWatch basic, dan cache tidak punya monitoring sama sekali. Ini yang perlu diprioritaskan.
 
 ### Simple Availability Calculator
 
@@ -275,11 +278,47 @@ echo "Availability: ${availability}%"
 
 ## Studi Kasus: TechStartup Indonesia
 
-TechStartup Indonesia (TSI) adalah startup e-commerce dengan 50.000 DAU yang di awal 2020 menghadapi growing pains — downtime yang sering, firefighting konstan, dan arsitektur monolith pada Node.js yang mulai tidak mampu menangani pertumbuhan 20%/bulan. Tim terdiri dari 15 developer dan 5 DevOps engineer, dengan deployment manual via SSH dan monitoring hanya CloudWatch basic.
+### Konteks
 
-Setelah "Monday Morning Incident" pada Januari 2020 yang menyebabkan 3.5 jam downtime dan kerugian Rp 35 juta (database connection pool exhausted + memory leak), CTO memutuskan untuk memulai perjalanan SRE secara bertahap selama 4 minggu. Sebelumnya, 95% waktu tim DevOps dihabiskan untuk toil — firefighting (65%), manual deployment (20%), dan manual monitoring (10%).
+TechStartup Indonesia (TSI) adalah startup e-commerce dengan 50.000 DAU yang di awal 2020 menghadapi growing pains:
+- Downtime yang sering
+- Firefighting konstan
+- Arsitektur monolith Node.js yang mulai tidak mampu menangani pertumbuhan 20%/bulan
+- Tim: 15 developer + 5 DevOps engineer
+- Deployment manual via SSH, monitoring hanya CloudWatch basic
 
-TSI menjalankan empat fase implementasi: (1) reliability assessment yang menghasilkan skor 3/20 — Critical, (2) setup monitoring dasar dengan Prometheus dan Grafana, (3) pembuatan runbook pertama untuk masalah memory leak yang terjadi 3x/minggu, dan (4) toil audit formal yang mengungkap bahwa 12 jam per minggu per engineer dihabiskan untuk pekerjaan yang seharusnya bisa diotomasi. Prioritas automation ditentukan berdasarkan formula frequency × time: manual deployment (135 min/minggu), log checking (150 min/minggu), dan app restart (45 min/minggu).
+### Trigger: Monday Morning Incident
+
+Januari 2020 — database connection pool exhausted + memory leak menyebabkan **3.5 jam downtime** dan kerugian **Rp 35 juta**. CTO memutuskan untuk memulai perjalanan SRE.
+
+Kondisi sebelumnya: 95% waktu tim DevOps dihabiskan untuk toil:
+- Firefighting: 65%
+- Manual deployment: 20%
+- Manual monitoring: 10%
+
+### Implementasi (4 Minggu)
+
+**Minggu 1: Reliability Assessment**
+
+Tim membuat checklist 20 poin (monitoring, backup, runbook, SLO, dll) dan menilai kondisi saat ini. Hasilnya: skor 3/20 — hanya punya basic health check, tidak ada runbook, tidak ada SLO yang terdefinisi.
+
+**Minggu 2: Setup Monitoring**
+
+Install Prometheus + Grafana di satu VM dedicated. Konfigurasi scraping untuk 3 service paling critical (API gateway, payment, database). Buat dashboard pertama yang menampilkan four golden signals: request rate, error rate, latency p95, dan CPU/memory usage.
+
+**Minggu 3: Runbook Pertama**
+
+Memory leak terjadi 3x/minggu dan selalu ditangani dengan cara yang sama: SSH > check memory > restart app. Tim dokumentasikan langkah-langkahnya jadi runbook formal, lalu buat alert di Prometheus yang trigger sebelum OOM kill. MTTR untuk masalah ini turun dari 45 menit ke 10 menit.
+
+**Minggu 4: Toil Audit**
+
+Setiap engineer mencatat semua pekerjaan manual selama 1 minggu. Hasilnya mengejutkan: rata-rata 12 jam/minggu/engineer dihabiskan untuk pekerjaan repetitif. Tim prioritaskan automation berdasarkan formula **frequency × time**:
+
+| Task | Frekuensi | Waktu/Kejadian | Total/Minggu |
+|------|-----------|----------------|-------------|
+| Log checking | 5x/hari | 30 min | 150 min |
+| Manual deployment | 3x/minggu | 45 min | 135 min |
+| App restart (memory leak) | 3x/minggu | 15 min | 45 min |
 
 ### Metrics Improvement
 
