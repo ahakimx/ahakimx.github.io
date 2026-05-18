@@ -5,7 +5,7 @@ order: 6
 title: Series
 ---
 
-Series ini berisi kumpulan artikel yang saya tulis sebagai bagian dari proses belajar dan eksperimen pribadi. Setiap series disusun secara terstruktur agar bisa dibaca step-by-step, tapi tujuan utamanya adalah dokumentasi perjalanan belajar saya.
+Series ini berisi kumpulan artikel yang ditulis sebagai bagian dari proses belajar dan eksperimen pribadi. Setiap series disusun secara terstruktur agar bisa dibaca step-by-step, tapi tujuan utamanya adalah dokumentasi perjalanan belajar saya.
 
 ---
 
