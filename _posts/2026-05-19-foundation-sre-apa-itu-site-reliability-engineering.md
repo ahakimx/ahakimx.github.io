@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #1: Apa Itu Site Reliability Engineering"
-date: 2026-05-19T01:30:00
-description: "Pelajari apa itu Site Reliability Engineering, perbedaan dengan traditional ops, dan konsep dasar toil. Panduan foundation untuk memulai SRE."
+title: 'Belajar SRE #1: Apa Itu Site Reliability Engineering'
+date: 2026-05-18T01:30:00
+description: Pelajari apa itu Site Reliability Engineering, perbedaan dengan traditional ops, dan konsep dasar toil. Panduan foundation untuk memulai SRE.
 categories:
   - sre
 tags:
@@ -22,6 +22,8 @@ media_subpath: ''
 render_with_liquid: true
 ---
 
+## Overview
+
 Site Reliability Engineering (SRE) adalah disiplin engineering yang menerapkan prinsip software engineering pada masalah infrastruktur dan operasional. Diperkenalkan oleh Google pada awal 2000-an, SRE memberikan framework untuk menyeimbangkan kecepatan pengembangan fitur (velocity) dan keandalan sistem (reliability). Artikel ini membahas fondasi SRE — mulai dari definisi, perbedaan dengan traditional operations, hingga pengenalan konsep toil.
 
 ## Prerequisites
@@ -34,39 +36,44 @@ Site Reliability Engineering (SRE) adalah disiplin engineering yang menerapkan p
 
 SRE adalah pendekatan engineering untuk mengelola production systems yang reliable, scalable, dan efficient. Alih-alih mengandalkan manual processes dan tribal knowledge, SRE menggunakan automation, measurement, dan engineering rigor.
 
-Ben Treynor Sloss mendefinisikan SRE sebagai *"what happens when you ask a software engineer to design an operations function."*
+Ben Treynor Sloss mendefinisikan SRE sebagai _"what happens when you ask a software engineer to design an operations function."_
 
 ### Core Principles SRE
 
 1. **Engineering Approach to Operations**
-   - Treat operations as a software problem
-   - Automate repetitive tasks (reduce toil)
-   - Apply software engineering practices to infra
+
+- Treat operations as a software problem
+- Automate repetitive tasks (reduce toil)
+- Apply software engineering practices to infra
 
 2. **Service Level Objectives (SLOs)**
-   - Define measurable reliability targets
-   - Use data to make decisions
-   - Balance reliability vs feature velocity
+
+- Define measurable reliability targets
+- Use data to make decisions
+- Balance reliability vs feature velocity
 
 3. **Error Budgets**
-   - 100% reliability is the wrong target
-   - Error budget = acceptable unreliability
-   - Budget habis → freeze features, fokus reliability
+
+- 100% reliability is the wrong target
+- Error budget = acceptable unreliability
+- Budget habis → freeze features, fokus reliability
 
 4. **Toil Reduction**
-   - Identify manual, repetitive operational work
-   - Automate toil systematically
-   - Target: max 50% time on toil, 50% on engineering
+
+- Identify manual, repetitive operational work
+- Automate toil systematically
+- Target: max 50% time on toil, 50% on engineering
 
 5. **Blameless Postmortems**
-   - Learn from failures, don't blame individuals
-   - Focus on systemic improvements
-   - Share learnings across organization
+
+- Learn from failures, don't blame individuals
+- Focus on systemic improvements
+- Share learnings across organization
 
 ### Definisi Kunci dalam SRE
 
 | Term | Definisi | Contoh |
-|------|----------|--------|
+| --- | --- | --- |
 | **Reliability** | Kemampuan sistem untuk berfungsi sesuai harapan | Uptime 99.9% per bulan |
 | **SLI** (Service Level Indicator) | Metric yang mengukur level layanan | % requests yang berhasil |
 | **SLO** (Service Level Objective) | Target untuk SLI | 99.9% availability per bulan |
@@ -110,7 +117,7 @@ flowchart LR
 ### Perbandingan Detail
 
 | Aspek | Traditional Ops | SRE |
-|-------|----------------|-----|
+| --- | --- | --- |
 | **Mindset** | "Keep it running" | "Engineer reliability" |
 | **Reliability Target** | 100% uptime (unrealistic) | SLO-based (e.g., 99.9%) |
 | **Failure Response** | Blame individuals | Blameless postmortems |
@@ -153,7 +160,7 @@ SRE tidak berusaha menghilangkan semua risiko — SRE mengelola risiko secara te
 ### Measure Everything
 
 | Apa yang Diukur | Mengapa Penting | Tool Modern |
-|-----------------|-----------------|-------------|
+| --- | --- | --- |
 | **Availability** | Apakah user bisa mengakses service? | Prometheus, OpenTelemetry |
 | **Latency** | Apakah response cukup cepat? | Prometheus histograms |
 | **Error Rate** | Berapa banyak request yang gagal? | Prometheus counters |
@@ -169,6 +176,7 @@ Toil adalah pekerjaan yang terkait dengan menjalankan production service yang be
 ### Toil vs Engineering Work
 
 **Toil (Harus Dikurangi):**
+
 - Manual deployment ke production
 - Restart service yang crash secara manual
 - Copy-paste konfigurasi antar environment
@@ -176,6 +184,7 @@ Toil adalah pekerjaan yang terkait dengan menjalankan production service yang be
 - Respond alert yang sama berulang kali
 
 **Engineering Work (Harus Ditingkatkan):**
+
 - Membangun CI/CD pipeline
 - Menulis auto-scaling policies
 - Membuat self-healing mechanisms
@@ -186,7 +195,7 @@ Toil adalah pekerjaan yang terkait dengan menjalankan production service yang be
 ### Cara Mengidentifikasi Toil
 
 | Karakteristik | Pertanyaan | Jika Ya = Toil |
-|---------------|-----------|----------------|
+| --- | --- | --- |
 | **Manual** | Apakah harus dilakukan oleh manusia? | Ya |
 | **Repetitive** | Apakah dilakukan berulang kali? | Ya |
 | **Automatable** | Bisakah diotomasi dengan script/tool? | Ya |
@@ -217,7 +226,7 @@ flowchart TD
 Asumsi 1 bulan = 30 hari = 43.200 menit:
 
 | SLO | Error Budget | Downtime Diizinkan/Bulan |
-|-----|-------------|--------------------------|
+| --- | --- | --- |
 | 99% | 1% | 432 menit (7 jam 12 menit) |
 | 99.5% | 0.5% | 216 menit (3 jam 36 menit) |
 | 99.9% | 0.1% | 43.2 menit |
@@ -227,7 +236,7 @@ Asumsi 1 bulan = 30 hari = 43.200 menit:
 ### Error Budget Policy
 
 | Sisa Error Budget | Status | Tindakan |
-|-------------------|--------|----------|
+| --- | --- | --- |
 | > 50% | Healthy | Deploy normal, eksperimen diizinkan |
 | 25% - 50% | Warning | Deploy dengan extra review |
 | 5% - 25% | Critical | Hanya deploy bug fixes |
@@ -264,7 +273,7 @@ availability=$(echo "scale=4; ($total_hours - $downtime_hours) / $total_hours * 
 echo "Availability: ${availability}%"
 ```
 
-## 🏢 Studi Kasus: TechStartup Indonesia
+## Studi Kasus: TechStartup Indonesia
 
 TechStartup Indonesia (TSI) adalah startup e-commerce dengan 50.000 DAU yang di awal 2020 menghadapi growing pains — downtime yang sering, firefighting konstan, dan arsitektur monolith pada Node.js yang mulai tidak mampu menangani pertumbuhan 20%/bulan. Tim terdiri dari 15 developer dan 5 DevOps engineer, dengan deployment manual via SSH dan monitoring hanya CloudWatch basic.
 
@@ -275,8 +284,8 @@ TSI menjalankan empat fase implementasi: (1) reliability assessment yang menghas
 ### Metrics Improvement
 
 | Metric | Sebelum | Sesudah | Perubahan |
-|--------|---------|---------|-----------|
-| Availability | ~95% | ~98.5% | +3.5% |
+| --- | --- | --- | --- |
+| Availability | \~95% | \~98.5% | +3.5% |
 | MTTD (detect) | 30 min | 5 min | -83% |
 | MTTR (recover) | 3.5 hrs | 45 min | -79% |
 | Incidents/month | 12 | 6 | -50% |
@@ -285,12 +294,14 @@ TSI menjalankan empat fase implementasi: (1) reliability assessment yang menghas
 ### Lessons Learned
 
 **Yang Berhasil:**
+
 - **Start Small, Show Value Fast** — Mulai dari monitoring basic dan satu runbook, bukan overhaul besar-besaran
 - **Use Real Incidents as Motivation** — Monday Morning Incident menjadi catalyst untuk perubahan
 - **Toil Audit Opens Eyes** — Ketika tim melihat 65% waktu mereka adalah toil, motivasi untuk berubah meningkat drastis
 - **CTO Buy-in is Critical** — Dukungan leadership membuat perubahan cultural lebih mudah
 
 **Yang Perlu Dihindari:**
+
 - Jangan coba ubah semuanya sekaligus — TSI fokus pada 4 hal dalam 4 minggu
 - Jangan skip assessment — tanpa data baseline, Anda tidak tahu apakah ada improvement
 - Jangan blame individuals — postmortem pertama TSI hampir menjadi blame session sebelum CTO intervensi
@@ -310,6 +321,7 @@ TSI menjalankan empat fase implementasi: (1) reliability assessment yang menghas
 Artikel berikutnya: [Foundation SRE: Monitoring Basics](/posts/foundation-sre-monitoring-basics/) — membahas dasar-dasar monitoring dari perspektif SRE, termasuk four golden signals dan setup observability stack.
 
 Topik terkait yang bisa Anda eksplorasi:
+
 - Konsep four golden signals (latency, traffic, errors, saturation)
 - OpenTelemetry sebagai standar observability modern
 - Incident response dan komunikasi saat incident
@@ -324,8 +336,8 @@ Topik terkait yang bisa Anda eksplorasi:
 - [Prometheus Documentation](https://prometheus.io/docs/) — Monitoring dan alerting toolkit
 - [Grafana Documentation](https://grafana.com/docs/grafana/latest/) — Visualization dan dashboarding (Grafana 11+)
 
----
+***
 
 ## Navigasi Series
 
-➡️ **Selanjutnya:** [Foundation SRE: Monitoring Basics](/posts/foundation-sre-monitoring-basics/)
+**Selanjutnya:** [Foundation SRE: Monitoring Basics](/posts/foundation-sre-monitoring-basics/)
