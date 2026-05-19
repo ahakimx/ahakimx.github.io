@@ -15,7 +15,7 @@ Eksperimen dalam mempelajari Site Reliability Engineering secara sistematis. Dim
 
 Setiap artikel dilengkapi studi kasus fiktif dari "TechStartup Indonesia" sebagai latihan menerapkan konsep ke skenario nyata.
 
-<!-- [📚 Lihat Daftar Lengkap →](/posts/sre-learning-series-index/) -->
+[📚 Mulai Series →](/posts/foundation-sre-apa-itu-site-reliability-engineering/)
 
 ---
 
