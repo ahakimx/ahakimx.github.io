@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #3: Pengantar Incident Response"
+title: 'Belajar SRE #3: Pengantar Incident Response'
 date: 2026-05-22T09:00:00
-description: "Pelajari dasar incident response untuk SRE: proses, komunikasi, dan koordinasi tim saat incident. Fondasi untuk incident management."
+description: 'Pelajari dasar incident response untuk SRE: proses, komunikasi, dan koordinasi tim saat incident. Fondasi untuk incident management.'
 categories:
   - sre
 tags:
@@ -38,6 +38,7 @@ Incident response adalah salah satu kemampuan paling kritis yang harus dimiliki 
 Dalam konteks SRE, incident adalah event yang menyebabkan atau berpotensi menyebabkan degradasi atau gangguan pada service yang berdampak pada user. Incident bukan hanya "server down" — bisa juga berupa peningkatan latency yang signifikan, error rate yang melonjak, atau data corruption.
 
 **✅ Yang termasuk incident:**
+
 - Service completely down (HTTP 500 untuk semua request)
 - Latency meningkat 10x dari normal (200ms → 2s)
 - Error rate melonjak dari 0.1% ke 5%
@@ -45,6 +46,7 @@ Dalam konteks SRE, incident adalah event yang menyebabkan atau berpotensi menyeb
 - Degradasi yang melanggar SLO
 
 **❌ Bukan incident** (tapi perlu perhatian):
+
 - Planned maintenance window
 - Bug yang tidak mempengaruhi user experience
 - Performance issue di staging environment
@@ -55,7 +57,7 @@ Dalam konteks SRE, incident adalah event yang menyebabkan atau berpotensi menyeb
 Incident response yang baik bukan hanya tentang memperbaiki masalah — ini tentang meminimalkan dampak, berkomunikasi dengan jelas, dan belajar dari setiap kejadian.
 
 | Tanpa Incident Response | Dengan Incident Response |
-|------------------------|--------------------------|
+| --- | --- |
 | Panic dan chaos saat incident | Respons terstruktur dan tenang |
 | Tidak jelas siapa yang bertanggung jawab | Roles dan responsibilities jelas |
 | Komunikasi kacau, stakeholder tidak tahu status | Update regular ke semua pihak |
@@ -66,7 +68,7 @@ Incident response yang baik bukan hanya tentang memperbaiki masalah — ini tent
 ### Konsep Kunci
 
 | Term | Definisi | Contoh |
-|------|----------|--------|
+| --- | --- | --- |
 | **Incident** | Event yang menyebabkan degradasi service | API return 500 errors untuk 30% requests |
 | **Severity** | Tingkat keparahan incident | SEV-1 (critical), SEV-2 (major), SEV-3 (minor) |
 | **Incident Commander (IC)** | Orang yang memimpin respons incident | Senior engineer yang koordinasi semua aktivitas |
@@ -82,8 +84,8 @@ Tidak semua incidents sama. Severity levels membantu tim memprioritaskan respons
 
 ### Severity Matrix
 
-| | Semua User | Mayoritas (>50%) | Sebagian (10-50%) | Sedikit (<10%) |
-|---|---|---|---|---|
+|  | Semua User | Mayoritas (>50%) | Sebagian (10-50%) | Sedikit (<10%) |
+| --- | --- | --- | --- | --- |
 | **Service Down** | SEV-1 | SEV-1 | SEV-2 | SEV-3 |
 | **Major Degradation** | SEV-1 | SEV-2 | SEV-2 | SEV-3 |
 | **Minor Degradation** | SEV-2 | SEV-3 | SEV-3 | SEV-4 |
@@ -92,7 +94,7 @@ Tidak semua incidents sama. Severity levels membantu tim memprioritaskan respons
 ### Response Requirements per Severity
 
 | Aspek | SEV-1 | SEV-2 | SEV-3 | SEV-4 |
-|-------|----------|----------|----------|----------|
+| --- | --- | --- | --- | --- |
 | **Response Time** | < 15 menit | < 30 menit | < 4 jam | Next business day |
 | **Notification** | Page on-call + escalate | Page on-call | Slack notification | Ticket/backlog |
 | **War Room** | Ya, dedicated channel | Ya, jika perlu | Tidak | Tidak |
@@ -118,7 +120,7 @@ flowchart LR
 Semakin cepat mendeteksi incident, semakin kecil dampaknya.
 
 | Metode Deteksi | Kecepatan | Reliability | Contoh |
-|---------------|-----------|-------------|--------|
+| --- | --- | --- | --- |
 | **Automated Monitoring** | Tercepat (detik-menit) | Tinggi | Prometheus alert: error rate > 1% |
 | **Synthetic Monitoring** | Cepat (menit) | Tinggi | Health check endpoint gagal |
 | **Internal Report** | Sedang (menit-jam) | Sedang | Engineer notice anomaly di dashboard |
@@ -193,7 +195,7 @@ kubectl apply -f maintenance-mode.yaml
 ### Fase 4: Recovery (Pemulihan)
 
 | Step | Action | Verification |
-|------|--------|-------------|
+| --- | --- | --- |
 | 1 | Apply fix/mitigation | Deployment berhasil tanpa error |
 | 2 | Verify service health | Health check endpoint return 200 |
 | 3 | Check error rate | Error rate kembali ke baseline |
@@ -230,7 +232,7 @@ flowchart TD
 
 #### Initial Notification
 
-```
+```plain
 INCIDENT DECLARED — [Severity Level]
 
 What: [Deskripsi singkat masalah]
@@ -243,7 +245,7 @@ Next Update: [Waktu update berikutnya]
 
 #### Status Update (setiap 30 menit SEV-1, 1 jam SEV-2)
 
-```
+```plain
 INCIDENT UPDATE — [Severity Level]
 
 Current Status: [Investigating/Identified/Mitigating/Monitoring]
@@ -255,7 +257,7 @@ Next Update: [Waktu update berikutnya]
 
 #### Resolution Notification
 
-```
+```plain
 INCIDENT RESOLVED — [Severity Level]
 
 Duration: [Total waktu incident]
@@ -268,7 +270,7 @@ Postmortem: [Jadwal postmortem]
 ### Communication Anti-Patterns
 
 | Anti-Pattern | Alternatif yang Benar |
-|-------------|----------------------|
+| --- | --- |
 | "Sedang di-fix" tanpa detail | Jelaskan apa yang sedang dilakukan |
 | Tidak ada update selama 1+ jam | Update regular meskipun belum ada progress |
 | Blame dalam komunikasi | Fokus pada fakta dan timeline |
@@ -282,7 +284,7 @@ Runbook adalah dokumentasi langkah-demi-langkah untuk menangani incident atau op
 ### Anatomi Runbook yang Baik
 
 | Komponen | Deskripsi | Contoh |
-|----------|-----------|--------|
+| --- | --- | --- |
 | **Title** | Nama yang jelas dan deskriptif | "Database Connection Pool Exhausted" |
 | **Severity** | Default severity | SEV-2 (Major) |
 | **Symptoms** | Bagaimana masalah terdeteksi | Alert: `db_connections > 90%` |
@@ -388,12 +390,14 @@ oncall_schedule:
 TSI di awal 2020 menghadapi major outage pertama mereka — "Valentine's Day Outage" — yang berlangsung 6 jam.
 
 Kondisi saat itu:
+
 - 50K DAU dengan arsitektur monolith
 - Promo Valentine's Day menarik traffic 3x lipat
 - Database connection pool exhausted
 - Tidak ada proses incident response sama sekali
 
 Masalah selama outage:
+
 - Deteksi memakan waktu 45 menit (dari marketing, bukan monitoring)
 - 5 DevOps engineers SSH bersamaan tanpa koordinasi
 - Trial-and-error selama 3 jam sebelum fix ditemukan
@@ -412,27 +416,30 @@ Hasilnya diuji saat incident serupa terjadi di bulan Maret — flash sale yang m
 ### Metrics Improvement
 
 | Metric | Sebelum (Feb 2020) | Sesudah (Mar 2020) | Perubahan |
-|--------|-------------------|-------------------|-----------|
+| --- | --- | --- | --- |
 | MTTD (Mean Time to Detect) | 45 menit | 3 menit | -93% |
 | MTTR (Mean Time to Recovery) | 5 jam | 43 menit | -86% |
 | Revenue loss per incident | Rp 50 juta | Rp 7 juta | -86% |
 | Incidents tanpa postmortem | 100% | 0% (SEV-1/2) | -100% |
 
 Perbedaan utama saat incident Maret:
+
 - Alert fired dalam 3 menit (bukan 45 menit dari marketing)
 - On-call yang sedang jaga merespon dalam 5 menit
 - Langsung buka runbook RB-001 dan ikuti langkah yang sudah terdokumentasi
-- Total investasi: ~Rp 2 juta/bulan (on-call compensation) vs Rp 50 juta revenue loss per incident sebelumnya
+- Total investasi: \~Rp 2 juta/bulan (on-call compensation) vs Rp 50 juta revenue loss per incident sebelumnya
 
 ### Lessons Learned
 
 **Yang Berhasil:**
+
 - Runbooks save lives (and revenue) — Engineer on-call bisa handle incident sendiri karena runbook sudah ada
 - Alerting yang tepat = detection yang cepat — 3 menit vs 45 menit detection time
 - Clear roles prevent chaos — satu IC, satu responder, tidak ada 5 orang SSH bersamaan
 - Communication templates reduce cognitive load — saat stress, template membantu tetap terstruktur
 
 **Yang Perlu Dihindari:**
+
 - Notification masih manual — perlu automated paging (Grafana OnCall atau PagerDuty)
 - Runbook masih sedikit (baru 3) — perlu lebih banyak untuk common scenarios
 - Postmortem process masih informal — perlu template dan tracking system
@@ -452,6 +459,7 @@ Perbedaan utama saat incident Maret:
 Artikel berikutnya: [Intermediate SRE: Incident Management](/posts/intermediate-sre-incident-management/) — setelah memahami fondasi incident response, langkah selanjutnya adalah membangun incident management yang lebih terstruktur dengan roles formal, war room procedures, dan escalation policies.
 
 Topik terkait yang bisa Anda eksplorasi:
+
 - Alerting Strategy — mengurangi alert fatigue dan membangun actionable alerts
 - Service Ownership — siapa yang bertanggung jawab ketika alert berbunyi?
 - Postmortem Culture — membangun budaya blameless learning dari incidents
@@ -464,7 +472,7 @@ Topik terkait yang bisa Anda eksplorasi:
 - [Grafana OnCall Documentation](https://grafana.com/docs/oncall/latest/)
 - [incident.io — Practical Guide to Incident Management](https://incident.io/guide)
 
----
+***
 
 ## Navigasi Series
 
