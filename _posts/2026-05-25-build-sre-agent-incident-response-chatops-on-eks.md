@@ -24,49 +24,13 @@ render_with_liquid: true
 
 **Repo:** [github.com/ahakimx/eks-microservices-lab](https://github.com/ahakimx/eks-microservices-lab)
 
----
+***
 
 ## Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        AWS Cloud (ap-southeast-1)                │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │                    VPC (10.0.0.0/16)                        │ │
-│  │                                                             │ │
-│  │  ┌─────────────────────────────────────────────────────┐   │ │
-│  │  │              EKS Cluster (v1.34)                     │   │ │
-│  │  │                                                      │   │ │
-│  │  │  ┌──────────┐  ┌──────────┐  ┌───────────────────┐ │   │ │
-│  │  │  │ frontend │→ │api-gateway│→ │ backend-service   │ │   │ │
-│  │  │  └──────────┘  └──────────┘  └───────────────────┘ │   │ │
-│  │  │        ↑ Network Policies (pod-to-pod restricted)    │   │ │
-│  │  │                                                      │   │ │
-│  │  │  ┌──────────────────────────────────────────────────┐   │   │ │
-│  │  │  │           SRE Agent (Python)                  │   │   │ │
-│  │  │  │  • Cluster Health Scan (proactive)            │   │   │ │
-│  │  │  │  • Auto-Remediation (CrashLoopBackOff)       │   │   │ │
-│  │  │  │  • ChatOps Commands (reactive)               │   │   │ │
-│  │  │  └──────────────────────────────────────────────┘   │   │ │
-│  │  │                                                      │   │ │
-│  │  │  ┌─────────────┐  ┌─────────────┐                  │   │ │
-│  │  │  │ Prometheus  │  │   Grafana   │  (monitoring ns)  │   │ │
-│  │  │  └─────────────┘  └─────────────┘                  │   │ │
-│  │  │                                                      │   │ │
-│  │  │  Worker Nodes: 2x t3.medium (Spot, IMDSv2)         │   │ │
-│  │  └─────────────────────────────────────────────────────┘   │ │
-│  └────────────────────────────────────────────────────────────┘ │
-│                                                                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────────────────┐  │
-│  │   ECR    │  │   KMS    │  │  IAM (OIDC + IRSA)           │  │
-│  │(immutable│  │(encrypt) │  │  GitHub Actions → EKS access  │  │
-│  │  tags)   │  │          │  │  Pod → AWS API (scoped)       │  │
-│  └──────────┘  └──────────┘  └──────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-```
+![](/uploads/diagram.drawio.png)
 
----
+***
 
 ## Prerequisites
 
@@ -77,7 +41,7 @@ render_with_liquid: true
 - Python 3.11+
 - GitHub repo with Actions enabled
 
----
+***
 
 ## Step 1: Provision EKS Cluster with Terraform
 
@@ -322,7 +286,7 @@ terraform apply
 aws eks update-kubeconfig --name eks-lab --region ap-southeast-1
 ```
 
----
+***
 
 ## Step 2: Deploy Microservices
 
@@ -397,7 +361,7 @@ done
 kubectl apply -f k8s/microservices.yaml
 ```
 
----
+***
 
 ## Step 3: Setup Monitoring (Prometheus + Grafana)
 
@@ -434,7 +398,7 @@ annotations:
   prometheus.io/path: "/metrics"
 ```
 
----
+***
 
 ## Step 4: CI/CD with GitHub Actions + OIDC
 
@@ -482,7 +446,7 @@ jobs:
             -n microservices
 ```
 
----
+***
 
 ## Step 5: Build SRE Agent
 
@@ -610,7 +574,7 @@ python sre_agent.py health
 python sre_agent.py rollback api-gateway
 ```
 
----
+***
 
 ## Step 6: IRSA for SRE Agent (Least Privilege)
 
@@ -647,7 +611,7 @@ metadata:
     eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/sre-agent-role
 ```
 
----
+***
 
 ## Step 7: Run the Agent as a CronJob
 
@@ -671,12 +635,12 @@ spec:
           restartPolicy: OnFailure
 ```
 
----
+***
 
 ## Security Highlights
 
 | Layer | Implementation |
-|-------|---------------|
+| --- | --- |
 | **OIDC** | GitHub Actions → AWS without long-lived credentials |
 | **IRSA** | Pod-level IAM, not shared node credentials |
 | **IMDSv2** | Prevents SSRF credential theft on worker nodes |
@@ -687,13 +651,13 @@ spec:
 | **Encryption** | EBS encrypted, EKS secrets encrypted at rest |
 | **Auto-remediation guard** | Max restart count check, prevents infinite loops |
 
----
+***
 
 ## Sample Output
 
 ### Scan Mode (All Clear)
 
-```
+```plain
 ✅ SRE Agent Scan — All Clear
 
 Cluster healthy. No issues detected.
@@ -701,7 +665,7 @@ Cluster healthy. No issues detected.
 
 ### Scan Mode (Issues Found)
 
-```
+```plain
 🚨 SRE Agent Scan — 2 issue(s)
 ⏰ 2026-05-25T09:30:00+00:00
 
@@ -716,7 +680,7 @@ Auto-remediation actions:
 
 ### ChatOps: `status`
 
-```
+```plain
 📊 Cluster Status
 
 🖥 Nodes: 2/2 ✅
@@ -728,7 +692,7 @@ Auto-remediation actions:
   🟢 backend-service    2/2
 ```
 
----
+***
 
 ## Next Steps
 
@@ -738,7 +702,7 @@ Auto-remediation actions:
 - **ML-based anomaly detection** — predict issues before they happen
 - **Multi-cluster support** — scan multiple EKS clusters
 
----
+***
 
 ## Conclusion
 
@@ -750,8 +714,8 @@ With this setup, you have:
 4. **CI/CD** that is secure (OIDC, no stored credentials)
 5. **SRE Agent** that can proactively detect issues, safely auto-fix them, and respond to ChatOps commands
 
-Total cost for this lab: ~$3-5/day (Spot instances + NAT Gateway). Suitable for learning and POC before scaling to production.
+Total cost for this lab: \~$3-5/day (Spot instances + NAT Gateway). Suitable for learning and POC before scaling to production.
 
----
+***
 
-*Built with ☕ by [Abdul Hakim](https://github.com/ahakimx)*
+_Built with ☕ by_ [_Abdul Hakim_](https://github.com/ahakimx)
