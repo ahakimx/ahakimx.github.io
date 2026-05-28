@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #5: Alerting Strategy"
-date: 2026-05-26T09:00:00
+date: 2026-05-26T09:00:00+0700
 description: "Pelajari strategi alerting yang efektif untuk SRE: mengurangi alert fatigue, SLO-based alerting, dan multi-window burn rate alerts."
 categories:
   - sre

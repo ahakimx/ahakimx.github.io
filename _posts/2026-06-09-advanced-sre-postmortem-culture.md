@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #13: Postmortem Culture"
-date: 2026-06-09T09:00:00
+date: 2026-06-09T09:00:00+0700
 description: "Pelajari blameless postmortem culture: template, root cause analysis, action item tracking, dan membangun organisasi yang belajar dari kegagalan."
 categories:
   - sre

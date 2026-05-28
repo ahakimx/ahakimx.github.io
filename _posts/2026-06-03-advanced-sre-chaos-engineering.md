@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #10: Chaos Engineering"
-date: 2026-06-03T09:00:00
+date: 2026-06-03T09:00:00+0700
 description: "Pelajari chaos engineering dengan Chaos Mesh dan AWS FIS untuk membangun confidence terhadap resilience sistem melalui controlled experiments."
 categories:
   - sre

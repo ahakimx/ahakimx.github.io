@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #12: On-Call Best Practices"
-date: 2026-06-06T09:00:00
+date: 2026-06-06T09:00:00+0700
 description: "Pelajari on-call best practices: rotation design, escalation policy, runbook creation, dan alert quality management untuk sustainable operations."
 categories:
   - sre

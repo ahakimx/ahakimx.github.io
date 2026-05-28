@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #7: Simplicity in SRE"
-date: 2026-05-29T09:00:00
+date: 2026-05-29T09:00:00+0700
 description: "Pelajari prinsip simplicity dalam SRE: mengurangi kompleksitas sistem, essential vs accidental complexity, dan simple design patterns."
 categories:
   - sre

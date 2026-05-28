@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #9: Error Budget"
-date: 2026-06-02T09:00:00
+date: 2026-06-02T09:00:00+0700
 description: "Pelajari error budget sebagai framework kuantitatif untuk menyeimbangkan reliability dengan feature velocity, termasuk burn rate alerting."
 categories:
   - sre

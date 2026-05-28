@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Belajar SRE #1: Apa Itu Site Reliability Engineering'
-date: 2026-05-18T01:30:00
+date: 2026-05-18T01:30:00+0700
 description: Pelajari apa itu Site Reliability Engineering, perbedaan dengan traditional ops, dan konsep dasar toil. Panduan foundation untuk memulai SRE.
 categories:
   - sre

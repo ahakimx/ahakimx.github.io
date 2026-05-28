@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #6: Service Ownership"
-date: 2026-05-27T09:00:00
+date: 2026-05-27T09:00:00+0700
 description: "Pelajari model service ownership dalam SRE: tanggung jawab tim, production readiness review, dan shared ownership culture."
 categories:
   - sre

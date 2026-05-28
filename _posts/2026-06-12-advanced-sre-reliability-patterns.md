@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #15: Reliability Patterns"
-date: 2026-06-12T09:00:00
+date: 2026-06-12T09:00:00+0700
 description: "Pelajari reliability patterns: circuit breaker, retry with backoff, bulkhead, timeout, dan graceful degradation untuk distributed systems."
 categories:
   - sre

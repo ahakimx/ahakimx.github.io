@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Belajar SRE #3: Pengantar Incident Response'
-date: 2026-05-22T09:00:00
+date: 2026-05-22T09:00:00+0700
 description: 'Pelajari dasar incident response untuk SRE: proses, komunikasi, dan koordinasi tim saat incident. Fondasi untuk incident management.'
 categories:
   - sre

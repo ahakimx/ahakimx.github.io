@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #14: Toil Reduction"
-date: 2026-06-10T09:00:00
+date: 2026-06-10T09:00:00+0700
 description: "Pelajari cara mengidentifikasi dan mengeliminasi toil menggunakan taxonomy terstruktur, automation ROI matrix, dan engineering time allocation."
 categories:
   - sre

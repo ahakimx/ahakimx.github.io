@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #16: SLO Dashboard Design"
-date: 2026-06-13T09:00:00
+date: 2026-06-13T09:00:00+0700
 description: "Pelajari cara merancang SLO dashboard dengan error budget visualization, multi-window burn rate alerting, dan compliance heatmaps di Grafana."
 categories:
   - sre

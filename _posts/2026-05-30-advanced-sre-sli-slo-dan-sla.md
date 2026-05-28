@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Belajar SRE #8: SLI, SLO, dan SLA"
-date: 2026-05-30T09:00:00
+date: 2026-05-30T09:00:00+0700
 description: "Pelajari definisi dan implementasi SLI, SLO, dan SLA sebagai fondasi SRE practices untuk mengukur dan menjamin reliability service."
 categories:
   - sre
