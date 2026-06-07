@@ -5,7 +5,7 @@ order: 4
 
 ## About Me
 
-Hi, I'm Abdul Hakim — a Site Reliability Engineer & Cloud/DevOps Engineer with a passion for building reliable, scalable infrastructure. I specialize in cloud architecture, container orchestration, automation, and ensuring system reliability at scale.
+Hi, I'm Abdul Hakim — a Cloud / Site Reliability Engineer & AWS Community Builder with a passion for building  infrastructure. I specialize in cloud, container orchestration, automation, and ensuring system reliability at scale.
 
 Currently exploring the intersection of AI and infrastructure — learning how to build and operate AI/ML systems.
 
