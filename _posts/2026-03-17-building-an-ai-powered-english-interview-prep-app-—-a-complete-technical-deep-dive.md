@@ -11,7 +11,7 @@ image:
   path: https://picsum.photos/id/1015/1920/1280.webp
   alt: Photo by Lorem Picsum
   lqip: ''
-pin: true
+pin: false
 toc: true
 comments: true
 math: false
