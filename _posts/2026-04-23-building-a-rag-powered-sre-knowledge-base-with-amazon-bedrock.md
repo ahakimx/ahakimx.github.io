@@ -15,7 +15,7 @@ image:
   path: /uploads/pasted-image-1776934011325.png
   alt: ''
   lqip: ''
-pin: false
+pin: true
 toc: true
 comments: true
 math: false
