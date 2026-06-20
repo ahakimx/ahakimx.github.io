@@ -13,7 +13,7 @@ image:
   path: /uploads/diagram.drawio.png
   alt: ''
   lqip: ''
-pin: false
+pin: true
 toc: true
 comments: true
 math: false
