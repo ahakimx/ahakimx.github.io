@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #21: Automation Evolution"
+title: 'Belajar SRE #21: Automation Evolution'
 date: 2026-06-23T09:00:00+0700
-description: "Pelajari evolusi automation dari manual scripts ke self-healing systems: automation hierarchy, Kubernetes operators, GitOps, dan event-driven remediation."
+description: 'Pelajari evolusi automation dari manual scripts ke self-healing systems: automation hierarchy, Kubernetes operators, GitOps, dan event-driven remediation.'
 categories:
   - sre
 tags:
@@ -10,7 +10,7 @@ tags:
   - sre-advanced
   - automation-evolution
 image:
-  path: https://picsum.photos/id/21/1920/1280.webp
+  path: https://picsum.photos/id/641/1920/1280.webp
   alt: Advanced SRE - Automation Evolution dari Scripts ke Self-Healing Systems
   lqip: ''
 pin: false
@@ -50,7 +50,7 @@ Google SRE Book menggambarkan automation sebagai tangga dengan 5 level:
 **Level 5: Self-Healing** — Sistem detect, diagnose, dan resolve masalah tanpa manusia sama sekali.
 
 | Level | Trigger | Execution | Decision | Example |
-|-------|---------|-----------|----------|---------|
+| --- | --- | --- | --- | --- |
 | Manual | Human | Human | Human | SSH ke server, restart process |
 | Scripted | Human | Script | Human | Menjalankan `restart_service.sh` |
 | Automated | Human | System | System | Klik "Deploy" di CI/CD |
@@ -64,9 +64,11 @@ Insight kunci dari Chapter 7: **setiap level menjadi fondasi untuk level berikut
 Google mengidentifikasi tiga nilai inti:
 
 ### Consistency
+
 Manusia membuat kesalahan, terutama di bawah tekanan. Failover jam 3 pagi yang dijalankan engineer yang baru bangun tidur punya error rate jauh lebih tinggi dibanding yang dijalankan oleh code.
 
 ### Speed
+
 Sistem otomatis bereaksi dalam hitungan detik. Kalau manusia: alert → bangun → buka laptop → cari context → diagnosa → bertindak. Itu bisa makan waktu 15-45 menit.
 
 ### Platform Building
@@ -227,7 +229,7 @@ spec:
 ## Kapan TIDAK Mengotomatisasi
 
 | Situation | Why Not | Alternative |
-|-----------|---------|-------------|
+| --- | --- | --- |
 | Novel incidents | Tidak ada pattern untuk di-encode | Runbooks + decision trees |
 | Judgment calls | Tergantung konteks | Human-in-the-loop approval |
 | Event langka (<1/tahun) | ROI negatif | Dokumentasikan prosedurnya |
@@ -237,7 +239,7 @@ spec:
 ## Mengukur Efektivitas Automation
 
 | Metric | Formula | Target |
-|--------|---------|--------|
+| --- | --- | --- |
 | Toil Reduction | (manual_before - manual_after) / manual_before | >50% |
 | MTTR | Mean time from alert to resolution | <15 min |
 | Human Intervention Rate | manual_interventions / total_incidents | <20% |
@@ -251,6 +253,7 @@ spec:
 TSI di Optimization Phase (2023) perlu mengurangi operational toil.
 
 Kondisi sebelumnya:
+
 - Tim SRE menghabiskan 60% waktu untuk task repetitif
 - 47 bash script tersebar di 3 repo tanpa test dan tanpa ownership
 - Database failover makan waktu rata-rata 23 menit
@@ -268,7 +271,7 @@ TSI adopt pendekatan tiga pilar:
 ### Metrics Improvement
 
 | Metric | Sebelum | Sesudah | Perubahan |
-|--------|---------|---------|-----------|
+| --- | --- | --- | --- |
 | DB Failover Time | 23 min | 47 sec | -96% |
 | SRE Toil (hrs/week) | 30 hrs | 8 hrs | -73% |
 | Human Intervention Rate | 85% | 18% | -79% |
@@ -279,12 +282,14 @@ TSI adopt pendekatan tiga pilar:
 ### Lessons Learned
 
 **Yang Berhasil:**
+
 - Mulai dari task toil tertinggi (DB failover) memberikan ROI langsung dan buy-in tim
 - Build operator dengan `requireApproval: true` di awal, baru hapus gate setelah confidence tumbuh
 - Investasi di observability operator (Prometheus metrics untuk setiap reconcile loop) menangkap bug lebih awal
 - Migrasi bertahap — menjalankan script lama paralel dengan operator baru selama 4 minggu
 
 **Yang Perlu Dihindari:**
+
 - Jangan automate tanpa circuit breakers — operator scaling pertama TSI hampir scale ke 200 pods
 - Jangan skip integration tests — operator cert-rotation works di staging tapi gagal di prod karena IAM roles berbeda
 - Jangan build custom jika community operators tersedia — TSI membuang 3 minggu build cert operator sebelum menemukan cert-manager
@@ -305,6 +310,7 @@ TSI adopt pendekatan tiga pilar:
 Artikel berikutnya: [Advanced SRE: Distributed Consensus](/posts/advanced-sre-distributed-consensus/) — managing critical state di distributed systems menggunakan consensus algorithms.
 
 Topik terkait yang bisa Anda eksplorasi:
+
 - Distributed Consensus — Raft, etcd, dan leader election
 - Toil Reduction — identifikasi dan eliminasi toil secara sistematis
 - Release Engineering — automated release pipeline dan progressive delivery
@@ -317,7 +323,7 @@ Topik terkait yang bisa Anda eksplorasi:
 - [Argo Events - Event-Driven Automation](https://argoproj.github.io/argo-events/)
 - [Istio - Circuit Breaking](https://istio.io/latest/docs/tasks/traffic-management/circuit-breaking/)
 
----
+***
 
 ## Navigasi Series
 
