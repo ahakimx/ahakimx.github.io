@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Dashboard as Code: Managing Grafana Dashboards with Terraform'
-date: 2026-06-30T08:04
+date: 2026-07-15T08:04
 description: A comprehensive guide to building a Dashboard-as-Code system using Terraform and Grafana. From local setup to a CI/CD pipeline for production
 categories:
   - grafana, terraform, observability, sre, devops, infrastructure-as-code
@@ -55,14 +55,13 @@ Before starting, make sure the following tools are installed:
 - **curl** & **jq** — for interacting with APIs
 
 > **Note:** This article targets macOS/Linux. If you're on Windows, use WSL2.
-
----
+>   ---
 
 ## Architecture
 
 Before diving into the implementation, let's understand the overall architecture of the system we'll build:
 
-```
+```plain
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         Local Development                                │
 │                                                                          │
@@ -98,14 +97,13 @@ Before diving into the implementation, let's understand the overall architecture
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**The flow:**
+  **The flow:**
 
 1. Prometheus scrapes metrics from all targets (itself, Grafana, sample app)
 2. Grafana queries Prometheus as a datasource to render dashboards
 3. Terraform communicates with the Grafana API to create/update folders and dashboards
 4. The CI/CD pipeline automatically validates and deploys changes to Grafana
-
----
+  ---
 
 ## Step 1: Repository Setup
 
@@ -129,7 +127,7 @@ git init
 
 The target directory structure:
 
-```
+```plain
 observability-as-code/
 ├── README.md
 ├── docker-compose.yaml
@@ -165,8 +163,7 @@ observability-as-code/
 - **`.github/workflows/`** — CI/CD pipeline
 
 > **Note:** We deliberately separate dashboard JSON from Terraform config. This is intentional — JSON templates can be generated from other tools (Grafonnet, grafana-dashboard-builder) in the future without modifying the Terraform config.
-
----
+>   ---
 
 ## Step 2: Local Observability Stack
 
@@ -187,46 +184,46 @@ services:
     image: prom/prometheus:v2.53.0
     container_name: prometheus
     ports:
-      - "9090:9090"
+            - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
-      - prometheus_data:/prometheus
+            - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+            - prometheus_data:/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.time=15d"
-      - "--web.enable-lifecycle"
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--storage.tsdb.retention.time=15d"
+            - "--web.enable-lifecycle"
     networks:
-      - observability
+            - observability
     restart: unless-stopped
 
   grafana:
     image: grafana/grafana:11.1.0
     container_name: grafana
     ports:
-      - "3000:3000"
+            - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+            - GF_SECURITY_ADMIN_USER=admin
+            - GF_SECURITY_ADMIN_PASSWORD=admin123
+            - GF_USERS_ALLOW_SIGN_UP=false
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+            - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - grafana_data:/var/lib/grafana
+            - ./grafana/provisioning:/etc/grafana/provisioning:ro
+            - grafana_data:/var/lib/grafana
     depends_on:
-      - prometheus
+            - prometheus
     networks:
-      - observability
+            - observability
     restart: unless-stopped
 
   sample-app:
     image: quay.io/brancz/prometheus-example-app:v0.5.0
     container_name: sample-app
     ports:
-      - "8080:8080"
+            - "8080:8080"
     networks:
-      - observability
+            - observability
     restart: unless-stopped
 
 volumes:
@@ -248,21 +245,19 @@ global:
   scrape_timeout: 10s
 
 scrape_configs:
-  - job_name: "prometheus"
+    - job_name: "prometheus"
     static_configs:
-      - targets: ["localhost:9090"]
+            - targets: ["localhost:9090"]
         labels:
           environment: "local"
-
-  - job_name: "grafana"
+      - job_name: "grafana"
     static_configs:
-      - targets: ["grafana:3000"]
+            - targets: ["grafana:3000"]
         labels:
           environment: "local"
-
-  - job_name: "sample-app"
+      - job_name: "sample-app"
     static_configs:
-      - targets: ["sample-app:8080"]
+            - targets: ["sample-app:8080"]
         labels:
           environment: "local"
           service: "example-app"
@@ -275,7 +270,7 @@ Auto-provision Prometheus as a datasource in Grafana:
 apiVersion: 1
 
 datasources:
-  - name: Prometheus
+    - name: Prometheus
     type: prometheus
     access: proxy
     url: http://prometheus:9090
@@ -312,7 +307,7 @@ curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets | length'
 
 # Grafana - check that the datasource is provisioned
 curl -s http://localhost:3000/api/datasources \
-  -u admin:admin123 | jq '.[].name'
+    -u admin:admin123 | jq '.[].name'
 # Expected: "Prometheus"
 
 # Sample app - check metrics endpoint
@@ -327,8 +322,7 @@ A few important design decisions:
 2. **`GF_AUTH_ANONYMOUS_ENABLED=true`** — For development, this makes access easier without repeated logins. **Do not enable this in production.**
 3. **Volume mounting `:ro`** — Config files are mounted read-only. If Grafana/Prometheus needs to modify config, that's a code smell.
 4. **Named volumes** (`prometheus_data`, `grafana_data`) — Data persists across `docker compose down` and `up`. Use `docker compose down -v` for a clean slate.
-
----
+  ---
 
 ## Step 3: Grafana API Key
 
@@ -345,9 +339,9 @@ For this lab we'll use an API Key because it's the most straightforward. In prod
 ```bash
 # Create an API key with Admin role
 API_KEY=$(curl -s -X POST http://localhost:3000/api/auth/keys \
-  -H "Content-Type: application/json" \
-  -u admin:admin123 \
-  -d '{"name":"terraform-local","role":"Admin","secondsToLive":86400}' \
+    -H "Content-Type: application/json" \
+    -u admin:admin123 \
+    -d '{"name":"terraform-local","role":"Admin","secondsToLive":86400}' \
   | jq -r '.key')
 
 echo "API Key: $API_KEY"
@@ -363,7 +357,7 @@ export TF_VAR_grafana_api_key="$API_KEY"
 ```bash
 # Test the API key
 curl -s http://localhost:3000/api/org \
-  -H "Authorization: Bearer $TF_VA...key" | jq '.name'
+    -H "Authorization: Bearer $TF_VA...key" | jq '.name'
 # Expected: "Main Org."
 ```
 
@@ -372,12 +366,11 @@ curl -s http://localhost:3000/api/org \
 The `secondsToLive: 86400` parameter makes the key expire in 24 hours. This is a best practice for development — you won't forget to delete unused keys because they automatically expire.
 
 In production, Service Account Tokens can be created without expiry (for CI/CD) or with a longer expiry (30-90 days) with automated rotation.
-
----
+  ---
 
 ## Step 4: Terraform Configuration
 
-Terraform is an Infrastructure as Code tool that uses a **declarative** approach, you define the *desired state*, and Terraform determines the steps needed to achieve it. This is different from an imperative approach (scripting curl commands against the Grafana API).
+Terraform is an Infrastructure as Code tool that uses a **declarative** approach, you define the _desired state_, and Terraform determines the steps needed to achieve it. This is different from an imperative approach (scripting curl commands against the Grafana API).
 
 Advantages of Terraform for Grafana:
 
@@ -544,17 +537,17 @@ terraform plan -var-file=environments/local.tfvars
 
 The plan output should show:
 
-```
+```plain
 Plan: 4 to add, 0 to change, 0 to destroy.
 
 Changes to Outputs:
-  + environment              = "local"
-  + folder_ids               = {
-      + application    = (known after apply)
-      + infrastructure = (known after apply)
-      + slos           = (known after apply)
+    + environment              = "local"
+    + folder_ids               = {
+            + application    = (known after apply)
+            + infrastructure = (known after apply)
+            + slos           = (known after apply)
     }
-  + infrastructure_overview_url = (known after apply)
+    + infrastructure_overview_url = (known after apply)
 ```
 
 ### Explanation
@@ -565,8 +558,7 @@ A few important points:
 2. **`validation` block** on `environment` — Prevents typos that could cause deployment to the wrong environment
 3. **`overwrite = true`** on the dashboard — If someone modifies the dashboard via the UI, Terraform will revert it to the state defined in code
 4. **`file()` function** — Reads the JSON template from a separate file, keeping Terraform config clean
-
----
+  ---
 
 ## Step 5: Dashboard Template
 
@@ -656,8 +648,7 @@ Some best practices for dashboard templates:
 - **`$datasource` template variable** — Dashboard can be used in any environment (each env may have a different datasource)
 - **`$job` template variable** — Filter per service, very useful when troubleshooting a specific target
 - **`$__rate_interval`** — A Grafana built-in variable that automatically adjusts the interval based on the scrape interval and resolution
-
----
+  ---
 
 ## Step 6: Deploy with Terraform
 
@@ -684,7 +675,7 @@ terraform apply -var-file=environments/local.tfvars
 
 Terraform will display the plan and ask for confirmation:
 
-```
+```plain
 Do you want to perform these actions?
   Terraform will perform the actions described above.
   Only 'yes' will be accepted to approve.
@@ -702,12 +693,12 @@ terraform output
 
 # Verify via Grafana API - folders
 curl -s http://localhost:3000/api/folders \
-  -H "Authorization: Bearer $TF_VA...key" | jq '.[].title'
+    -H "Authorization: Bearer $TF_VA...key" | jq '.[].title'
 # Expected: "Infrastructure", "Application", "SLOs"
 
 # Verify via Grafana API - dashboard
 curl -s http://localhost:3000/api/dashboards/uid/infra-overview \
-  -H "Authorization: Bearer $TF_VA...key" | jq '.meta.folderTitle'
+    -H "Authorization: Bearer $TF_VA...key" | jq '.meta.folderTitle'
 # Expected: "Infrastructure"
 ```
 
@@ -722,8 +713,7 @@ After apply, Terraform creates a `terraform.tfstate` file containing the mapping
 - Don't edit it manually — let Terraform manage it
 
 State allows Terraform to know that the "Infrastructure" folder it created has a specific ID in Grafana. Without state, Terraform would try to create a new folder on every apply.
-
----
+  ---
 
 ## Step 7: CI/CD Pipeline
 
@@ -746,13 +736,13 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "terraform/**"
-      - "dashboards/**"
+            - "terraform/**"
+            - "dashboards/**"
   push:
     branches: [main]
     paths:
-      - "terraform/**"
-      - "dashboards/**"
+            - "terraform/**"
+            - "dashboards/**"
 
 env:
   TF_VERSION: "1.7.5"
@@ -766,27 +756,22 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout repository
+            - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Terraform
+              - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Terraform Format Check
+              - name: Terraform Format Check
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform fmt -check -recursive
-
-      - name: Terraform Init
+              - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform init -backend=false
-
-      - name: Terraform Validate
+              - name: Terraform Validate
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform validate
-
-      - name: Validate Dashboard JSON
+              - name: Validate Dashboard JSON
         run: |
           for f in dashboards/templates/*.json; do
             echo "Validating $f..."
@@ -803,29 +788,25 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout repository
+            - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Terraform
+              - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Terraform Init
+              - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform init
-
-      - name: Terraform Plan
+              - name: Terraform Plan
         working-directory: ${{ env.TF_WORKING_DIR }}
         id: plan
         run: |
           terraform plan \
-            -var-file=environments/prod.tfvars \
-            -var="grafana_api_key=${{ secrets.GRAFANA_API_KEY }}" \
-            -no-color \
-            -out=tfplan
-
-      - name: Comment Plan on PR
+                        -var-file=environments/prod.tfvars \
+                        -var="grafana_api_key=${{ secrets.GRAFANA_API_KEY }}" \
+                        -no-color \
+                        -out=tfplan
+              - name: Comment Plan on PR
         uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
         with:
@@ -834,7 +815,7 @@ jobs:
             \`\`\`
             ${{ steps.plan.outputs.stdout }}
             \`\`\`
-            *Pushed by: @${{ github.actor }}*`;
+                        *Pushed by: @${{ github.actor }}*`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -849,27 +830,23 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: production
     steps:
-      - name: Checkout repository
+            - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Terraform
+              - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
-
-      - name: Terraform Init
+              - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform init
-
-      - name: Terraform Apply
+              - name: Terraform Apply
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           terraform apply \
-            -var-file=environments/prod.tfvars \
-            -var="grafana_api_key=${{ secrets.GRAFANA_API_KEY }}" \
-            -auto-approve
-
-      - name: Output Dashboard URLs
+                        -var-file=environments/prod.tfvars \
+                        -var="grafana_api_key=${{ secrets.GRAFANA_API_KEY }}" \
+                        -auto-approve
+              - name: Output Dashboard URLs
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform output -json
 ```
@@ -879,13 +856,15 @@ jobs:
 Before the pipeline can run, you need to configure:
 
 1. **Repository Secrets:**
-   - `GRAFANA_API_KEY` — Service account token for the production Grafana instance
-   - `TF_API_TOKEN` — (Optional) If using Terraform Cloud as a backend
+
+    - `GRAFANA_API_KEY` — Service account token for the production Grafana instance
+    - `TF_API_TOKEN` — (Optional) If using Terraform Cloud as a backend
 
 2. **Environment Protection:**
-   - Create a "production" environment under Settings → Environments
-   - Enable "Required reviewers" — add at least 1 reviewer
-   - This provides an approval gate before deploying to production
+
+    - Create a "production" environment under Settings → Environments
+    - Enable "Required reviewers" — add at least 1 reviewer
+    - This provides an approval gate before deploying to production
 
 ### Verification
 
@@ -913,8 +892,7 @@ Some design decisions:
 2. **`-backend=false` in validate** — For the validation job, we don't need to connect to the remote backend. This makes validation faster and doesn't require credentials.
 3. **Environment protection** — `environment: production` on the deploy job ensures there's manual approval before applying to production.
 4. **Plan as PR comment** — Reviewers can see exactly what will change without having to run Terraform locally.
-
----
+  ---
 
 ## Step 8: End-to-End Verification
 
@@ -967,8 +945,7 @@ done
 ```
 
 After a few minutes, the HTTP Request Rate panel will display the traffic pattern.
-
----
+  ---
 
 ## Real-World Considerations
 
@@ -979,7 +956,7 @@ Now that you understand the fundamentals, here are important considerations when
 In production, Terraform state **must** be stored in a remote backend. Some options:
 
 | Backend | Pros | Cons |
-|---------|------|------|
+| --- | --- | --- |
 | S3 + DynamoDB | Cheap, reliable, native locking | Manual setup |
 | Terraform Cloud | Free tier, built-in locking + UI | Vendor lock-in |
 | GCS | Reliable, built-in locking | GCP only |
@@ -1003,18 +980,21 @@ backend "s3" {
 Never hardcode API keys in the repository. Recommended options:
 
 1. **Environment Variables** (Development)
-   ```bash
+
+```bash
    export TF_VAR_grafana_api_key="glsa_xxxx"
-   ```
+```
 
 2. **CI/CD Secrets** (GitHub Actions, GitLab CI)
-   ```yaml
-   -var="grafana_api_key=${{ secrets.GRAFANA_API_KEY }}"
-   ```
+
+```yaml
+      -var="grafana_api_key=${{ secrets.GRAFANA_API_KEY }}"
+```
 
 3. **Secret Manager** (Production)
-   ```hcl
-   # Terraform data source from AWS Secrets Manager
+
+```hcl
+  # Terraform data source from AWS Secrets Manager
    data "aws_secretsmanager_secret_version" "grafana" {
      secret_id = "observability/grafana-api-key"
    }
@@ -1022,7 +1002,7 @@ Never hardcode API keys in the repository. Recommended options:
    provider "grafana" {
      auth = data.aws_secretsmanager_secret_version.grafana.secret_string
    }
-   ```
+```
 
 ### Drift Detection
 
@@ -1046,7 +1026,7 @@ Example cron job in GitHub Actions for drift detection:
 ```yaml
 on:
   schedule:
-    - cron: '0 8 * * 1-5'  # Every weekday at 8 AM
+        - cron: '0 8 * * 1-5'  # Every weekday at 8 AM
 ```
 
 > **Tip from experience:** Don't auto-fix drift immediately. Notify the team first via Slack/Teams. Sometimes there are legitimate urgent changes made via the UI (during an incident). A good process: detect → notify → discuss → decide (fix or adopt).
@@ -1057,45 +1037,53 @@ When working in a team, some important conventions:
 
 1. **Branch naming**: `feat/add-payment-dashboard`, `fix/adjust-cpu-threshold`
 2. **PR template** with checklist:
-   - [ ] Dashboard JSON valid
-   - [ ] Terraform plan reviewed
-   - [ ] Tested locally with `docker compose up`
-   - [ ] No sensitive data in code
+
+    - [ ] Dashboard JSON valid
+    - [ ] Terraform plan reviewed
+    - [ ] Tested locally with `docker compose up`
+    - [ ] No sensitive data in code
+
 3. **Code owners** for the dashboard directory:
-   ```
-   # .github/CODEOWNERS
+
+```plain
+  # .github/CODEOWNERS
    /dashboards/ @sre-team
    /terraform/  @sre-team @platform-team
-   ```
+```
+
 4. **Dashboard UID convention**: `<team>-<service>-<purpose>`
-   - `sre-infra-overview`
-   - `backend-payment-latency`
-   - `platform-k8s-cluster`
+
+    - `sre-infra-overview`
+    - `backend-payment-latency`
+    - `platform-k8s-cluster`
 
 ### Scaling Tips
 
 When dashboard count grows (50+), some patterns that help:
 
 1. **Modularize Terraform** — Split by team/domain:
-   ```
-   terraform/
+
+```plain
+  terraform/
    ├── modules/
    │   ├── sre-dashboards/
    │   ├── backend-dashboards/
    │   └── platform-dashboards/
    └── main.tf
-   ```
+```
 
 2. **Dashboard Generation** — For repetitive dashboards (per-service), use templating:
-   ```bash
-   # Using Jsonnet/Grafonnet
+
+```bash
+  # Using Jsonnet/Grafonnet
    jsonnet -J vendor service-dashboard.jsonnet \
-     --tla-str service=payment > dashboards/templates/payment.json
-   ```
+          --tla-str service=payment > dashboards/templates/payment.json
+```
 
 3. **Import Existing Dashboards** — If you already have many dashboards in Grafana:
-   ```bash
-   # Export all dashboards
+
+```bash
+  # Export all dashboards
    for uid in $(curl -s $GRAFANA_URL/api/search | jq -r '.[].uid'); do
      curl -s "$GRAFANA_URL/api/dashboards/uid/$uid" | \
        jq '.dashboard' > "dashboards/templates/${uid}.json"
@@ -1103,9 +1091,9 @@ When dashboard count grows (50+), some patterns that help:
    
    # Import into Terraform state
    terraform import grafana_dashboard.existing_dashboard "$uid"
-   ```
+```
 
----
+  ---
 
 ## Troubleshooting
 
@@ -1113,13 +1101,12 @@ When dashboard count grows (50+), some patterns that help:
 
 #### 1. "Error: Provider produced inconsistent result"
 
-```
+```plain
 Error: Provider produced inconsistent result after apply
 ```
 
-**Cause:** Grafana modifies the dashboard JSON after save (adding `version`, `id`, etc.).
-
-**Solution:** Make sure the JSON template doesn't include `id` and `version` fields. Use `lifecycle { ignore_changes = [...] }` if needed:
+  **Cause:** Grafana modifies the dashboard JSON after save (adding `version`, `id`, etc.).
+  **Solution:** Make sure the JSON template doesn't include `id` and `version` fields. Use `lifecycle { ignore_changes = [...] }` if needed:
 
 ```hcl
 resource "grafana_dashboard" "example" {
@@ -1133,26 +1120,25 @@ resource "grafana_dashboard" "example" {
 
 #### 2. "Error: status: 401 Unauthorized"
 
-**Cause:** API key expired or incorrect.
+  **Cause:** API key expired or incorrect.
+  **Solution:**
 
-**Solution:**
 ```bash
 # Check if the key is still valid
 curl -s http://localhost:3000/api/org \
-  -H "Authorization: Bearer $TF_VA...key"
+    -H "Authorization: Bearer $TF_VA...key"
 
 # If 401, create a new key
 curl -s -X POST http://localhost:3000/api/auth/keys \
-  -H "Content-Type: application/json" \
-  -u admin:admin123 \
-  -d '{"name":"terraform-new","role":"Admin"}'
+    -H "Content-Type: application/json" \
+    -u admin:admin123 \
+    -d '{"name":"terraform-new","role":"Admin"}'
 ```
 
 #### 3. "Error: Folder not found" when deploying dashboard
 
-**Cause:** Dashboard is being deployed before the folder is created.
-
-**Solution:** Make sure the dependency is correct. Terraform should handle this automatically since `grafana_folder.infrastructure.id` is referenced in the dashboard resource. If the error persists, add an explicit dependency:
+  **Cause:** Dashboard is being deployed before the folder is created.
+  **Solution:** Make sure the dependency is correct. Terraform should handle this automatically since `grafana_folder.infrastructure.id` is referenced in the dashboard resource. If the error persists, add an explicit dependency:
 
 ```hcl
 resource "grafana_dashboard" "infrastructure_overview" {
@@ -1163,9 +1149,8 @@ resource "grafana_dashboard" "infrastructure_overview" {
 
 #### 4. Docker Compose: Grafana "datasource not found"
 
-**Cause:** Grafana starts before Prometheus is ready.
-
-**Solution:** Container dependency is already handled in `docker-compose.yaml` with `depends_on`. If the issue persists, restart Grafana:
+  **Cause:** Grafana starts before Prometheus is ready.
+  **Solution:** Container dependency is already handled in `docker-compose.yaml` with `depends_on`. If the issue persists, restart Grafana:
 
 ```bash
 docker compose restart grafana
@@ -1173,27 +1158,28 @@ docker compose restart grafana
 
 #### 5. Dashboard panels showing "No Data"
 
-**Common causes:**
+  **Common causes:**
+
 - Prometheus hasn't scraped the target yet (wait 15-30 seconds)
 - Datasource misconfigured
 - Query syntax error
+  **Debug steps:**
 
-**Debug steps:**
 ```bash
 # 1. Check if Prometheus has data
 curl -s 'http://localhost:9090/api/v1/query?query=up' | jq '.data.result'
 
 # 2. Check the datasource in Grafana
 curl -s http://localhost:3000/api/datasources \
-  -u admin:admin123 | jq '.[0].url'
+    -u admin:admin123 | jq '.[0].url'
 # Should be "http://prometheus:9090" (not localhost!)
 
 # 3. Test query via Grafana proxy
 curl -s 'http://localhost:3000/api/datasources/proxy/1/api/v1/query?query=up' \
-  -u admin:admin123 | jq '.data.result | length'
+    -u admin:admin123 | jq '.data.result | length'
 ```
 
----
+  ---
 
 ## Cleanup
 
@@ -1213,28 +1199,27 @@ cd ..
 rm -rf observability-as-code
 ```
 
----
+  ---
 
 ## Summary
 
 In this article, we've built a complete Dashboard-as-Code system:
 
 | Component | Tool | Purpose |
-|-----------|------|---------|
+| --- | --- | --- |
 | Local Stack | Docker Compose | Development environment |
 | Metrics | Prometheus | Data source |
 | Visualization | Grafana | Dashboard rendering |
 | IaC | Terraform + Grafana Provider | Dashboard management |
 | CI/CD | GitHub Actions | Automated deployment |
 
-**Key takeaways:**
+  **Key takeaways:**
 
 1. **Dashboard = Code** — Treated the same as application code (versioned, reviewed, tested)
 2. **Terraform state** — The single source of truth for the mapping between code and reality
 3. **CI/CD pipeline** — A safety net that prevents unreviewed changes from reaching production
 4. **Drift detection** — A mechanism to detect changes made outside of Terraform
-
----
+  ---
 
 ## What's Next: Alerts as Code (Part 2)
 
@@ -1248,8 +1233,7 @@ In the next article, we'll continue with **Alerts-as-Code** - managing Grafana a
 - Testing alerts before deployment (alert simulation)
 
 Stay tuned! Follow this blog or star the repository for update notifications.
-
----
+  ---
 
 ## Resources
 
@@ -1258,7 +1242,5 @@ Stay tuned! Follow this blog or star the repository for update notifications.
 - **Grafana Provisioning:** [grafana.com/docs/grafana/latest/administration/provisioning](https://grafana.com/docs/grafana/latest/administration/provisioning/)
 - **Prometheus Configuration:** [prometheus.io/docs/prometheus/latest/configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
 - **Grafonnet (Jsonnet):** [grafana.github.io/grafonnet/](https://grafana.github.io/grafonnet/)
-
----
-
-*This article is part of the **Observability as Code** series on [ahakimx.id](https://ahakimx.id). This series covers how to apply Infrastructure-as-Code principles to the entire observability stack: dashboards, alerts, SLOs, and monitoring configuration.*
+  ---
+  _This article is part of the **Observability as Code** series on_ [_ahakimx.id_](https://ahakimx.id)_. This series covers how to apply Infrastructure-as-Code principles to the entire observability stack: dashboards, alerts, SLOs, and monitoring configuration._
