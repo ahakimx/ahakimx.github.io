@@ -20,18 +20,21 @@ media_subpath: ''
 render_with_liquid: true
 ---
 
-Prerequisites
+## Prerequisites
+
 - docker
 - docker compose
 - virtual machine linux ubuntu 24.04
 
-# A. Install Gitlab Server
-## Step 1: Prepare Environment
+## A. Install Gitlab Server
+
+### Step 1: Prepare Environment
 
 Explanation: We need to prepare directories for GitLab data storage and ensure the system is ready.
 
 Commands:
-```
+
+```plain
 # Update system
 sudo apt update && sudo apt upgrade -y
 
@@ -46,22 +49,28 @@ echo "export GITLAB_HOME=/srv/gitlab" >> ~/.bashrc
 docker --version
 docker compose version
 ```
+
 Expected Output:
-```
+
+```plain
 Docker version 24.0.x, build xxxxx
 Docker Compose version v2.x.x
 ```
-## Step 2: Create Docker Compose File
+
+### Step 2: Create Docker Compose File
 
 Explanation: The Docker Compose file defines how the GitLab container will be configured and run.
 
 Command:
-```
+
+```plain
 # Create gitlab-server directory
 mkdir -p ~/gitlab-server && cd ~/gitlab-server
 ```
+
 Create docker-compose.yml:
-```
+
+```plain
 services:
   gitlab:
     image: gitlab/gitlab-ce:18.11.7-ce.0
@@ -109,49 +118,61 @@ services:
       retries: 5
       start_period: 300s
 ```
-⚠️ Important: Replace YOUR_SERVER_IP with your actual server IP address!
+Important: Replace YOUR_SERVER_IP with your actual server IP address!
+{: .prompt-info }
 
-## Step 3: Start GitLab
+### Step 3: Start GitLab
 
 Explanation: Start the GitLab container. The first-time initialization takes approximately 5-10 minutes.
 
 Command:
-```
+
+```plain
 # Start GitLab
 docker compose up -d
 
 # Watch logs
 docker logs -f gitlab
 ```
+
 Expected Output:
-```
+
+```plain
 Creating network "gitlab-server_default" with the default driver
 Creating gitlab ... done
 ```
+
 Verification:
-```
+
+```plain
 # Check container status
 docker ps
 
 # Wait for GitLab to be ready (check health)
 docker inspect gitlab --format='{{.State.Health.Status}}'
 ```
+
 Expected Output:
-```
+
+```plain
 CONTAINER ID   IMAGE                          STATUS                    PORTS
 xxxxxxxxxxxx   gitlab/gitlab-ce:18.11.7-ce.0   Up X minutes (healthy)    0.0.0.0:80->80/tcp...
 ```
+
 ## Step 4: Wait for GitLab Initialization
 
 Explanation: GitLab requires time for initialization. We need to wait until all services are ready.
 
 Command:
-```
+
+```plain
 # Check GitLab status
 docker exec gitlab gitlab-ctl status
 ```
+
 Expected Output (when ready):
-```
+
+```plain
 run: alertmanager: (pid 1234) 300s; run: log: (pid 1235) 300s
 run: gitaly: (pid 1236) 300s; run: log: (pid 1237) 300s
 run: gitlab-exporter: (pid 1238) 300s; run: log: (pid 1239) 300s
@@ -173,15 +194,20 @@ run: sshd: (pid 1260) 300s; run: log: (pid 1261) 300s
 Explanation: GitLab automatically generates a root password during the first run.
 
 Command:
-```
+
+```plain
 # Get initial root password
 docker exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
 ```
+
 Expected Output:
-```
+
+```plain
 Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-⚠️ Important:
+
+Important:
+{: .prompt-info }
 
     Save this password immediately!
     The password file is automatically deleted after 24 hours
@@ -208,15 +234,18 @@ img
 Explanation: Ensure all GitLab components are running properly.
 
 Commands:
-```
+
+```plain
 # Run GitLab check
 docker exec gitlab gitlab-rake gitlab:check SANITIZE=true
 
 # Check environment info
 docker exec gitlab gitlab-rake gitlab:env:info
 ```
+
 Expected Output:
-```
+
+```plain
 Checking GitLab subtasks ...
 
 Checking GitLab Shell ...
@@ -241,10 +270,12 @@ Checking GitLab subtasks ... Finished
 ```
 
 # B. SSL Configuration
+
 Use this option for development or internal networks.
 
 ## Step 1: Create SSL Directory
-```
+
+```plain
 # Create SSL directory
 sudo mkdir -p /srv/gitlab/config/ssl
 cd /srv/gitlab/config/ssl
@@ -255,7 +286,8 @@ cd /srv/gitlab/config/ssl
 Explanation: We will create a certificate valid for 365 days with Subject Alternative Names (SANs). Modern browsers require SANs for certificate validation.
 
 Command:
-```
+
+```plain
 # Generate private key and certificate with SANs
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout gitlab.key \
@@ -263,26 +295,31 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -subj "/C=ID/ST=Jakarta/L=Jakarta/O=Company/OU=IT/CN=gitlab.local" \
   -addext "subjectAltName=DNS:gitlab.local,IP:YOUR_SERVER_IP"
 ```
-```
+
+```plain
 # Set proper permissions
 sudo chmod 600 gitlab.key
 sudo chmod 644 gitlab.crt
 ```
+
 ⚠️ Important: Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
 
 Expected Output:
-```
+
+```plain
 Generating a RSA private key
 ...+++++
 ...+++++
 writing new private key to 'gitlab.key'
 ```
+
 ## Step 3: Update GitLab Configuration
 
 Explanation: Update docker-compose.yml to use HTTPS.
 
 Edit docker-compose.yml:
-```
+
+```plain
 services:
   gitlab:
     image: gitlab/gitlab-ce:18.11.7-ce.0
@@ -327,7 +364,8 @@ services:
 ```
 
 ## Step 4: Restart GitLab
-```
+
+```plain
 # Restart GitLab
 docker compose down
 docker compose up -d
@@ -337,7 +375,8 @@ docker logs -f gitlab
 ```
 
 ## Step 5: Verify HTTPS
-```
+
+```plain
 # Test HTTPS (ignore certificate warning for self-signed)
 curl -k https://gitlab.local
 
@@ -347,6 +386,7 @@ curl -k https://gitlab.local
 ```
 
 # C. Initial Setup
+
 ## Step 1: Change Root Password
 
 Explanation: The auto-generated root password must be changed immediately.
@@ -357,13 +397,15 @@ Via Web UI:
 2. Click avatar in the top right → Edit profile
 3. In the left sidebar, click Password
 4. Enter:
-   - Current password: (initial password)
-   - New password: (a strong new password)
-   - Password confirmation: (repeat new password)
-   - Click Save password
+
+- Current password: (initial password)
+- New password: (a strong new password)
+- Password confirmation: (repeat new password)
+- Click Save password
 
 Via Rails Console:
-```
+
+```plain
 # Access Rails console
 docker exec -it gitlab gitlab-rails console
 
@@ -374,6 +416,7 @@ user.password_confirmation = 'NewSecurePassword123!'
 user.save!
 exit
 ```
+
 ⚠️ Note: Replace NewSecurePassword123! with your own strong password.
 
 ## Step 2: Create Admin User
@@ -386,15 +429,18 @@ Via Web UI:
 2. Go to Admin Area (wrench icon)
 3. Click Users → New user
 4. Fill in:
-   - Name: Admin User
-   - Username: admin
-   - Email: admin@company.com
+
+- Name: Admin User
+- Username: admin
+- Email: admin@company.com
     - Access level: Admin
+
 5. Click Create user
 6. Click Edit → Set password
 
 Via Rails Console:
-```
+
+```plain
 docker exec -it gitlab gitlab-rails console
 
 # Create admin user
@@ -425,15 +471,19 @@ Via Web UI:
 Via gitlab.rb (in docker-compose.yml):
 
 Add to GITLAB_OMNIBUS_CONFIG:
-```
-        # Disable sign-up
+
+```plain
+       # Disable sign-up
         gitlab_rails['gitlab_signup_enabled'] = false
 ```
+
 Then reconfigure:
-```
+
+```plain
 docker compose down
 docker compose up -d
 ```
+
 ## Step 4: Configure Password Policy
 
 Via Web UI:
@@ -441,11 +491,13 @@ Via Web UI:
 1. Go to Admin Area → Settings → General
 2. Expand Sign-in restrictions
 3. Set:
-     - Minimum password length: 12
-     - Require numbers: 
-     - Require uppercase: 
-     - Require lowercase: 
-     - Require symbols: 
+
+    - Minimum password length: 12
+    - Require numbers: 
+    - Require uppercase: 
+    - Require lowercase: 
+    - Require symbols: 
+
 4. Click Save changes
 
 ## Step 5: Enable Two-Factor Authentication (2FA)
@@ -475,8 +527,10 @@ Via Web UI:
 1. Go to Admin Area → Settings → General
 2. Expand Sign-in restrictions
 3. Set:
-   - Session duration: 10080 (7 days in minutes)
-   - Or shorter for higher security: 1440 (24 hours)
+
+- Session duration: 10080 (7 days in minutes)
+- Or shorter for higher security: 1440 (24 hours)
+
 4. Click Save changes
 
 ## Step 7: Configure Visibility Settings
@@ -488,10 +542,12 @@ Via Web UI:
 1. Go to Admin Area → Settings → General
 2. Expand Visibility and access controls
 3. Set:
-   - Default project visibility: Private
-   - Default snippet visibility: Private
-   - Default group visibility: Private
-   - Restricted visibility levels: Check Public (disable public projects)
+
+- Default project visibility: Private
+- Default snippet visibility: Private
+- Default group visibility: Private
+- Restricted visibility levels: Check Public (disable public projects)
+
 4. Click Save changes
 
 ## Step 8: Configure Rate Limiting
@@ -501,20 +557,25 @@ Via Web UI (recommended for GitLab 18.x):
 1. Go to Admin Area → Settings → Network
 2. Expand User and IP rate limits
 3. Set:
+
     - Unauthenticated API requests per period: 3600
     - Authenticated API requests per period: 7200
     - Period in seconds: 60
+
 4. Click Save changes
 
 Via gitlab.rb (in docker-compose.yml):
 
 Add to GITLAB_OMNIBUS_CONFIG:
-```
+
+```plain
 # Rate limiting
 gitlab_rails['rate_limiting_response_text'] = "Too many requests. Please try again later."
 ```
+
 Then reconfigure:
-```
+
+```plain
 docker compose down
 docker compose up -d
 ```
@@ -525,26 +586,32 @@ Create Group:
 
 1. Click Groups → New group
 2. Fill in:
-   - Group name: engineering
-   - Group URL: engineering
-   - Visibility: Private
+
+- Group name: engineering
+- Group URL: engineering
+- Visibility: Private
+
 3. Click Create group
 
 Create Subgroups:
-```
+
+```plain
 engineering/
 ├── backend/
 ├── frontend/
 └── devops/
 ```
+
 Create Test Project:
 
 1. Go to group engineering/devops
 2. Click New project
 3. Select Create blank project
 4. Fill in:
-   - Project name: ci-cd-templates
-   - Visibility: Private
+
+- Project name: ci-cd-templates
+- Visibility: Private
+
 5. Click Create project
 
 ## Step 10: Configure Protected Branches
@@ -554,20 +621,25 @@ For the test project:
 1. Go to project → Settings → Repository
 2. Expand Protected branches
 3. Add protection for main:
+
     - Branch: main
     - Allowed to merge: Maintainers
     - Allowed to push: No one
+
 4. Click Protect
 
 ## Step 11: Verify Security Settings
 
 Run Security Check:
-```
+
+```plain
 # Check GitLab configuration
 docker exec gitlab gitlab-rake gitlab:check SANITIZE=true
 ```
+
 Verify Settings via API:
-```
+
+```plain
 # Get current settings (requires admin token)
 curl -k --header "PRIVATE-TOKEN: <your-token>" \
   "https://gitlab.local/api/v4/application/settings" | jq .
