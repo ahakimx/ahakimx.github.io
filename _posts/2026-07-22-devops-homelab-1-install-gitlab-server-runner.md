@@ -26,6 +26,8 @@ render_with_liquid: true
 - docker compose
 - virtual machine linux ubuntu 24.04
 
+![](/uploads/gitlab-server-runner-setup.png)
+
 ## A. Install Gitlab Server
 
 ### Step 1: Prepare Environment
@@ -120,7 +122,7 @@ services:
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address!
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -211,7 +213,7 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 > Save this password immediately!
 > The password file is automatically deleted after 24 hours
 > Change the password right after your first login
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 6: Access GitLab Web Interface
 
@@ -303,7 +305,7 @@ sudo chmod 644 gitlab.crt
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-{: .prompt-info }
+> {: .prompt-info }
 
 Expected Output:
 
@@ -420,7 +422,7 @@ exit
 ```
 
 > Replace `NewSecurePassword123!` with your own strong password.
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 2: Create Admin User
 
