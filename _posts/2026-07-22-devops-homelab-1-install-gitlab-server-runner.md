@@ -120,9 +120,8 @@ services:
       retries: 5
       start_period: 300s
 ```
-
 > Replace YOUR_SERVER_IP with your actual server IP address!
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -213,7 +212,7 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 > Save this password immediately!.
 > The password file is automatically deleted after 24 hours. 
 > Change the password right after your first login
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 6: Access GitLab Web Interface
 
@@ -303,9 +302,8 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 sudo chmod 600 gitlab.key
 sudo chmod 644 gitlab.crt
 ```
-
 > Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-> {: .prompt-info }
+{: .prompt-info }
 
 Expected Output:
 
@@ -420,9 +418,8 @@ user.password_confirmation = 'NewSecurePassword123!'
 user.save!
 exit
 ```
-
 > Replace `NewSecurePassword123!` with your own strong password.
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 2: Create Admin User
 
@@ -871,9 +868,8 @@ Expected Output:
 ```bash
 CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 ```
-
 > If you get a "permission denied" error, restart the server or logout/login.
-> {: .prompt-info }
+{: .prompt-info }
 
 ### Step 8: Check Directory Structure
 
@@ -936,6 +932,7 @@ With the new method, you must create a runner in the GitLab UI first, then obtai
 └─────────────────────────────────────────────────────────────┘
 
 ### Step 1.2: Configure Runner in the Form
+
 Fill in the form with the following configuration:
 
 | Field | Value | Notes |
@@ -971,6 +968,7 @@ After clicking "Create runner", an authentication token will appear:
 ### Step 2: Register Runner with Authentication Token
 
 Option A: Interactive Mode
+
 ```bash
 sudo gitlab-runner register
 
@@ -1000,7 +998,9 @@ Enter the default Docker image (for example, ruby:2.7):
 
 Runner registered successfully.
 ```
+
 Option B: Non-Interactive Mode (Recommended for Automation)
+
 ```bash
 sudo gitlab-runner register \
   --non-interactive \
@@ -1013,7 +1013,9 @@ sudo gitlab-runner register \
   --docker-volumes "/var/run/docker.sock:/var/run/docker.sock" \
   --docker-volumes "/cache:/cache"
 ```
+
 Expected Output:
+
 ```bash
 Runtime platform                                    arch=amd64 os=linux pid=xxxx revision=xxxxxxxx version=18.x.x
 Running in system-mode.
@@ -1027,6 +1029,7 @@ Runner registered successfully.
 If GitLab uses a self-signed certificate, you need to add the CA certificate.
 
 ### Step 3.1: Copy Certificate to Runner
+
 ```bash
 # Create directory for certificates
 
@@ -1038,6 +1041,7 @@ sudo cp /path/to/gitlab.local.crt /etc/gitlab-runner/certs/gitlab.local.crt
 ```
 
 ### Step 3.2: Register with TLS CA File
+
 ```bash
 sudo gitlab-runner register \
   --non-interactive \
@@ -1049,12 +1053,13 @@ sudo gitlab-runner register \
   --docker-image "docker:27.0" \
   --docker-privileged=true \
   --docker-volumes "/var/run/docker.sock:/var/run/docker.sock"
-
+```
 > Tip: If you get the error x509: certificate relies on legacy Common Name field, use SANs instead, see Lab 05: Troubleshooting SSL for the solution.
 {: .prompt-tip }
 
 ### Step 4: Verify Registration in GitLab UI
 ```
+
     Open GitLab → Settings → CI/CD → Runners
     The runner should appear with a green status (online)
 
@@ -1067,26 +1072,32 @@ sudo gitlab-runner register \
 │    Last contact: just now                                   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
-```
+
+````
 Verification from CLI:
+
 ```bash
 # List runners
-
 sudo gitlab-runner list
 
 # Verify connection
-
 sudo gitlab-runner verify
-```
+````
+
 Expected Output:
+
 ```bash
 Verifying runner... is valid                        runner=glrt-xxxx
 ```
+
 ### Step 5: Check Config File
+
 ```bash
 sudo cat /etc/gitlab-runner/config.toml
 ```
+
 Expected Output:
+
 ```bash
 concurrent = 1
 check_interval = 0
@@ -1118,6 +1129,7 @@ check_interval = 0
 For production, register multiple runners with different configurations:
 
 Runner for Build (Heavy):
+
 ```bash
 # Create runner in GitLab UI first, get token, then:
 
@@ -1135,6 +1147,7 @@ sudo gitlab-runner register \
 ```
 
 Runner for Test (Light):
+
 ```bash
 sudo gitlab-runner register \
   --non-interactive \
