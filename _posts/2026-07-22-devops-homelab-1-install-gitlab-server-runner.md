@@ -122,7 +122,7 @@ services:
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address!
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -213,7 +213,7 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 > Save this password immediately!.
 > The password file is automatically deleted after 24 hours. 
 > Change the password right after your first login
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 6: Access GitLab Web Interface
 
@@ -305,7 +305,7 @@ sudo chmod 644 gitlab.crt
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-{: .prompt-info }
+> {: .prompt-info }
 
 Expected Output:
 
@@ -422,7 +422,7 @@ exit
 ```
 
 > Replace `NewSecurePassword123!` with your own strong password.
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 2: Create Admin User
 
@@ -651,39 +651,51 @@ curl -k --header "PRIVATE-TOKEN: <your-token>" \
 ```
 
 ## D. Install Runner
+
 ### Step 1: Update System
 
 Explanation: Before installation, make sure the system is up-to-date to avoid dependency issues.
 
 Command:
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
+
 Expected Output:
+
 ```bash
 Reading package lists... Done
 Building dependency tree... Done
 ...
 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
 ```
+
 Verification:
+
 ```bash
 cat /etc/os-release | grep VERSION
 ```
+
 Expected:
+
 ```bash
 VERSION="22.04.3 LTS (Jammy Jellyfish)"
 VERSION_ID="22.04"
 ```
+
 ### Step 2: Install Dependencies
 
 GitLab Runner requires several dependencies to run properly.
 
 Command:
+
 ```bash
 sudo apt install -y curl git ca-certificates gnupg lsb-release
 ```
+
 Expected Output:
+
 ```bash
 Reading package lists... Done
 Building dependency tree... Done
@@ -692,27 +704,32 @@ Setting up curl (7.81.0-1ubuntu1.x) ...
 ```
 
 Verification:
+
 ```bash
 curl --version | head -1
 git --version
 ```
 
 Expected:
+
 ```bash
 curl 7.81.0 (x86_64-pc-linux-gnu)
 git version 2.34.1
 ```
 
 ### Step 3: Add GitLab Runner Repository
+
 We will add the official GitLab Runner repository to get the latest version.
 
 Command:
+
 ```bash
 # Download and run the repository script
 curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
 ```
 
 Expected Output:
+
 ```bash
 Detected operating system as Ubuntu/jammy.
 Checking for curl...
@@ -722,12 +739,14 @@ The repository is setup! You can now install packages.
 ```
 
 Verification:
+
 ```bash
 # Check repository has been added
 cat /etc/apt/sources.list.d/runner_gitlab-runner.list
 ```
 
 Expected:
+
 ```bash
 deb https://packages.gitlab.com/runner/gitlab-runner/ubuntu/ jammy main
 deb-src https://packages.gitlab.com/runner/gitlab-runner/ubuntu/ jammy main
@@ -738,12 +757,14 @@ deb-src https://packages.gitlab.com/runner/gitlab-runner/ubuntu/ jammy main
 Explanation: Now we install GitLab Runner from the repository we just added.
 
 Command:
+
 ```bash
 sudo apt update
 sudo apt install -y gitlab-runner
 ```
 
 Expected Output:
+
 ```bash
 Reading package lists... Done
 ...
@@ -753,11 +774,13 @@ GitLab Runner installed successfully!
 ```
 
 Verification:
+
 ```bash
 gitlab-runner --version
 ```
 
 Expected:
+
 ```bash
 Version:      18.x.x
 Git revision: xxxxxxxx
@@ -772,11 +795,13 @@ OS/Arch:      linux/amd64
 Explanation: GitLab Runner runs as a systemd service. Make sure the service is running.
 
 Command:
+
 ```bash
 sudo systemctl status gitlab-runner
 ```
 
 Expected Output:
+
 ```bash
 ● gitlab-runner.service - GitLab Runner
      Loaded: loaded (/etc/systemd/system/gitlab-runner.service; enabled; vendor preset: enabled)
@@ -790,12 +815,15 @@ Expected Output:
 ```
 
 Verification:
+
 ```bash
 # Check service enabled on boot
 sudo systemctl is-enabled gitlab-runner
 ```
+
 Expected:
-```
+
+```plain
 enabled
 ```
 
@@ -804,44 +832,55 @@ enabled
 Explanation: For the Runner to use the Docker executor, the gitlab-runner user needs access to the Docker daemon.
 
 Command:
-```
+
+```plain
 sudo usermod -aG docker gitlab-runner
 ```
 
 Verification:
+
 ```bash
 # Check group membership
 groups gitlab-runner
 ```
+
 Expected:
+
 ```bash
 gitlab-runner : gitlab-runner docker
 ```
+
 Restart Service:
+
 ```bash
 sudo systemctl restart gitlab-runner
 ```
+
 ### Step 7: Verify Docker Access
 
 Explanation: Make sure the gitlab-runner user can run Docker commands.
 
 Command:
+
 ```bash
 sudo -u gitlab-runner docker ps
 ```
+
 Expected Output:
+
 ```bash
 CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 ```
 
 > If you get a "permission denied" error, restart the server or logout/login.
-{: .prompt-info }
+> {: .prompt-info }
 
 ### Step 8: Check Directory Structure
 
-Explanation: Understand the GitLab Runner directory structure for troubleshooting.
+Understand the GitLab Runner directory structure for troubleshooting.
 
 Command:
+
 ```bash
 # Config directory
 ls -la /etc/gitlab-runner/
@@ -852,7 +891,9 @@ ls -la /home/gitlab-runner/
 # Builds directory (will be created when the first job runs)
 ls -la /home/gitlab-runner/builds/ 2>/dev/null || echo "Builds directory does not exist yet"
 ```
+
 Expected Output:
+
 ```bash
 # /etc/gitlab-runner/
 total 12
@@ -867,4 +908,242 @@ drwxr-xr-x 4 root          root          4096 xxx xx xx:xx ..
 -rw-r--r-- 1 gitlab-runner gitlab-runner  220 xxx xx xx:xx .bash_logout
 -rw-r--r-- 1 gitlab-runner gitlab-runner 3771 xxx xx xx:xx .bashrc
 -rw-r--r-- 1 gitlab-runner gitlab-runner  807 xxx xx xx:xx .profile
+```
+
+## E. Register Runner
+
+### Step 1: Obtain Token from GitLab (New Method - GitLab 15.6+)
+
+With the new method, you must create a runner in the GitLab UI first, then obtain an authentication token for registration.
+
+### Step 1.1: Create Runner in GitLab UI
+
+    Open your GitLab project/group
+    Navigate to Settings → CI/CD
+    Expand the Runners section
+    Click "New project runner" (do NOT copy the registration token!)
+
+┌─────────────────────────────────────────────────────────────┐
+│ Settings > CI/CD > Runners                                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│ Project runners                                             │
+│                                                             │
+│ [+ New project runner]  ← CLICK THIS                        │
+│                                                             │
+│ ⚠️ Registration tokens are deprecated                       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+### Step 1.2: Configure Runner in the Form
+Fill in the form with the following configuration:
+
+| Field | Value | Notes |
+| --- | --- | --- |
+| Tags | docker,fintech,build | Comma-separated |
+| Description | fintech-runner-01 | Runner name |
+| Run untagged jobs | ☑️ or ☐ | As needed |
+| Lock to current project | ☐ | Usually not locked |
+| Maximum job timeout | 3600 | 1 hour (optional) |
+
+### Step 1.3: Copy Authentication Token
+
+After clicking "Create runner", an authentication token will appear:
+
+┌─────────────────────────────────────────────────────────────┐
+│ Runner created successfully!                                │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│ ✅ Runner fintech-runner-01 was created.                    │
+│                                                             │
+│ Use the following authentication token to register:         │
+│                                                             │
+│ glrt-xxxxxxxxxxxxxxxxxxxxxxxxxxxx          [📋 Copy]        │
+│                                                             │
+│ ⚠️ This token will only be shown ONCE!                      │
+│    Make sure to copy it now.                                │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+> IMPORTANT: The token is only shown ONCE! Make sure you save it.
+{: .prompt-info }
+
+### Step 2: Register Runner with Authentication Token
+
+Option A: Interactive Mode
+```bash
+sudo gitlab-runner register
+
+Interactive Prompts:
+
+Runtime platform                                    arch=amd64 os=linux pid=xxxx revision=xxxxxxxx version=18.x.x
+
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+
+> https://gitlab.local
+
+Enter the authentication token:
+
+> glrt-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Enter a description for the runner:
+
+> fintech-runner-01
+
+Enter an executor: docker, shell, ssh, kubernetes, custom:
+
+> docker
+
+Enter the default Docker image (for example, ruby:2.7):
+
+> docker:27.0
+
+Runner registered successfully.
+```
+Option B: Non-Interactive Mode (Recommended for Automation)
+```bash
+sudo gitlab-runner register \
+  --non-interactive \
+  --url "https://gitlab.local" \
+  --token "glrt-xxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  --description "fintech-runner-01" \
+  --executor "docker" \
+  --docker-image "docker:27.0" \
+  --docker-privileged=true \
+  --docker-volumes "/var/run/docker.sock:/var/run/docker.sock" \
+  --docker-volumes "/cache:/cache"
+```
+Expected Output:
+```bash
+Runtime platform                                    arch=amd64 os=linux pid=xxxx revision=xxxxxxxx version=18.x.x
+Running in system-mode.
+
+Verifying runner... is valid                        runner=glrt-xxxx
+Runner registered successfully.
+```
+
+### Step 3: Register with Self-Signed SSL Certificate
+
+If GitLab uses a self-signed certificate, you need to add the CA certificate.
+
+### Step 3.1: Copy Certificate to Runner
+```bash
+# Create directory for certificates
+
+sudo mkdir -p /etc/gitlab-runner/certs
+
+# Copy certificate from GitLab server (or download)
+
+sudo cp /path/to/gitlab.local.crt /etc/gitlab-runner/certs/gitlab.local.crt
+```
+
+### Step 3.2: Register with TLS CA File
+```bash
+sudo gitlab-runner register \
+  --non-interactive \
+  --url "https://gitlab.local" \
+  --token "glrt-xxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  --tls-ca-file "/etc/gitlab-runner/certs/gitlab.local.crt" \
+  --description "fintech-runner-01" \
+  --executor "docker" \
+  --docker-image "docker:27.0" \
+  --docker-privileged=true \
+  --docker-volumes "/var/run/docker.sock:/var/run/docker.sock"
+
+> Tip: If you get the error x509: certificate relies on legacy Common Name field, use SANs instead, see Lab 05: Troubleshooting SSL for the solution.
+{: .prompt-tip }
+
+### Step 4: Verify Registration in GitLab UI
+```
+    Open GitLab → Settings → CI/CD → Runners
+    The runner should appear with a green status (online)
+
+┌─────────────────────────────────────────────────────────────┐
+│ Assigned project runners                                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│ 🟢 fintech-runner-01                                        │
+│    Tags: docker, fintech, build                             │
+│    Last contact: just now                                   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+Verification from CLI:
+```bash
+# List runners
+
+sudo gitlab-runner list
+
+# Verify connection
+
+sudo gitlab-runner verify
+```
+Expected Output:
+```bash
+Verifying runner... is valid                        runner=glrt-xxxx
+```
+### Step 5: Check Config File
+```bash
+sudo cat /etc/gitlab-runner/config.toml
+```
+Expected Output:
+```bash
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "fintech-runner-01"
+  url = "https://gitlab.local"
+  id = 1
+  token = "glrt-xxxxxxxxxxxx"
+  token_obtained_at = 2026-xx-xxT00:00:00Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  executor = "docker"
+  [runners.docker]
+    tls_verify = false
+    image = "docker:27.0"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache:/cache"]
+    shm_size = 0
+```
+
+### Step 6: Register Multiple Runners (Optional)
+
+For production, register multiple runners with different configurations:
+
+Runner for Build (Heavy):
+```bash
+# Create runner in GitLab UI first, get token, then:
+
+sudo gitlab-runner register \
+  --non-interactive \
+  --url "https://gitlab.local" \
+  --token "glrt-BUILD_TOKEN_HERE" \
+  --description "fintech-runner-heavy" \
+  --executor "docker" \
+  --docker-image "docker:27.0" \
+  --docker-privileged=true \
+  --docker-memory "8g" \
+  --docker-cpus "4" \
+  --limit 1
+```
+
+Runner for Test (Light):
+```bash
+sudo gitlab-runner register \
+  --non-interactive \
+  --url "https://gitlab.local" \
+  --token "glrt-TEST_TOKEN_HERE" \
+  --description "fintech-runner-test" \
+  --executor "docker" \
+  --docker-image "alpine:latest" \
+  --docker-memory "2g" \
+  --docker-cpus "2" \
+  --limit 4
 ```
