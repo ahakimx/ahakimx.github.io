@@ -118,8 +118,9 @@ services:
       retries: 5
       start_period: 300s
 ```
-Important: Replace YOUR_SERVER_IP with your actual server IP address!
-{: .prompt-info }
+
+> Important: Replace YOUR_SERVER_IP with your actual server IP address!
+> {: .prompt-info }
 
 ### Step 3: Start GitLab
 
@@ -206,8 +207,8 @@ Expected Output:
 Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-Important:
-{: .prompt-info }
+> Important:
+> {: .prompt-info }
 
     Save this password immediately!
     The password file is automatically deleted after 24 hours
@@ -302,7 +303,8 @@ sudo chmod 600 gitlab.key
 sudo chmod 644 gitlab.crt
 ```
 
-⚠️ Important: Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
+> Important: Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
+> {: .prompt-warning }
 
 Expected Output:
 
@@ -417,7 +419,8 @@ user.save!
 exit
 ```
 
-⚠️ Note: Replace NewSecurePassword123! with your own strong password.
+> Note: Replace NewSecurePassword123! with your own strong password.
+> {: .prompt-info }
 
 ## Step 2: Create Admin User
 
@@ -473,7 +476,7 @@ Via gitlab.rb (in docker-compose.yml):
 Add to GITLAB_OMNIBUS_CONFIG:
 
 ```plain
-       # Disable sign-up
+      # Disable sign-up
         gitlab_rails['gitlab_signup_enabled'] = false
 ```
 
