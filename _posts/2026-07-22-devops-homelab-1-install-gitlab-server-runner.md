@@ -122,7 +122,7 @@ services:
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address!
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -210,10 +210,10 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 > Important:
-> Save this password immediately!
-> The password file is automatically deleted after 24 hours
+> Save this password immediately!.
+> The password file is automatically deleted after 24 hours. 
 > Change the password right after your first login
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 6: Access GitLab Web Interface
 
@@ -305,7 +305,7 @@ sudo chmod 644 gitlab.crt
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-> {: .prompt-info }
+{: .prompt-info }
 
 Expected Output:
 
@@ -422,7 +422,7 @@ exit
 ```
 
 > Replace `NewSecurePassword123!` with your own strong password.
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 2: Create Admin User
 
@@ -648,4 +648,223 @@ Verify Settings via API:
 # Get current settings (requires admin token)
 curl -k --header "PRIVATE-TOKEN: <your-token>" \
 "https://gitlab.local/api/v4/application/settings" | jq .
+```
+
+## D. Install Runner
+### Step 1: Update System
+
+Explanation: Before installation, make sure the system is up-to-date to avoid dependency issues.
+
+Command:
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+Expected Output:
+```bash
+Reading package lists... Done
+Building dependency tree... Done
+...
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+```
+Verification:
+```bash
+cat /etc/os-release | grep VERSION
+```
+Expected:
+```bash
+VERSION="22.04.3 LTS (Jammy Jellyfish)"
+VERSION_ID="22.04"
+```
+### Step 2: Install Dependencies
+
+GitLab Runner requires several dependencies to run properly.
+
+Command:
+```bash
+sudo apt install -y curl git ca-certificates gnupg lsb-release
+```
+Expected Output:
+```bash
+Reading package lists... Done
+Building dependency tree... Done
+...
+Setting up curl (7.81.0-1ubuntu1.x) ...
+```
+
+Verification:
+```bash
+curl --version | head -1
+git --version
+```
+
+Expected:
+```bash
+curl 7.81.0 (x86_64-pc-linux-gnu)
+git version 2.34.1
+```
+
+### Step 3: Add GitLab Runner Repository
+We will add the official GitLab Runner repository to get the latest version.
+
+Command:
+```bash
+# Download and run the repository script
+curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+```
+
+Expected Output:
+```bash
+Detected operating system as Ubuntu/jammy.
+Checking for curl...
+Detected curl...
+...
+The repository is setup! You can now install packages.
+```
+
+Verification:
+```bash
+# Check repository has been added
+cat /etc/apt/sources.list.d/runner_gitlab-runner.list
+```
+
+Expected:
+```bash
+deb https://packages.gitlab.com/runner/gitlab-runner/ubuntu/ jammy main
+deb-src https://packages.gitlab.com/runner/gitlab-runner/ubuntu/ jammy main
+```
+
+### Step 4: Install GitLab Runner
+
+Explanation: Now we install GitLab Runner from the repository we just added.
+
+Command:
+```bash
+sudo apt update
+sudo apt install -y gitlab-runner
+```
+
+Expected Output:
+```bash
+Reading package lists... Done
+...
+Setting up gitlab-runner (18.x.x) ...
+...
+GitLab Runner installed successfully!
+```
+
+Verification:
+```bash
+gitlab-runner --version
+```
+
+Expected:
+```bash
+Version:      18.x.x
+Git revision: xxxxxxxx
+Git branch:   18-x-stable
+GO version:   go1.23.x
+Built:        2026-xx-xxTxx:xx:xxZ
+OS/Arch:      linux/amd64
+```
+
+### Step 5: Verify Service Status
+
+Explanation: GitLab Runner runs as a systemd service. Make sure the service is running.
+
+Command:
+```bash
+sudo systemctl status gitlab-runner
+```
+
+Expected Output:
+```bash
+● gitlab-runner.service - GitLab Runner
+     Loaded: loaded (/etc/systemd/system/gitlab-runner.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2026-xx-xx xx:xx:xx UTC; 1min ago
+   Main PID: xxxx (gitlab-runner)
+      Tasks: 8 (limit: 4915)
+     Memory: 20.0M
+        CPU: 100ms
+     CGroup: /system.slice/gitlab-runner.service
+             └─xxxx /usr/bin/gitlab-runner run --working-directory /home/gitlab-runner --config /etc/gitlab-runner/config.toml
+```
+
+Verification:
+```bash
+# Check service enabled on boot
+sudo systemctl is-enabled gitlab-runner
+```
+Expected:
+```
+enabled
+```
+
+### Step 6: Add gitlab-runner to Docker Group
+
+Explanation: For the Runner to use the Docker executor, the gitlab-runner user needs access to the Docker daemon.
+
+Command:
+```
+sudo usermod -aG docker gitlab-runner
+```
+
+Verification:
+```bash
+# Check group membership
+groups gitlab-runner
+```
+Expected:
+```bash
+gitlab-runner : gitlab-runner docker
+```
+Restart Service:
+```bash
+sudo systemctl restart gitlab-runner
+```
+### Step 7: Verify Docker Access
+
+Explanation: Make sure the gitlab-runner user can run Docker commands.
+
+Command:
+```bash
+sudo -u gitlab-runner docker ps
+```
+Expected Output:
+```bash
+CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
+```
+
+> If you get a "permission denied" error, restart the server or logout/login.
+{: .prompt-info }
+
+### Step 8: Check Directory Structure
+
+Explanation: Understand the GitLab Runner directory structure for troubleshooting.
+
+Command:
+```bash
+# Config directory
+ls -la /etc/gitlab-runner/
+
+# Home directory
+ls -la /home/gitlab-runner/
+
+# Builds directory (will be created when the first job runs)
+ls -la /home/gitlab-runner/builds/ 2>/dev/null || echo "Builds directory does not exist yet"
+```
+Expected Output:
+```bash
+# /etc/gitlab-runner/
+total 12
+drwxr-xr-x   2 root root 4096 xxx xx xx:xx .
+drwxr-xr-x 100 root root 4096 xxx xx xx:xx ..
+-rw-------   1 root root    0 xxx xx xx:xx config.toml
+
+# /home/gitlab-runner/
+total 20
+drwxr-xr-x 2 gitlab-runner gitlab-runner 4096 xxx xx xx:xx .
+drwxr-xr-x 4 root          root          4096 xxx xx xx:xx ..
+-rw-r--r-- 1 gitlab-runner gitlab-runner  220 xxx xx xx:xx .bash_logout
+-rw-r--r-- 1 gitlab-runner gitlab-runner 3771 xxx xx xx:xx .bashrc
+-rw-r--r-- 1 gitlab-runner gitlab-runner  807 xxx xx xx:xx .profile
 ```
