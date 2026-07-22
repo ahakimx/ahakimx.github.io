@@ -119,8 +119,8 @@ services:
       start_period: 300s
 ```
 
-> Important: Replace YOUR_SERVER_IP with your actual server IP address!
-{: .prompt-info }
+> Replace YOUR_SERVER_IP with your actual server IP address!
+{: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -208,11 +208,10 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 > Important:
+> Save this password immediately!
+> The password file is automatically deleted after 24 hours
+> Change the password right after your first login
 {: .prompt-warning }
-
-    Save this password immediately!
-    The password file is automatically deleted after 24 hours
-    Change the password right after your first login
 
 ### Step 6: Access GitLab Web Interface
 
@@ -303,8 +302,8 @@ sudo chmod 600 gitlab.key
 sudo chmod 644 gitlab.crt
 ```
 
-> Important: Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-{: .prompt-warning }
+> Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
+{: .prompt-info }
 
 Expected Output:
 
@@ -399,9 +398,11 @@ Via Web UI:
 2. Click avatar in the top right → Edit profile
 3. In the left sidebar, click Password
 4. Enter:
-   - Current password: (initial password)
-   - New password: (a strong new password)
-   - Password confirmation: (repeat new password)
+
+- Current password: (initial password)
+- New password: (a strong new password)
+- Password confirmation: (repeat new password)
+
 5. Click Save password
 
 Via Rails Console:
@@ -418,7 +419,7 @@ user.save!
 exit
 ```
 
-> Note: Replace NewSecurePassword123! with your own strong password.
+> Replace `NewSecurePassword123!` with your own strong password.
 {: .prompt-warning }
 
 ### Step 2: Create Admin User
@@ -431,10 +432,12 @@ Via Web UI:
 2. Go to Admin Area (wrench icon)
 3. Click Users → New user
 4. Fill in:
-     - Name: Admin User
-     - Username: admin
+
+    - Name: Admin User
+    - Username: admin
     - Email: admin@company.com
     - Access level: Admin
+
 5. Click Create user
 6. Click Edit → Set password
 
@@ -491,6 +494,7 @@ Via Web UI:
 1. Go to Admin Area → Settings → General
 2. Expand Sign-in restrictions
 3. Set:
+
     - Minimum password length: 12
     - Require numbers: 
     - Require uppercase: 
@@ -526,8 +530,9 @@ Via Web UI:
 1. Go to Admin Area → Settings → General
 2. Expand Sign-in restrictions
 3. Set:
-   - Session duration: 10080 (7 days in minutes)
-   - Or shorter for higher security: 1440 (24 hours)
+
+- Session duration: 10080 (7 days in minutes)
+- Or shorter for higher security: 1440 (24 hours)
 
 4. Click Save changes
 
@@ -540,10 +545,11 @@ Via Web UI:
 1. Go to Admin Area → Settings → General
 2. Expand Visibility and access controls
 3. Set:
-   - Default project visibility: Private
-   - Default snippet visibility: Private
-   - Default group visibility: Private
-   - Restricted visibility levels: Check Public (disable public projects)
+
+- Default project visibility: Private
+- Default snippet visibility: Private
+- Default group visibility: Private
+- Restricted visibility levels: Check Public (disable public projects)
 
 4. Click Save changes
 
@@ -554,6 +560,7 @@ Via Web UI (recommended for GitLab 18.x):
 1. Go to Admin Area → Settings → Network
 2. Expand User and IP rate limits
 3. Set:
+
     - Unauthenticated API requests per period: 3600
     - Authenticated API requests per period: 7200
     - Period in seconds: 60
@@ -582,9 +589,10 @@ Create Group:
 
 1. Click Groups → New group
 2. Fill in:
-   - Group name: engineering
-   - Group URL: engineering
-   - Visibility: Private
+
+- Group name: engineering
+- Group URL: engineering
+- Visibility: Private
 
 3. Click Create group
 
@@ -603,8 +611,9 @@ Create Test Project:
 2. Click New project
 3. Select Create blank project
 4. Fill in:
-   - Project name: ci-cd-templates
-   - Visibility: Private
+
+- Project name: ci-cd-templates
+- Visibility: Private
 
 5. Click Create project
 
@@ -615,13 +624,14 @@ For the test project:
 1. Go to project → Settings → Repository
 2. Expand Protected branches
 3. Add protection for main:
+
     - Branch: main
     - Allowed to merge: Maintainers
     - Allowed to push: No one
 
 4. Click Protect
 
-## Step 11: Verify Security Settings
+### Step 11: Verify Security Settings
 
 Run Security Check:
 
