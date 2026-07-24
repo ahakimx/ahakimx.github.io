@@ -390,6 +390,8 @@ curl -k https://gitlab.local
 # Make sure gitlab.local is in your /etc/hosts
 ```
 
+![](/uploads/Screenshot%202026-07-24%20at%2011.04.27.png)
+
 ## C. Initial Setup
 
 ### Step 1: Change Root Password
@@ -1067,7 +1069,7 @@ sudo gitlab-runner register \
 ### Step 4: Verify Registration in GitLab UI
 
 ```plain
-   Open GitLab → Settings → CI/CD → Runners
+  Open GitLab → Settings → CI/CD → Runners
     The runner should appear with a green status (online)
 
 ┌─────────────────────────────────────────────────────────────┐
