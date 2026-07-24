@@ -120,8 +120,9 @@ services:
       retries: 5
       start_period: 300s
 ```
+
 > Replace YOUR_SERVER_IP with your actual server IP address!
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -160,6 +161,8 @@ Expected Output:
 CONTAINER ID   IMAGE                          STATUS                    PORTS
 xxxxxxxxxxxx   gitlab/gitlab-ce:18.11.7-ce.0   Up X minutes (healthy)    0.0.0.0:80->80/tcp...
 ```
+
+![Gitlab status](/uploads/01-gitlab-status%281%29.png "Gitlab status")
 
 ### Step 4: Wait for GitLab Initialization
 
@@ -212,7 +215,7 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 > Save this password immediately!.
 > The password file is automatically deleted after 24 hours. 
 > Change the password right after your first login
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 6: Access GitLab Web Interface
 
@@ -228,7 +231,7 @@ Steps:
 
 Expected Result:
 
-img
+![](/uploads/Screenshot%202026-07-24%20at%2010.33.33.png)
 
 ### Step 7: Verify Installation
 
@@ -302,8 +305,9 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 sudo chmod 600 gitlab.key
 sudo chmod 644 gitlab.crt
 ```
+
 > Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-{: .prompt-info }
+> {: .prompt-info }
 
 Expected Output:
 
@@ -418,8 +422,9 @@ user.password_confirmation = 'NewSecurePassword123!'
 user.save!
 exit
 ```
+
 > Replace `NewSecurePassword123!` with your own strong password.
-{: .prompt-warning }
+> {: .prompt-warning }
 
 ### Step 2: Create Admin User
 
@@ -868,8 +873,9 @@ Expected Output:
 ```bash
 CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 ```
+
 > If you get a "permission denied" error, restart the server or logout/login.
-{: .prompt-info }
+> {: .prompt-info }
 
 ### Step 8: Check Directory Structure
 
@@ -963,7 +969,7 @@ After clicking "Create runner", an authentication token will appear:
 └─────────────────────────────────────────────────────────────┘
 
 > IMPORTANT: The token is only shown ONCE! Make sure you save it.
-{: .prompt-info }
+> {: .prompt-info }
 
 ### Step 2: Register Runner with Authentication Token
 
@@ -1054,13 +1060,14 @@ sudo gitlab-runner register \
   --docker-privileged=true \
   --docker-volumes "/var/run/docker.sock:/var/run/docker.sock"
 ```
+
 > Tip: If you get the error x509: certificate relies on legacy Common Name field, use SANs instead, see Lab 05: Troubleshooting SSL for the solution.
-{: .prompt-tip }
+> {: .prompt-tip }
 
 ### Step 4: Verify Registration in GitLab UI
-```
 
-    Open GitLab → Settings → CI/CD → Runners
+```plain
+   Open GitLab → Settings → CI/CD → Runners
     The runner should appear with a green status (online)
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -1072,8 +1079,8 @@ sudo gitlab-runner register \
 │    Last contact: just now                                   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
+```
 
-````
 Verification from CLI:
 
 ```bash
@@ -1082,7 +1089,7 @@ sudo gitlab-runner list
 
 # Verify connection
 sudo gitlab-runner verify
-````
+```
 
 Expected Output:
 
