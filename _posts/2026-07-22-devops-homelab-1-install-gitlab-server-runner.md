@@ -233,6 +233,8 @@ Expected Result:
 
 ![](/uploads/Screenshot%202026-07-24%20at%2010.33.33.png)
 
+![](/uploads/Screenshot%202026-07-25%20at%2010.55.24.png)
+
 ### Step 7: Verify Installation
 
 Explanation: Ensure all GitLab components are running properly.
@@ -402,7 +404,7 @@ Via Web UI:
 
 1. Log in to GitLab as root
 2. Click avatar in the top right → Edit profile
-3. In the left sidebar, click Password
+3. In the left sidebar, click Access > Password and Authentication
 4. Enter:
 
 - Current password: (initial password)
@@ -430,7 +432,7 @@ exit
 
 ### Step 2: Create Admin User
 
-Explanation: Best practice: don't use root for daily operations. Create a separate admin user.
+Best practice: don't use root for daily operations. Create a separate admin user.
 
 Via Web UI:
 
@@ -440,7 +442,7 @@ Via Web UI:
 4. Fill in:
 
     - Name: Admin User
-    - Username: admin
+    - Username: admin-company
     - Email: admin@company.com
     - Access level: Admin
 
@@ -473,8 +475,8 @@ Explanation: For on-premises deployments, public sign-up should be disabled.
 Via Web UI:
 
 1. Go to Admin Area → Settings → General
-2. Expand Sign-up restrictions
-3. Uncheck Sign-up enabled
+2. Expand New user account restrictions
+3. Uncheck Allow new user accounts
 4. Click Save changes
 
 Via gitlab.rb (in docker-compose.yml):
@@ -525,7 +527,7 @@ Enforce 2FA for All Users:
 
 1. Go to Admin Area → Settings → General
 2. Expand Sign-in restrictions
-3. Check Require all users to set up two-factor authentication
+3. Check Enforce two-factor authentication
 4. Set grace period (e.g., 3 days)
 5. Click Save changes
 
@@ -604,6 +606,8 @@ Create Group:
 
 Create Subgroups:
 
+- Click New subgroup
+
 ```bash
 engineering/
 ├── backend/
@@ -611,10 +615,12 @@ engineering/
 └── devops/
 ```
 
+![](/uploads/Screenshot%202026-07-25%20at%2013.18.13.png)
+
 Create Test Project:
 
 1. Go to group engineering/devops
-2. Click New project
+2. Click Create project
 3. Select Create blank project
 4. Fill in:
 
@@ -622,6 +628,8 @@ Create Test Project:
 - Visibility: Private
 
 5. Click Create project
+
+![](/uploads/Screenshot%202026-07-25%20at%2013.21.52.png)
 
 ### Step 10: Configure Protected Branches
 
@@ -1069,7 +1077,7 @@ sudo gitlab-runner register \
 ### Step 4: Verify Registration in GitLab UI
 
 ```plain
-  Open GitLab → Settings → CI/CD → Runners
+Open GitLab → Settings → CI/CD → Runners
     The runner should appear with a green status (online)
 
 ┌─────────────────────────────────────────────────────────────┐
