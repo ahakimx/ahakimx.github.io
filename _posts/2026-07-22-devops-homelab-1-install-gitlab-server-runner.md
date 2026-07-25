@@ -122,7 +122,7 @@ services:
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address!
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 3: Start GitLab
 
@@ -215,7 +215,7 @@ Password: xxxxxxxxxxxxxxxxxxxxxxxxxxx
 > Save this password immediately!.
 > The password file is automatically deleted after 24 hours. 
 > Change the password right after your first login
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 6: Access GitLab Web Interface
 
@@ -309,7 +309,7 @@ sudo chmod 644 gitlab.crt
 ```
 
 > Replace YOUR_SERVER_IP with your actual server IP address (e.g., IP:192.168.1.100).
-> {: .prompt-info }
+{: .prompt-info }
 
 Expected Output:
 
@@ -428,7 +428,7 @@ exit
 ```
 
 > Replace `NewSecurePassword123!` with your own strong password.
-> {: .prompt-warning }
+{: .prompt-warning }
 
 ### Step 2: Create Admin User
 
@@ -847,7 +847,7 @@ Explanation: For the Runner to use the Docker executor, the gitlab-runner user n
 
 Command:
 
-```plain
+```bash
 sudo usermod -aG docker gitlab-runner
 ```
 
@@ -887,7 +887,7 @@ CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 ```
 
 > If you get a "permission denied" error, restart the server or logout/login.
-> {: .prompt-info }
+{: .prompt-info }
 
 ### Step 8: Check Directory Structure
 
@@ -960,7 +960,7 @@ glrt-VkFecLHOOLF0ZgiBXLSmLG86MQpwOjEKdDozCnU6Mw8.01.171f3qom5
 ```
 
 > IMPORTANT: The token is only shown ONCE! Make sure you save it.
-> {: .prompt-info }
+{: .prompt-info }
 
 ### Step 2: Register Runner with Self-Signed SSL Certificate
 
@@ -1007,7 +1007,7 @@ Configuration (with the authentication token) was saved in "/etc/gitlab-runner/c
 ```
 
 > Tip: If you get the error x509: certificate relies on legacy Common Name field, use SANs instead, see gitlab server SSL section.
-> {: .prompt-tip }
+{: .prompt-tip }
 
 ### Step 3: Verify Registration in GitLab UI
 
