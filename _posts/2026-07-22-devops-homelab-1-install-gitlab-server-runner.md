@@ -1035,7 +1035,7 @@ Verifying runner... is valid                        runner=glrt-xxxx
 
 ![](/uploads/Screenshot%202026-07-25%20at%2015.09.23.png)
 
-### Step 5: Check Config File
+### Step 4: Check Config File
 
 ```bash
 sudo cat /etc/gitlab-runner/config.toml
@@ -1069,7 +1069,7 @@ check_interval = 0
     shm_size = 0
 ```
 
-### Step 6: Register Multiple Runners (Optional)
+### Step 5: Register Multiple Runners (Optional)
 
 For production, register multiple runners with different configurations:
 
@@ -1106,4 +1106,276 @@ sudo gitlab-runner register \
   --docker-memory "2g" \
   --docker-cpus "2" \
   --limit 4
+```
+
+# F. Configure Runner
+Understanding `config.toml`, 
+- File Location
+```bash
+# Default location
+/etc/gitlab-runner/config.toml
+
+# Check current config
+sudo cat /etc/gitlab-runner/config.toml
+```
+
+- Config Structure
+```toml
+# Global settings
+concurrent = 4          # Max concurrent jobs across all runners
+check_interval = 3      # Interval (seconds) to check for new jobs
+log_level = "info"      # Log verbosity
+log_format = "json"     # Log format
+
+[session_server]
+  session_timeout = 1800
+
+# Runner definitions (can have multiple)
+[[runners]]
+  name = "runner-name"
+  url = "https://gitlab.example.com"
+  token = "runner-token"
+  executor = "docker"
+  
+  [runners.docker]
+    # Docker executor settings
+```
+### Step 1: Backup Current Config
+
+Explanation: Always back up the config before making changes.
+
+Command:
+```bash
+sudo cp /etc/gitlab-runner/config.toml /etc/gitlab-runner/config.toml.backup
+```
+Verification:
+```bash
+ls -la /etc/gitlab-runner/
+```
+Expected Output:
+```bash
+-rw------- 1 root root 1234 Jan  1 00:00 config.toml
+-rw------- 1 root root 1234 Jan  1 00:00 config.toml.backup
+```
+### Step 2: Configure Global Settings
+
+Explanation: Global settings affect all runners configured in this file.
+
+Edit config.toml:
+```bash
+sudo nano /etc/gitlab-runner/config.toml
+
+Add/Modify Global Settings:
+```toml
+# ============================================
+# Global Configuration
+# ============================================
+
+# Maximum number of concurrent jobs
+# Adjust based on server capacity
+concurrent = 4
+
+# Interval to check for new jobs (seconds)
+check_interval = 3
+
+# Log settings
+log_level = "info"
+log_format = "json"
+
+# Sentry DSN for error tracking (optional)
+# sentry_dsn = "https://xxx@sentry.io/xxx"
+
+[session_server]
+  session_timeout = 1800
+```
+
+**Options Explained:**
+
+| Option | Description | Recommended |
+|--------|-------------|-------------|
+| `concurrent` | Max simultaneous jobs | CPU cores - 1 |
+| `check_interval` | Polling interval | 3-5 seconds |
+| `log_level` | debug, info, warn, error | info |
+| `log_format` | text, json | json (for parsing) |
+
+### Step 3: Configure Docker Executor
+
+**Explanation:**
+The Docker executor is the most commonly used. Proper configuration is essential for performance and security.
+
+> **Security Notes:**
+{: .prompt-warning }
+> - `privileged = true` — gives the container full access to the host. Required for Docker-in-Docker (DinD), but is a security risk. Only use if your pipeline needs `docker build`.
+> - `tls_verify = false` — disables TLS certificate verification. Acceptable for self-signed certs on internal networks, but in production with a public CA, always set to `true`.
+
+**Add Docker Configuration:**
+```toml
+[[runners]]
+  name = "fintech-runner-01"
+  url = "https://gitlab.internal.fintech.local"
+  token = "YOUR_RUNNER_TOKEN"
+  executor = "docker"
+  
+  # Limit concurrent jobs for this runner
+  limit = 2
+  
+  # Output limit (bytes) - 4MB
+  output_limit = 4096
+  
+  # Build directory
+  builds_dir = "/builds"
+  cache_dir = "/cache"
+  
+  # Environment variables for all jobs
+  environment = [
+    "DOCKER_DRIVER=overlay2",
+    "DOCKER_TLS_CERTDIR="
+  ]
+
+  [runners.custom_build_dir]
+    enabled = true
+
+  [runners.docker]
+    tls_verify = false
+    image = "docker:24.0"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    
+    # Volume mounts
+    volumes = [
+      "/var/run/docker.sock:/var/run/docker.sock",
+      "/cache:/cache:rw",
+      "/builds:/builds:rw"
+    ]
+    
+    # Resource limits
+    memory = "2g"
+    memory_swap = "4g"
+    memory_reservation = "1g"
+    cpus = "2"
+    
+    # Network mode
+    network_mode = "bridge"
+    
+    # Pull policy
+    pull_policy = ["if-not-present"]
+    
+    # Shared memory size (256MB)
+    shm_size = 268435456
+```
+
+### Step 4: Configure Security Settings
+
+**Explanation:**
+Security settings are critical for fintech environments that require compliance.
+
+> ** IMPORTANT for Self-Hosted GitLab:**
+{: .prompt-warning }
+> If you are using a local domain (gitlab.local, gitlab.internal.company.local), 
+> Docker containers **CANNOT** resolve those domains because they don't exist in public DNS.
+> 
+> You **MUST** configure `extra_hosts` to map the hostname to the IP address!
+
+**Add Security Configuration:**
+```toml
+  [runners.docker]
+    # ... previous settings ...
+    
+    # ============================================
+    # DNS Configuration (REQUIRED for Self-Hosted)
+    # ============================================
+    
+    # Option 1: Internal DNS server (if available)
+    dns = ["10.0.0.2", "10.0.0.3"]
+    dns_search = ["internal.fintech.local"]
+    
+    # Option 2: Extra hosts mapping (RECOMMENDED)
+    # Format: ["hostname:ip_address"]
+    # 
+    # ⚠️ REPLACE IP ADDRESSES with your actual environment values!
+    # To check IP: ping gitlab.local (from the host server)
+    #
+    extra_hosts = [
+      "gitlab.internal.fintech.local:10.0.1.10",
+      "gitlab.local:10.0.1.10",
+      "registry.internal.fintech.local:10.0.1.11",
+      "sonarqube.internal.fintech.local:10.0.1.12",
+      "vault.internal.fintech.local:10.0.1.13"
+    ]
+    
+    # Allowed images (whitelist) - SECURITY
+    allowed_images = [
+      "docker:*",
+      "docker/compose:*",
+      "registry.internal.fintech.local/*",
+      "maven:*",
+      "gradle:*",
+      "node:*",
+      "python:*",
+      "golang:*",
+      "openjdk:*",
+      "eclipse-temurin:*",
+      "alpine:*",
+      "alpine/git:*",
+      "sonarsource/sonar-scanner-cli:*",
+      "aquasec/trivy:*"
+    ]
+    
+    # Allowed services
+    allowed_services = [
+      "docker:*-dind",
+      "postgres:*",
+      "redis:*",
+      "mysql:*",
+      "registry.internal.fintech.local/*"
+    ]
+```
+
+**Verify extra_hosts is working:**
+```bash
+# Test from a container
+docker run --rm \
+  --add-host gitlab.local:10.0.1.10 \
+  alpine sh -c "cat /etc/hosts && ping -c 1 gitlab.local"
+```
+
+### Step 5: Apply Configuration
+
+**Explanation:**
+After editing the config, restart the Runner to apply changes.
+
+**Command:**
+```bash
+# Validate config syntax
+sudo gitlab-runner verify
+
+# Restart runner
+sudo gitlab-runner restart
+
+# Check status
+sudo gitlab-runner status
+```
+
+**Expected Output:**
+```
+Runtime platform                                    arch=amd64 os=linux pid=xxxx revision=xxxxxxxx version=16.x.x
+Running in system-mode.
+
+Verifying runner... is alive                        runner=xxxxxxxxxx
+Verifying runner... is alive                        runner=yyyyyyyyyy
+```
+
+---
+
+### Step 6: Verify Configuration
+
+**Command:**
+```bash
+# List all runners
+sudo gitlab-runner list
+
+# Check detailed status
+sudo systemctl status gitlab-runner
 ```
