@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Belajar SRE #21: Automation Evolution'
-date: 2026-06-23T09:00:00+0700
+date: 2027-05-04T09:00:00
 description: 'Pelajari evolusi automation dari manual scripts ke self-healing systems: automation hierarchy, Kubernetes operators, GitOps, dan event-driven remediation.'
 categories:
   - sre
