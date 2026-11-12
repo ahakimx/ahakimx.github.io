@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #20: Release Engineering"
-date: 2026-06-20T09:00:00+0700
-description: "Pelajari release engineering: hermetic builds, progressive delivery, semantic versioning, dan automated release pipeline untuk deploy software secara reliable."
+title: 'Belajar SRE #20: Release Engineering'
+date: 2027-05-05T09:00:00
+description: 'Pelajari release engineering: hermetic builds, progressive delivery, semantic versioning, dan automated release pipeline untuk deploy software secara reliable.'
 categories:
   - sre
 tags:
