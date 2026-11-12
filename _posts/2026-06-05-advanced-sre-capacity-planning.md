@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #11: Capacity Planning"
-date: 2026-06-05T09:00:00+0700
-description: "Pelajari capacity planning dan load testing untuk memastikan sistem memiliki resources yang cukup menghadapi traffic spike dan flash sale events."
+title: 'Belajar SRE #11: Capacity Planning'
+date: 2027-06-05T09:00:00
+description: Pelajari capacity planning dan load testing untuk memastikan sistem memiliki resources yang cukup menghadapi traffic spike dan flash sale events.
 categories:
   - sre
 tags:
