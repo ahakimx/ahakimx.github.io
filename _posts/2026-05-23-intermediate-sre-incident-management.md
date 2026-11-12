@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #4: Incident Management"
-date: 2026-05-23T09:00:00+0700
-description: "Pelajari framework incident management untuk SRE: roles, war room procedures, escalation policies, dan koordinasi tim saat outage."
+title: 'Belajar SRE #4: Incident Management'
+date: 2027-05-23T09:00:00
+description: 'Pelajari framework incident management untuk SRE: roles, war room procedures, escalation policies, dan koordinasi tim saat outage.'
 categories:
   - sre
 tags:
