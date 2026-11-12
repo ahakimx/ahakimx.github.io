@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #22: Distributed Consensus"
-date: 2026-06-24T09:00:00+0700
-description: "Pelajari distributed consensus: Raft, Paxos, etcd, leader election, distributed locks, dan fencing tokens untuk manage critical state di production."
+title: 'Belajar SRE #22: Distributed Consensus'
+date: 2027-05-03T09:00:00
+description: 'Pelajari distributed consensus: Raft, Paxos, etcd, leader election, distributed locks, dan fencing tokens untuk manage critical state di production.'
 categories:
   - sre
 tags:
