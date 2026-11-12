@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #2: Monitoring Basics"
-date: 2026-05-20T09:00:00+0700
-description: "Pelajari dasar-dasar monitoring untuk SRE: metrics, logs, traces, dan observability. Panduan praktis membangun monitoring stack."
+title: 'Belajar SRE #2: Monitoring Basics'
+date: 2027-05-01T09:00:00
+description: 'Pelajari dasar-dasar monitoring untuk SRE: metrics, logs, traces, dan observability. Panduan praktis membangun monitoring stack.'
 categories:
   - sre
 tags:
