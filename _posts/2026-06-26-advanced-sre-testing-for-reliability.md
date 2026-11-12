@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #23: Testing for Reliability"
-date: 2026-06-26T09:00:00+0700
-description: "Pelajari reliability testing: testing pyramid, load testing dengan k6, chaos engineering, disaster recovery drills, dan contract testing untuk microservices."
+title: 'Belajar SRE #23: Testing for Reliability'
+date: 2027-05-02T09:00:00
+description: 'Pelajari reliability testing: testing pyramid, load testing dengan k6, chaos engineering, disaster recovery drills, dan contract testing untuk microservices.'
 categories:
   - sre
 tags:
