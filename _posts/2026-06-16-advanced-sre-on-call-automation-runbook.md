@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #17: On-Call Automation & Runbook"
-date: 2026-06-16T09:00:00+0700
-description: "Pelajari on-call automation dengan runbook-as-code, graduated auto-remediation, escalation automation, dan incident classification untuk MTTR optimal."
+title: 'Belajar SRE #17: On-Call Automation & Runbook'
+date: 2027-06-16T09:00:00
+description: Pelajari on-call automation dengan runbook-as-code, graduated auto-remediation, escalation automation, dan incident classification untuk MTTR optimal.
 categories:
   - sre
 tags:
