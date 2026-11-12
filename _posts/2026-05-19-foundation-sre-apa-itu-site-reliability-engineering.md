@@ -156,6 +156,7 @@ Transisi dari traditional ops ke SRE dimulai dari perubahan mindset:
 ### Embrace Risk
 
 SRE tidak berusaha menghilangkan semua risiko, SRE mengelola risiko secara terukur melalui tiga tahap: 
+
 - **Identify** (apa yang bisa fail?),
 - **Measure** (seberapa buruk dampaknya?), dan 
 - **Manage** (bagaimana menanganinya?).
@@ -254,7 +255,7 @@ Sebelum memperbaiki reliability, kita perlu tahu posisi saat ini.
 Langkah pertama: buat daftar semua service yang dikelola beserta status monitoring-nya saat ini.
 
 | Service | Type | Owner | Criticality | Current Monitoring |
-|---------|------|-------|-------------|-------------------|
+| --- | --- | --- | --- | --- |
 | api-gateway | Web Service | Platform Team | Critical | Basic health check |
 | user-service | Microservice | Backend Team | High | Logs only |
 | payment-service | Microservice | Payment Team | Critical | APM + Logs |
@@ -281,6 +282,7 @@ echo "Availability: ${availability}%"
 ### Konteks
 
 TechStartup Indonesia (TSI) adalah startup e-commerce dengan 50.000 DAU yang di awal 2020 menghadapi growing pains:
+
 - Downtime yang sering
 - Firefighting konstan
 - Arsitektur monolith Node.js yang mulai tidak mampu menangani pertumbuhan 20%/bulan
@@ -292,6 +294,7 @@ TechStartup Indonesia (TSI) adalah startup e-commerce dengan 50.000 DAU yang di 
 Januari 2020 — database connection pool exhausted + memory leak menyebabkan **3.5 jam downtime** dan kerugian **Rp 35 juta**. CTO memutuskan untuk memulai perjalanan SRE.
 
 Kondisi sebelumnya: 95% waktu tim DevOps dihabiskan untuk toil:
+
 - Firefighting: 65%
 - Manual deployment: 20%
 - Manual monitoring: 10%
@@ -315,7 +318,7 @@ Memory leak terjadi 3x/minggu dan selalu ditangani dengan cara yang sama: SSH > 
 Setiap engineer mencatat semua pekerjaan manual selama 1 minggu. Hasilnya mengejutkan: rata-rata 12 jam/minggu/engineer dihabiskan untuk pekerjaan repetitif. Tim prioritaskan automation berdasarkan formula **frequency × time**:
 
 | Task | Frekuensi | Waktu/Kejadian | Total/Minggu |
-|------|-----------|----------------|-------------|
+| --- | --- | --- | --- |
 | Log checking | 5x/hari | 30 min | 150 min |
 | Manual deployment | 3x/minggu | 45 min | 135 min |
 | App restart (memory leak) | 3x/minggu | 15 min | 45 min |
@@ -357,7 +360,7 @@ Setiap engineer mencatat semua pekerjaan manual selama 1 minggu. Hasilnya mengej
 
 ## Selanjutnya
 
-Artikel berikutnya: [Foundation SRE: Monitoring Basics](/posts/foundation-sre-monitoring-basics/) — membahas dasar-dasar monitoring dari perspektif SRE, termasuk four golden signals dan setup observability stack.
+Artikel berikutnya: membahas dasar-dasar monitoring dari perspektif SRE, termasuk four golden signals dan setup observability stack.
 
 Topik terkait yang bisa Anda eksplorasi:
 
@@ -376,7 +379,3 @@ Topik terkait yang bisa Anda eksplorasi:
 - [Grafana Documentation](https://grafana.com/docs/grafana/latest/) — Visualization dan dashboarding (Grafana 11+)
 
 ***
-
-## Navigasi Series
-
-**Selanjutnya:** [Foundation SRE: Monitoring Basics](/posts/foundation-sre-monitoring-basics/)
