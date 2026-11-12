@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #19: Data Integrity"
-date: 2026-06-19T09:00:00+0700
-description: "Pelajari data integrity dan backup strategy: PITR, recovery testing automation, data validation, dan 3-2-1 backup rule untuk production systems."
+title: 'Belajar SRE #19: Data Integrity'
+date: 2027-05-13T09:00:00
+description: 'Pelajari data integrity dan backup strategy: PITR, recovery testing automation, data validation, dan 3-2-1 backup rule untuk production systems.'
 categories:
   - sre
 tags:
