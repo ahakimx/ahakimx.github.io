@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Belajar SRE #18: Overload Handling"
-date: 2026-06-17T09:00:00+0700
-description: "Pelajari strategi overload handling: load shedding, rate limiting, dan graceful degradation untuk menjaga sistem tetap berfungsi saat traffic spike."
+title: 'Belajar SRE #18: Overload Handling'
+date: 2027-06-17T09:00:00
+description: 'Pelajari strategi overload handling: load shedding, rate limiting, dan graceful degradation untuk menjaga sistem tetap berfungsi saat traffic spike.'
 categories:
   - sre
 tags:
