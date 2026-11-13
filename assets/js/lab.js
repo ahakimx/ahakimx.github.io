@@ -1,5 +1,5 @@
 // Interaksi komponen artikel lab (markup dibuat scripts/publish-post.mjs di vault quartz-notes):
-// kuis, tombol salin di terminal, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
+// kuis, tombol salin di terminal, lipatan blok kode panjang, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
 document.addEventListener('DOMContentLoaded', () => {
   /* ---------- kuis: klik jawaban, tampilkan benar/salah dan pembahasan ---------- */
   document.querySelectorAll('.lab-quiz').forEach((quiz) => {
@@ -72,6 +72,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     bar.appendChild(btn);
   });
+
+  /* ---------- blok kode panjang: dilipat, dibuka dengan "Tampilkan semua (N baris)" ---------- */
+  // Hanya di post lab (ada kartu lab), dan tidak untuk blok yang sudah berada di dalam output terlipat.
+  const FOLD_AT = 22;
+  if (document.querySelector('.lab-card')) {
+    const blocks = [];
+    document.querySelectorAll('.content div.highlighter-rouge, .content figure.highlight').forEach((box) => {
+      const view = box.querySelector('.highlight') || box;
+      const pre = box.querySelector('td.rouge-code pre') || box.querySelector('pre');
+      if (pre) blocks.push({ box, view, lines: pre.textContent.replace(/\n$/, '').split('\n').length });
+    });
+    document.querySelectorAll('.content .lab-term').forEach((box) => {
+      const view = box.querySelector('.lab-term__body');
+      if (view) blocks.push({ box, view, lines: view.querySelectorAll('.ln').length });
+    });
+    blocks.forEach(({ box, view, lines }) => {
+      if (lines <= FOLD_AT || box.closest('details') || box.querySelector('.lab-codefold')) return;
+      view.classList.add('lab-foldable', 'is-folded');
+      const foot = document.createElement('div');
+      foot.className = 'lab-codefold';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      const label = () => { btn.textContent = view.classList.contains('is-folded') ? `Tampilkan semua (${lines} baris)` : 'Lipat'; };
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => {
+        const folded = view.classList.toggle('is-folded');
+        btn.setAttribute('aria-expanded', String(!folded));
+        label();
+        if (folded) box.scrollIntoView({ block: 'nearest' });
+      });
+      label();
+      foot.appendChild(btn);
+      view.after(foot);
+    });
+  }
 
   /* ---------- penanda langkah: "Langkah 4/11 · judul" + ‹ › selama bagian langkah terlihat ---------- */
   const map = document.querySelector('.lab-steps');

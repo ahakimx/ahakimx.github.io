@@ -676,3 +676,61 @@ details.lab-fold > .lab-fold__body {
     padding: 1rem 1.05rem;
   }
 }
+
+/* ---------- blok kode panjang dilipat (kelas dipasang lab.js) ---------- */
+.lab-foldable.is-folded {
+  max-height: 17.5rem;
+  overflow: hidden !important;
+  -webkit-mask-image: linear-gradient(#000 65%, transparent);
+  mask-image: linear-gradient(#000 65%, transparent);
+}
+.lab-codefold {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  border-top: 1px solid var(--main-border-color);
+}
+.lab-term .lab-codefold {
+  border-top-color: rgb(255 255 255 / 10%);
+}
+.lab-codefold button {
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--heading-color);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lab-term .lab-codefold button {
+  border-color: rgb(255 255 255 / 16%);
+  background: rgb(255 255 255 / 6%);
+  color: #cbd5e1;
+}
+.lab-codefold button:hover {
+  border-color: var(--lab-accent);
+}
+.lab-codefold button:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 2px;
+}
+@media print {
+  .lab-foldable.is-folded {
+    max-height: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .lab-codefold {
+    display: none;
+  }
+}
+
+/* ---------- tanda "#" di heading ----------
+ * Chirpy menyembunyikan tautan jangkar ini sampai heading disorot mouse; di layar sentuh tidak ada "sorot",
+ * jadi "#" tampil terus di semua heading. Di layar sentuh disembunyikan (daftar isi tetap bisa dipakai). */
+@media (hover: none) {
+  .content .anchor {
+    display: none !important;
+  }
+}
