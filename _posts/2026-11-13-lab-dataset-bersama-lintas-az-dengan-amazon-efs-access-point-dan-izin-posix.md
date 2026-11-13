@@ -234,7 +234,7 @@ aws efs describe-mount-targets --file-system-id $FS_ID \
 ```
 
 <details class="lab-fold"><summary>Output yang diharapkan: dua mount target <code>available</code><small>6 baris</small></summary><div class="lab-fold__body">
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><pre class="lab-term__pre"><code>---------------------------------------------------&#10;|              DescribeMountTargets               |&#10;+-----------------+---------------+---------------+&#10;|  ap-southeast-3a|  172.31.5.21  |  available    |&#10;|  ap-southeast-3b|  172.31.22.87 |  available    |&#10;+-----------------+---------------+---------------+</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><div class="lab-term__body"><span class="ln">---------------------------------------------------</span><span class="ln">|&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;DescribeMountTargets&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;|</span><span class="ln">+-----------------+---------------+---------------+</span><span class="ln">|&#32;&#32;ap-southeast-3a|&#32;&#32;172.31.5.21&#32;&#32;|&#32;&#32;available&#32;&#32;&#32;&#32;|</span><span class="ln">|&#32;&#32;ap-southeast-3b|&#32;&#32;172.31.22.87&#32;|&#32;&#32;available&#32;&#32;&#32;&#32;|</span><span class="ln">+-----------------+---------------+---------------+</span></div></div>
 </div></details>
 
 ### 6. Access point per tim
@@ -366,11 +366,11 @@ aws ssm start-session --target $INST_SURVEY
 
 Jalankan di dalam sesi:
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><pre class="lab-term__pre"><code>sudo -i&#10;source /etc/rimba-efs.env&#10;mount -t efs -o tls,iam,accesspoint=$AP_SURVEY $FS_ID:/ /mnt/datasets&#10;df -hT /mnt/datasets&#10;ls -ldn /mnt/datasets&#10;&#10;mkdir /mnt/datasets/survey&#10;chmod 750 /mnt/datasets/survey&#10;echo &quot;ortofoto blok-07 resolusi 5cm&quot; &gt; /mnt/datasets/survey/blok-07.txt&#10;ls -ln /mnt/datasets/survey</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><div class="lab-term__body"><span class="ln">sudo&#32;-i</span><span class="ln">source&#32;/etc/rimba-efs.env</span><span class="ln">mount&#32;-t&#32;efs&#32;-o&#32;tls,iam,accesspoint=$AP_SURVEY&#32;$FS_ID:/&#32;/mnt/datasets</span><span class="ln">df&#32;-hT&#32;/mnt/datasets</span><span class="ln">ls&#32;-ldn&#32;/mnt/datasets</span><span class="ln"></span><span class="ln">mkdir&#32;/mnt/datasets/survey</span><span class="ln">chmod&#32;750&#32;/mnt/datasets/survey</span><span class="ln">echo&#32;&quot;ortofoto&#32;blok-07&#32;resolusi&#32;5cm&quot;&#32;&gt;&#32;/mnt/datasets/survey/blok-07.txt</span><span class="ln">ls&#32;-ln&#32;/mnt/datasets/survey</span></div></div>
 
 Output yang diharapkan:
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><pre class="lab-term__pre"><code>Filesystem     Type  Size  Used Avail Use% Mounted on&#10;127.0.0.1:/    nfs4  8.0E     0  8.0E   0% /mnt/datasets&#10;drwxrwxr-t 2 0 3000 6144 ... /mnt/datasets&#10;-rw-r--r-- 1 2001 3000 30 ... blok-07.txt</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><div class="lab-term__body"><span class="ln">Filesystem&#32;&#32;&#32;&#32;&#32;Type&#32;&#32;Size&#32;&#32;Used&#32;Avail&#32;Use%&#32;Mounted&#32;on</span><span class="ln">127.0.0.1:/&#32;&#32;&#32;&#32;nfs4&#32;&#32;8.0E&#32;&#32;&#32;&#32;&#32;0&#32;&#32;8.0E&#32;&#32;&#32;0%&#32;/mnt/datasets</span><span class="ln">drwxrwxr-t&#32;2&#32;0&#32;3000&#32;6144&#32;...&#32;/mnt/datasets</span><span class="ln">-rw-r--r--&#32;1&#32;2001&#32;3000&#32;30&#32;...&#32;blok-07.txt</span></div></div>
 
 Perhatikan dua hal:
 
@@ -384,11 +384,11 @@ Perhatikan dua hal:
 aws ssm start-session --target $INST_GIS
 ```
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><pre class="lab-term__pre"><code>sudo -i&#10;source /etc/rimba-efs.env&#10;mount -t efs -o tls,iam,accesspoint=$AP_GIS $FS_ID:/ /mnt/datasets&#10;&#10;cat /mnt/datasets/survey/blok-07.txt&#10;mkdir /mnt/datasets/gis &amp;&amp; chmod 750 /mnt/datasets/gis&#10;echo &quot;peta batas lahan blok-07&quot; &gt; /mnt/datasets/gis/blok-07.geojson&#10;ls -ln /mnt/datasets</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><div class="lab-term__body"><span class="ln">sudo&#32;-i</span><span class="ln">source&#32;/etc/rimba-efs.env</span><span class="ln">mount&#32;-t&#32;efs&#32;-o&#32;tls,iam,accesspoint=$AP_GIS&#32;$FS_ID:/&#32;/mnt/datasets</span><span class="ln"></span><span class="ln">cat&#32;/mnt/datasets/survey/blok-07.txt</span><span class="ln">mkdir&#32;/mnt/datasets/gis&#32;&amp;&amp;&#32;chmod&#32;750&#32;/mnt/datasets/gis</span><span class="ln">echo&#32;&quot;peta&#32;batas&#32;lahan&#32;blok-07&quot;&#32;&gt;&#32;/mnt/datasets/gis/blok-07.geojson</span><span class="ln">ls&#32;-ln&#32;/mnt/datasets</span></div></div>
 
 Output yang diharapkan:
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><pre class="lab-term__pre"><code>ortofoto blok-07 resolusi 5cm&#10;drwxr-x--- 2 2002 3000 6144 ... gis&#10;drwxr-x--- 2 2001 3000 6144 ... survey</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><div class="lab-term__body"><span class="ln">ortofoto&#32;blok-07&#32;resolusi&#32;5cm</span><span class="ln">drwxr-x---&#32;2&#32;2002&#32;3000&#32;6144&#32;...&#32;gis</span><span class="ln">drwxr-x---&#32;2&#32;2001&#32;3000&#32;6144&#32;...&#32;survey</span></div></div>
 
 Data yang ditulis dari AZ 3a langsung terbaca di AZ 3b.
 

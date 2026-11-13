@@ -256,29 +256,27 @@
   font-style: normal;
   color: #64748b;
 }
-.content .lab-term pre {
+/* Tanpa <pre>/<code>: Jekyll (kramdown + compress Chirpy) merusaknya. Isi terminal = div berisi satu span per baris. */
+.content .lab-term .lab-term__body,
+.lab-term .lab-term__body {
+  display: block;
   margin: 0;
   padding: 1rem 1.1rem;
   background: transparent;
-  color: var(--lab-term-ink);
+  color: var(--lab-term-ink) !important;
+  opacity: 1;
   font: 400 0.84rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
   overflow-x: auto;
-  border: 0;
+  tab-size: 4;
 }
-.content .lab-term pre,
-.content .lab-term code {
-  white-space: pre; /* baris baru ditulis &#10; supaya tidak dirapatkan Jekyll */
-}
-.content .lab-term pre code {
-  background: none;
-  color: inherit;
-  padding: 0;
-  font: inherit;
-}
-.lab-term .p { color: #7dd3fc; }
-.lab-term .c { color: #64748b; }
-.lab-term .bad { color: #fda4af; }
-.lab-term .ok { color: #86efac; }
+.lab-term__body .ln { display: block; min-width: max-content; }
+.lab-term__body .ln:empty::before { content: " "; }
+.lab-term__body .ln > span { color: inherit; }
+.lab-term .lab-term__body .p { color: #7dd3fc !important; }
+.lab-term .lab-term__body .c { color: #8b9bb4 !important; }
+.lab-term .lab-term__body .bad { color: #fda4af !important; }
+.lab-term .lab-term__body .ok { color: #86efac !important; }
 
 /* ---------- galeri screenshot ---------- */
 .lab-gallery {
