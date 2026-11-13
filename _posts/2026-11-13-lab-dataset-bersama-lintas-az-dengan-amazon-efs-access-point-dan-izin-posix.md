@@ -298,9 +298,9 @@ aws efs describe-access-points --file-system-id $FS_ID \
   --output table
 ```
 
-Output yang diharapkan (dua baris):
-
+<details class="lab-fold"><summary>Output yang diharapkan: dua access point <code>available</code><small>2 baris</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><div class="lab-term__body"><span class="ln">rimba-lab-ap-survey&#32;&#124;&#32;2001&#32;&#124;&#32;3000&#32;&#124;&#32;/datasets&#32;&#124;&#32;available</span><span class="ln">rimba-lab-ap-gis&#32;&#32;&#32;&#32;&#124;&#32;2002&#32;&#124;&#32;3000&#32;&#124;&#32;/datasets&#32;&#124;&#32;available</span></div></div>
+</div></details>
 
 ### 7. File system policy: role terikat ke access point, wajib TLS
 {: #langkah-7 }
