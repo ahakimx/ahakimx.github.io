@@ -55,7 +55,7 @@ Kebutuhan:
 
 ## Arsitektur
 
-![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/uploads/lab-hands-on-efs-shared-file-system-diagram-1-light.gif)
+![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/uploads/lab-hands-on-efs-shared-file-system-diagram-1-light%281%29.gif)
 
 _Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point._
 
