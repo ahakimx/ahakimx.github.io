@@ -22,7 +22,8 @@ comments: true
 <div class="lab-actions"><a class="lab-btn" href="#langkah-1">Langsung ke langkah ↓</a></div>
 </section>
 
-![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1.png)
+![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1.svg){: .light }
+![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1-dark.svg){: .dark }
 
 _Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point._
 
@@ -73,7 +74,8 @@ Alur data:
 
 Lapisan kontrol akses yang dilatih:
 
-![Empat lapis kontrol akses NFS ke EFS.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-visual-1.png)
+![Empat lapis kontrol akses NFS ke EFS.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-visual-1.svg){: .light }
+![Empat lapis kontrol akses NFS ke EFS.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-visual-1-dark.svg){: .dark }
 *Empat lapis kontrol akses NFS ke EFS.*
 
 ## Prasyarat
@@ -428,7 +430,8 @@ User auditor tinggal ditambahkan dengan `aws iam add-user-to-group`. Tidak perlu
 
 Alur keputusan saat klien mount dan menulis:
 
-![Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-alur-1.png)
+![Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-alur-1.svg){: .light }
+![Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-alur-1-dark.svg){: .dark }
 *Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.*
 
 Ringkasan hasil uji:
