@@ -604,3 +604,75 @@ details.lab-fold > .lab-fold__body {
     transition: none;
   }
 }
+
+/* ---------- ritme baca di HP (hanya post yang punya kartu lab) ----------
+ * Satu skala ukuran: teks 1rem, kode sebaris sedikit lebih kecil dan tidak mencolok, heading berjenjang jelas,
+ * dan garis tipis sebelum tiap bagian (h2) supaya mata punya tempat berhenti. */
+@media (max-width: 576px) {
+  .content:has(.lab-card) {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .content:has(.lab-card) p,
+  .content:has(.lab-card) li,
+  .content:has(.lab-card) blockquote {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .content:has(.lab-card) h2 {
+    font-size: 1.3rem;
+    line-height: 1.3;
+    margin: 2.6rem 0 0.9rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--main-border-color);
+  }
+  .content:has(.lab-card) h3 {
+    font-size: 1.1rem;
+    line-height: 1.35;
+    margin: 2rem 0 0.6rem;
+  }
+  .content:has(.lab-card) h4 {
+    font-size: 1rem;
+    margin: 1.4rem 0 0.4rem;
+  }
+  .content:has(.lab-card) ul,
+  .content:has(.lab-card) ol {
+    padding-left: 1.2rem;
+  }
+  .content:has(.lab-card) li + li {
+    margin-top: 0.3rem;
+  }
+  .content:has(.lab-card) li > ul,
+  .content:has(.lab-card) li > ol {
+    margin-top: 0.3rem;
+    padding-left: 1rem;
+  }
+  /* kode sebaris: lebih kecil, latar tipis, boleh patah di tengah supaya tidak mendorong baris */
+  .content:has(.lab-card) :not(pre) > code {
+    font-size: 0.84em;
+    padding: 0.08em 0.32em;
+    border-radius: 4px;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  .content:has(.lab-card) .highlight pre,
+  .content:has(.lab-card) .highlight code {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  .content:has(.lab-card) .lab-term .lab-term__body {
+    font-size: 0.78rem;
+  }
+  .content:has(.lab-card) table {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .content:has(.lab-card) th,
+  .content:has(.lab-card) td {
+    padding: 0.45rem 0.6rem;
+    font-size: inherit;
+  }
+  .content:has(.lab-card) .lab-card {
+    padding: 1rem 1.05rem;
+  }
+}

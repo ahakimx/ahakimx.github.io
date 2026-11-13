@@ -87,10 +87,38 @@ Lapisan kontrol akses yang dilatih:
 - AWS CLI v2 (2.15+), `jq` opsional.
 - Session Manager plugin untuk `aws ssm start-session`. Alternatif: Console **Systems Manager > Session Manager**.
 - Izin IAM minimum untuk principal yang menjalankan lab:
-  - `ec2:Describe*`, `ec2:CreateSecurityGroup`, `ec2:AuthorizeSecurityGroupIngress`, `ec2:DeleteSecurityGroup`, `ec2:RunInstances`, `ec2:TerminateInstances`, `ec2:CreateTags`
-  - `elasticfilesystem:CreateFileSystem`, `CreateMountTarget`, `CreateAccessPoint`, `PutFileSystemPolicy`, `Describe*`, `DeleteAccessPoint`, `DeleteMountTarget`, `DeleteFileSystem`, `TagResource`
-  - `iam:CreateRole`, `AttachRolePolicy`, `CreateInstanceProfile`, `AddRoleToInstanceProfile`, `PassRole` (terbatas ke role `rimba-lab-*`), `CreateGroup`, `PutGroupPolicy`, beserta pasangan delete/detach/remove-nya
-  - `ssm:StartSession`
+
+```text
+ec2:Describe*
+ec2:CreateSecurityGroup
+ec2:AuthorizeSecurityGroupIngress
+ec2:DeleteSecurityGroup
+ec2:RunInstances
+ec2:TerminateInstances
+ec2:CreateTags
+
+elasticfilesystem:CreateFileSystem
+elasticfilesystem:CreateMountTarget
+elasticfilesystem:CreateAccessPoint
+elasticfilesystem:PutFileSystemPolicy
+elasticfilesystem:Describe*
+elasticfilesystem:DeleteAccessPoint
+elasticfilesystem:DeleteMountTarget
+elasticfilesystem:DeleteFileSystem
+elasticfilesystem:TagResource
+
+iam:CreateRole
+iam:AttachRolePolicy
+iam:CreateInstanceProfile
+iam:AddRoleToInstanceProfile
+iam:PassRole (terbatas ke role rimba-lab-*)
+iam:CreateGroup
+iam:PutGroupPolicy
+# beserta pasangan delete/detach/remove-nya
+
+ssm:StartSession
+```
+
 - Amazon EFS dan Elastic throughput tersedia di Jakarta (cek dokumentasi terbaru). Kalau Elastic belum tersedia, ganti `--throughput-mode elastic` jadi `bursting`.
 
 ## Estimasi biaya
