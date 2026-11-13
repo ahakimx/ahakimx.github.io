@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 'Lab: Dataset Bersama Lintas AZ dengan Amazon EFS, Access Point, dan Izin POSIX'
+title: "Lab: Dataset Bersama Lintas AZ dengan Amazon EFS, Access Point, dan Izin POSIX"
 date: 2026-11-13T09:00:00+0700
-description: Bangun satu file system EFS Regional yang di-mount dua EC2 di dua AZ berbeda. Setiap tim punya identitas POSIX sendiri yang dipaksa oleh access point, dan…
+description: "Bangun satu file system EFS Regional yang di-mount dua EC2 di dua AZ berbeda. Setiap tim punya identitas POSIX sendiri yang dipaksa oleh access point, dan…"
 categories:
   - aws
   - efs
@@ -10,20 +10,27 @@ tags:
   - aws
   - efs
 image:
-  path: /assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1.png
-  alt: 'Lab: Dataset Bersama Lintas AZ dengan Amazon EFS, Access Point, dan Izin POSIX'
-  lqip: ''
-pin: false
+  path: /assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/cover.png
 toc: true
 comments: true
-math: false
-mermaid: false
-media_subpath: ''
-render_with_liquid: true
 ---
+<section class="lab-card" aria-label="Ringkasan lab">
+<div class="lab-card__kicker">Hasil lab</div>
+<p class="lab-card__result">Satu dataset dipakai dua tim di dua AZ, dengan 4 lapis kontrol akses yang terbukti menolak akses yang tidak berhak.</p>
+<ul class="lab-stats"><li><span>Level</span><b>Intermediate</b></li><li><span>Durasi</span><b>60–75 menit</b></li><li><span>Biaya</span><b>&lt; USD 1</b></li><li><span>Region</span><b>ap-southeast-3</b></li></ul>
+<ul class="lab-services"><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/efs.svg')" aria-hidden="true"></span>Amazon EFS</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/ec2.svg')" aria-hidden="true"></span>Amazon EC2</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/iam-role.svg')" aria-hidden="true"></span>IAM</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/ssm.svg')" aria-hidden="true"></span>Systems Manager</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/vpc.svg')" aria-hidden="true"></span>VPC</li></ul>
+<div class="lab-actions"><a class="lab-btn" href="#langkah-1">Langsung ke langkah ↓</a></div>
+</section>
 
-> Bangun satu file system EFS Regional yang di-mount dua EC2 di dua AZ berbeda. Setiap tim punya identitas POSIX sendiri yang dipaksa oleh access point, dan IAM menentukan siapa boleh mount lewat access point mana.
-> Estimasi waktu: 60–75 menit · Level: Intermediate
+![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1.png)
+
+_Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point._
+
+> **Ringkasan 30 detik**
+> - **Masalah:** dua tim di dua AZ butuh folder yang sama, tapi masing-masing hanya boleh menulis di direktorinya sendiri.
+> - **Solusi:** EFS Regional + access point per tim (UID/GID dipaksa) + file system policy yang mengikat role ke access point dan mewajibkan TLS.
+> - **Bukti:** root di server pun ditolak menulis ke direktori tim lain, dan mount dengan access point tim lain ditolak di tahap IAM.
+{: .prompt-info }
 
 ## Tujuan belajar
 
@@ -32,8 +39,8 @@ render_with_liquid: true
 - Memakai **EFS access point** untuk memaksakan `PosixUser` (UID/GID) dan root directory.
 - Menulis **file system policy** (resource-based IAM policy) dengan `elasticfilesystem:ClientMount`, `ClientWrite`, kondisi `elasticfilesystem:AccessPointArn`, dan `aws:SecureTransport`.
 - Membuktikan dua lapis kontrol bekerja bersama:
-    - IAM menentukan siapa boleh mount.
-    - POSIX menentukan apa yang boleh dibaca/ditulis.
+  - IAM menentukan siapa boleh mount.
+  - POSIX menentukan apa yang boleh dibaca/ditulis.
 - Memakai **IAM group** untuk akses manajemen level organisasi, dan paham batasannya: IAM group tidak bisa jadi `Principal` di resource policy.
 
 ## Skenario
@@ -41,7 +48,7 @@ render_with_liquid: true
 **Rimba Geospatial** adalah startup pemetaan drone di Balikpapan. Dua tim mengolah data yang sama:
 
 | Tim | Tugas | UID | GID bersama |
-| --- | --- | --- | --- |
+|---|---|---|---|
 | `survey` | Upload hasil olah ortofoto per blok lahan | 2001 | 3000 (`rimba-data`) |
 | `gis` | Baca ortofoto, hasilkan peta vektor | 2002 | 3000 (`rimba-data`) |
 
@@ -55,9 +62,6 @@ Kebutuhan:
 
 ## Arsitektur
 
-![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/uploads/lab-hands-on-efs-shared-file-system-diagram-1-light%281%29.gif)
-
-_Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point._
 
 Alur data:
 
@@ -70,8 +74,7 @@ Alur data:
 Lapisan kontrol akses yang dilatih:
 
 ![Empat lapis kontrol akses NFS ke EFS.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-visual-1.png)
-
-_Empat lapis kontrol akses NFS ke EFS._
+*Empat lapis kontrol akses NFS ke EFS.*
 
 ## Prasyarat
 
@@ -79,17 +82,17 @@ _Empat lapis kontrol akses NFS ke EFS._
 - AWS CLI v2 (2.15+), `jq` opsional.
 - Session Manager plugin untuk `aws ssm start-session`. Alternatif: Console **Systems Manager > Session Manager**.
 - Izin IAM minimum untuk principal yang menjalankan lab:
-    - `ec2:Describe*`, `ec2:CreateSecurityGroup`, `ec2:AuthorizeSecurityGroupIngress`, `ec2:DeleteSecurityGroup`, `ec2:RunInstances`, `ec2:TerminateInstances`, `ec2:CreateTags`
-    - `elasticfilesystem:CreateFileSystem`, `CreateMountTarget`, `CreateAccessPoint`, `PutFileSystemPolicy`, `Describe*`, `DeleteAccessPoint`, `DeleteMountTarget`, `DeleteFileSystem`, `TagResource`
-    - `iam:CreateRole`, `AttachRolePolicy`, `CreateInstanceProfile`, `AddRoleToInstanceProfile`, `PassRole` (terbatas ke role `rimba-lab-*`), `CreateGroup`, `PutGroupPolicy`, beserta pasangan delete/detach/remove-nya
-    - `ssm:StartSession`
+  - `ec2:Describe*`, `ec2:CreateSecurityGroup`, `ec2:AuthorizeSecurityGroupIngress`, `ec2:DeleteSecurityGroup`, `ec2:RunInstances`, `ec2:TerminateInstances`, `ec2:CreateTags`
+  - `elasticfilesystem:CreateFileSystem`, `CreateMountTarget`, `CreateAccessPoint`, `PutFileSystemPolicy`, `Describe*`, `DeleteAccessPoint`, `DeleteMountTarget`, `DeleteFileSystem`, `TagResource`
+  - `iam:CreateRole`, `AttachRolePolicy`, `CreateInstanceProfile`, `AddRoleToInstanceProfile`, `PassRole` (terbatas ke role `rimba-lab-*`), `CreateGroup`, `PutGroupPolicy`, beserta pasangan delete/detach/remove-nya
+  - `ssm:StartSession`
 - Amazon EFS dan Elastic throughput tersedia di Jakarta (cek dokumentasi terbaru). Kalau Elastic belum tersedia, ganti `--throughput-mode elastic` jadi `bursting`.
 
 ## Estimasi biaya
 
 | Resource | Perkiraan |
-| --- | --- |
-| 2× EC2 `t3.micro` \~1 jam | Bisa masuk Free Tier, tergantung jenis akun (cek dokumentasi terbaru) |
+|---|---|
+| 2× EC2 `t3.micro` ~1 jam | Bisa masuk Free Tier, tergantung jenis akun (cek dokumentasi terbaru) |
 | EFS Standard, beberapa KB data | Hampir nol. Ada biaya per GB-bulan dan biaya transfer data untuk Elastic throughput (cek harga terbaru Region Jakarta) |
 | Mount target, access point, IAM | Tanpa biaya |
 
@@ -97,7 +100,11 @@ Total kurang dari USD 1 kalau cleanup langsung setelah lab (cek dokumentasi terb
 
 ## Langkah-langkah
 
+<ol class="lab-steps" aria-label="Peta langkah"><li><a href="#langkah-1">Set variabel</a></li><li><a href="#langkah-2">Security group: klien dan mount target</a></li><li><a href="#langkah-3">IAM role per tim (instance profile)</a></li><li><a href="#langkah-4">Buat file system EFS Regional (terenkripsi)</a></li><li><a href="#langkah-5">Mount target di setiap AZ</a></li><li><a href="#langkah-6">Access point per tim</a></li><li><a href="#langkah-7">File system policy: role terikat ke access point, wajib TLS</a></li><li><a href="#langkah-8">Luncurkan EC2 di dua AZ</a></li><li><a href="#langkah-9">Mount dan tulis data dari server survey (AZ 3a)</a></li><li><a href="#langkah-10">Mount dari server gis (AZ 3b)</a></li><li><a href="#langkah-11">IAM group untuk akses manajemen level organisasi</a></li></ol>
+
+
 ### 1. Set variabel
+{: #langkah-1 }
 
 Jalankan di CloudShell atau terminal lokal. Semua langkah berikut memakai variabel ini.
 
@@ -129,6 +136,7 @@ ACCOUNT=111122223333 VPC=vpc-0a1b2c3d4e5f60789 A=subnet-0aaa... B=subnet-0bbb...
 ```
 
 ### 2. Security group: klien dan mount target
+{: #langkah-2 }
 
 Console: **EC2 > Security Groups > Create**. SG klien tanpa inbound. SG EFS hanya mengizinkan NFS dari SG klien.
 
@@ -150,6 +158,7 @@ echo "SG_CLIENT=$SG_CLIENT SG_EFS=$SG_EFS"
 Akses ke instance memakai Session Manager, jadi port 22 tidak perlu dibuka.
 
 ### 3. IAM role per tim (instance profile)
+{: #langkah-3 }
 
 Tiap tim dapat role sendiri. Role inilah yang nanti jadi `Principal` di file system policy.
 
@@ -182,6 +191,7 @@ ROLE_GIS_ARN=arn:aws:iam::${ACCOUNT_ID}:role/${PREFIX}-gis-ec2
 Role ini tidak diberi identity policy EFS. Izin mount datang dari file system policy di langkah 6.
 
 ### 4. Buat file system EFS Regional (terenkripsi)
+{: #langkah-4 }
 
 Console: **EFS > Create file system > Customize**. Pilih File system type **Regional**, aktifkan **Encryption**.
 
@@ -206,6 +216,7 @@ done
 Output yang diharapkan: `FS_ID=fs-0123456789abcdef0`, lalu loop berhenti.
 
 ### 5. Mount target di setiap AZ
+{: #langkah-5 }
 
 Satu AZ hanya bisa punya satu mount target per file system. Instance memakai mount target di AZ-nya sendiri, supaya latensi rendah dan tidak ada biaya transfer data antar-AZ.
 
@@ -222,18 +233,17 @@ aws efs describe-mount-targets --file-system-id $FS_ID \
   --query 'MountTargets[].[AvailabilityZoneName,IpAddress,LifeCycleState]' --output table
 ```
 
-Output yang diharapkan:
-
-```text
----------------------------------------------------
+<details class="lab-fold"><summary>Output yang diharapkan: dua mount target <code>available</code><small>6 baris</small></summary><div class="lab-fold__body">
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><pre><code>---------------------------------------------------
 |              DescribeMountTargets               |
 +-----------------+---------------+---------------+
 |  ap-southeast-3a|  172.31.5.21  |  available    |
 |  ap-southeast-3b|  172.31.22.87 |  available    |
-+-----------------+---------------+---------------+
-```
++-----------------+---------------+---------------+</code></pre></div>
+</div></details>
 
 ### 6. Access point per tim
+{: #langkah-6 }
 
 Kedua access point memakai root `/datasets` yang sama, tapi identitas POSIX-nya berbeda. Pengaturan `CreationInfo` membuat `/datasets` saat pertama kali dipakai dengan detail berikut:
 
@@ -265,6 +275,7 @@ aws efs describe-access-points --file-system-id $FS_ID \
 Output yang diharapkan: dua baris, `rimba-lab-ap-survey | 2001 | 3000 | /datasets | available` dan `rimba-lab-ap-gis | 2002 | 3000 | /datasets | available`.
 
 ### 7. File system policy: role terikat ke access point, wajib TLS
+{: #langkah-7 }
 
 Console: **EFS > file system > File system policy > Edit**.
 
@@ -311,6 +322,7 @@ Catatan policy:
 - Principal harus role atau user. IAM group tidak valid sebagai `Principal`.
 
 ### 8. Luncurkan EC2 di dua AZ
+{: #langkah-8 }
 
 User data menginstal `amazon-efs-utils` dan menyimpan ID resource ke `/etc/rimba-efs.env`.
 
@@ -351,6 +363,7 @@ echo "SURVEY=$INST_SURVEY GIS=$INST_GIS"
 ```
 
 ### 9. Mount dan tulis data dari server `survey` (AZ 3a)
+{: #langkah-9 }
 
 ```bash
 aws ssm start-session --target $INST_SURVEY
@@ -358,8 +371,7 @@ aws ssm start-session --target $INST_SURVEY
 
 Jalankan di dalam sesi:
 
-```bash
-sudo -i
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><pre><code>sudo -i
 source /etc/rimba-efs.env
 mount -t efs -o tls,iam,accesspoint=$AP_SURVEY $FS_ID:/ /mnt/datasets
 df -hT /mnt/datasets
@@ -367,18 +379,15 @@ ls -ldn /mnt/datasets
 
 mkdir /mnt/datasets/survey
 chmod 750 /mnt/datasets/survey
-echo "ortofoto blok-07 resolusi 5cm" > /mnt/datasets/survey/blok-07.txt
-ls -ln /mnt/datasets/survey
-```
+echo &quot;ortofoto blok-07 resolusi 5cm&quot; &gt; /mnt/datasets/survey/blok-07.txt
+ls -ln /mnt/datasets/survey</code></pre></div>
 
 Output yang diharapkan:
 
-```text
-Filesystem     Type  Size  Used Avail Use% Mounted on
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><pre><code>Filesystem     Type  Size  Used Avail Use% Mounted on
 127.0.0.1:/    nfs4  8.0E     0  8.0E   0% /mnt/datasets
 drwxrwxr-t 2 0 3000 6144 ... /mnt/datasets
--rw-r--r-- 1 2001 3000 30 ... blok-07.txt
-```
+-rw-r--r-- 1 2001 3000 30 ... blok-07.txt</code></pre></div>
 
 Perhatikan dua hal:
 
@@ -386,33 +395,31 @@ Perhatikan dua hal:
 - Source `127.0.0.1:/` muncul karena mount helper membungkus NFS dengan tunnel TLS lokal.
 
 ### 10. Mount dari server `gis` (AZ 3b)
+{: #langkah-10 }
 
 ```bash
 aws ssm start-session --target $INST_GIS
 ```
 
-```bash
-sudo -i
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><pre><code>sudo -i
 source /etc/rimba-efs.env
 mount -t efs -o tls,iam,accesspoint=$AP_GIS $FS_ID:/ /mnt/datasets
 
 cat /mnt/datasets/survey/blok-07.txt
-mkdir /mnt/datasets/gis && chmod 750 /mnt/datasets/gis
-echo "peta batas lahan blok-07" > /mnt/datasets/gis/blok-07.geojson
-ls -ln /mnt/datasets
-```
+mkdir /mnt/datasets/gis &amp;&amp; chmod 750 /mnt/datasets/gis
+echo &quot;peta batas lahan blok-07&quot; &gt; /mnt/datasets/gis/blok-07.geojson
+ls -ln /mnt/datasets</code></pre></div>
 
 Output yang diharapkan:
 
-```text
-ortofoto blok-07 resolusi 5cm
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><pre><code>ortofoto blok-07 resolusi 5cm
 drwxr-x--- 2 2002 3000 6144 ... gis
-drwxr-x--- 2 2001 3000 6144 ... survey
-```
+drwxr-x--- 2 2001 3000 6144 ... survey</code></pre></div>
 
 Data yang ditulis dari AZ 3a langsung terbaca di AZ 3b.
 
 ### 11. IAM group untuk akses manajemen level organisasi
+{: #langkah-11 }
 
 IAM group cocok untuk mengelola izin **API manajemen** EFS bagi banyak user manusia. Akses NFS tetap lewat role/user di file system policy.
 
@@ -448,8 +455,17 @@ User auditor tinggal ditambahkan dengan `aws iam add-user-to-group`. Tidak perlu
 Alur keputusan saat klien mount dan menulis:
 
 ![Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-alur-1.png)
+*Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.*
 
-_Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX._
+Ringkasan hasil uji:
+
+| Uji | Skenario | Lapis yang menolak | Hasil yang diharapkan |
+| --- | --- | --- | --- |
+| 1 | Server `gis` menulis ke direktori `survey` | Izin POSIX | <span class="lab-pill is-deny">✕ Ditolak</span> |
+| 2 | `gis` mount dengan access point `survey` | File system policy (IAM) | <span class="lab-pill is-deny">✕ Ditolak</span> |
+| 3 | Mount tanpa access point | File system policy (IAM) | <span class="lab-pill is-deny">✕ Ditolak</span> |
+| 4 | Mount NFS polos tanpa TLS | `aws:SecureTransport` | <span class="lab-pill is-deny">✕ Ditolak</span> |
+| Kontrol | `gis` membaca file milik `survey` | Grup POSIX 3000 | <span class="lab-pill is-ok">✓ Berhasil</span> |
 
 ### Uji 1: POSIX menolak tulis lintas tim (di server `gis`)
 
@@ -505,7 +521,7 @@ Output yang diharapkan: `[true, "generalPurpose", "elastic", 2]`.
 ## Troubleshooting
 
 | Gejala | Penyebab umum | Solusi |
-| --- | --- | --- |
+|---|---|---|
 | `mount` menggantung atau timeout | SG mount target tidak mengizinkan 2049 dari SG klien, atau mount target belum `available` | Cek `describe-mount-targets` dan aturan inbound `SG_EFS` |
 | `Failed to resolve "fs-xxx.efs.ap-southeast-3.amazonaws.com"` | `enableDnsSupport`/`enableDnsHostnames` VPC mati, atau AZ belum punya mount target | Aktifkan atribut DNS VPC dan buat mount target di AZ tersebut |
 | `access denied by server` | Role instance bukan principal di policy, access point salah, atau opsi `iam` lupa | Cek role yang terpasang (`aws sts get-caller-identity` dari instance), lalu cocokkan ARN di policy |
@@ -565,6 +581,13 @@ rm -f trust-ec2.json fs-policy.json auditor-policy.json userdata.sh
 ```
 
 Kalau ada user yang sudah ditambahkan ke group, keluarkan dulu dengan `aws iam remove-user-from-group` sebelum `delete-group`.
+
+<section class="lab-quiz" aria-label="Kuis">
+<div class="lab-quiz__head"><strong>Uji pemahaman</strong><span>3 soal</span><span class="lab-quiz__score">0/3</span></div>
+<div class="lab-q"><p>1. File dibuat oleh root di server <code>survey</code>, tapi owner-nya tercatat UID 2001. Apa penyebabnya?</p><button type="button">File system policy mengganti principal root dengan role instance</button><button type="button" data-right="1">Access point memaksakan <code>PosixUser</code> untuk semua request NFS lewat access point itu</button><button type="button">Mount helper EFS memetakan root ke <code>nobody</code> secara default</button><div class="lab-q__why">access point menimpa UID/GID setiap request dengan <code>PosixUser</code> yang ditetapkan (2001/3000), apa pun identitas user di klien. Policy IAM menentukan boleh mount atau tidak, bukan identitas file.</div></div>
+<div class="lab-q"><p>2. Server <code>gis</code> mencoba mount memakai access point milik <code>survey</code>. Di lapis mana permintaan itu ditolak?</p><button type="button">Security group mount target</button><button type="button">Izin POSIX direktori <code>/datasets</code></button><button type="button" data-right="1">File system policy, lewat kondisi <code>elasticfilesystem:AccessPointArn</code></button><div class="lab-q__why">role <code>gis</code> hanya diizinkan <code>ClientMount</code> bila access point-nya ARN milik <code>gis</code>. Jaringan sudah lolos (SG sama), jadi penolakan terjadi saat EFS mengevaluasi file system policy.</div></div>
+<div class="lab-q"><p>3. Tim audit dikelola dengan IAM group. Bisakah group itu dijadikan <code>Principal</code> di file system policy EFS?</p><button type="button" data-right="1">Tidak. IAM group bukan principal; pakai role atau user di resource policy</button><button type="button">Bisa, asal memakai ARN group lengkap</button><button type="button">Bisa, tapi hanya untuk aksi Describe</button><div class="lab-q__why">resource-based policy tidak menerima IAM group sebagai principal. Group dipakai untuk melampirkan identity-based policy (misalnya izin Describe untuk auditor), sedangkan akses NFS tetap lewat role atau user.</div></div>
+</section>
 
 ## Referensi
 
