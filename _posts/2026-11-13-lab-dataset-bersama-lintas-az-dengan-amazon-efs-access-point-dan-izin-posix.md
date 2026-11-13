@@ -1,0 +1,569 @@
+---
+layout: post
+title: "Lab: Dataset Bersama Lintas AZ dengan Amazon EFS, Access Point, dan Izin POSIX"
+date: 2026-11-13T09:00:00+0700
+description: "Bangun satu file system EFS Regional yang di-mount dua EC2 di dua AZ berbeda. Setiap tim punya identitas POSIX sendiri yang dipaksa oleh access point, dan…"
+categories:
+  - aws
+  - efs
+tags:
+  - aws
+  - efs
+image:
+  path: /assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1.png
+  alt: "Lab: Dataset Bersama Lintas AZ dengan Amazon EFS, Access Point, dan Izin POSIX"
+toc: true
+comments: true
+---
+> Bangun satu file system EFS Regional yang di-mount dua EC2 di dua AZ berbeda. Setiap tim punya identitas POSIX sendiri yang dipaksa oleh access point, dan IAM menentukan siapa boleh mount lewat access point mana.
+> Estimasi waktu: 60–75 menit · Level: Intermediate
+
+## Tujuan belajar
+
+- Memilih storage tepat untuk **shared file system lintas AZ** dengan izin per user/grup di level file/direktori, yaitu **Amazon EFS**, dan paham kenapa bukan EBS, S3, atau FSx for Windows.
+- Membuat **mount target per AZ** dan security group NFS (TCP 2049) yang least privilege.
+- Memakai **EFS access point** untuk memaksakan `PosixUser` (UID/GID) dan root directory.
+- Menulis **file system policy** (resource-based IAM policy) dengan `elasticfilesystem:ClientMount`, `ClientWrite`, kondisi `elasticfilesystem:AccessPointArn`, dan `aws:SecureTransport`.
+- Membuktikan dua lapis kontrol bekerja bersama:
+  - IAM menentukan siapa boleh mount.
+  - POSIX menentukan apa yang boleh dibaca/ditulis.
+- Memakai **IAM group** untuk akses manajemen level organisasi, dan paham batasannya: IAM group tidak bisa jadi `Principal` di resource policy.
+
+## Skenario
+
+**Rimba Geospatial** adalah startup pemetaan drone di Balikpapan. Dua tim mengolah data yang sama:
+
+| Tim | Tugas | UID | GID bersama |
+|---|---|---|---|
+| `survey` | Upload hasil olah ortofoto per blok lahan | 2001 | 3000 (`rimba-data`) |
+| `gis` | Baca ortofoto, hasilkan peta vektor | 2002 | 3000 (`rimba-data`) |
+
+Kebutuhan:
+
+1. Server `survey` di AZ `ap-southeast-3a`, server `gis` di AZ `ap-southeast-3b`. Keduanya melihat folder `/datasets` yang sama.
+2. Tiap tim hanya boleh **menulis** di direktorinya sendiri, tapi boleh **membaca** direktori tim lain (lewat grup 3000).
+3. Root di server pun tidak boleh mengakali kepemilikan file.
+4. Server `survey` tidak boleh memakai identitas `gis`, dan sebaliknya.
+5. Tim audit internal butuh akses read-only ke konfigurasi EFS lewat IAM group.
+
+## Arsitektur
+
+![Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-diagram-1.png)
+*Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point.*
+
+Alur data:
+
+1. EC2 `survey` (AZ 3a) dan EC2 `gis` (AZ 3b) menjalankan `mount -t efs -o tls,iam,accesspoint=...`.
+2. DNS file system resolve ke mount target di AZ yang sama. Security group mount target hanya terima TCP 2049 dari SG klien.
+3. EFS mengevaluasi file system policy: role instance harus diizinkan `ClientMount`/`ClientWrite` **dan** memakai access point yang cocok.
+4. Access point menimpa UID/GID semua request NFS jadi identitas tim, lalu izin POSIX di direktori menentukan read/write.
+5. Percobaan `survey` memakai access point `gis` ditolak di tahap IAM.
+
+Lapisan kontrol akses yang dilatih:
+
+![Empat lapis kontrol akses NFS ke EFS.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-visual-1.png)
+*Empat lapis kontrol akses NFS ke EFS.*
+
+## Prasyarat
+
+- Akun AWS dengan **default VPC** di `ap-southeast-3` yang punya subnet default di AZ `a` dan `b`. Kalau default VPC sudah dihapus, buat ulang dengan `aws ec2 create-default-vpc`.
+- AWS CLI v2 (2.15+), `jq` opsional.
+- Session Manager plugin untuk `aws ssm start-session`. Alternatif: Console **Systems Manager > Session Manager**.
+- Izin IAM minimum untuk principal yang menjalankan lab:
+  - `ec2:Describe*`, `ec2:CreateSecurityGroup`, `ec2:AuthorizeSecurityGroupIngress`, `ec2:DeleteSecurityGroup`, `ec2:RunInstances`, `ec2:TerminateInstances`, `ec2:CreateTags`
+  - `elasticfilesystem:CreateFileSystem`, `CreateMountTarget`, `CreateAccessPoint`, `PutFileSystemPolicy`, `Describe*`, `DeleteAccessPoint`, `DeleteMountTarget`, `DeleteFileSystem`, `TagResource`
+  - `iam:CreateRole`, `AttachRolePolicy`, `CreateInstanceProfile`, `AddRoleToInstanceProfile`, `PassRole` (terbatas ke role `rimba-lab-*`), `CreateGroup`, `PutGroupPolicy`, beserta pasangan delete/detach/remove-nya
+  - `ssm:StartSession`
+- Amazon EFS dan Elastic throughput tersedia di Jakarta (cek dokumentasi terbaru). Kalau Elastic belum tersedia, ganti `--throughput-mode elastic` jadi `bursting`.
+
+## Estimasi biaya
+
+| Resource | Perkiraan |
+|---|---|
+| 2× EC2 `t3.micro` ~1 jam | Bisa masuk Free Tier, tergantung jenis akun (cek dokumentasi terbaru) |
+| EFS Standard, beberapa KB data | Hampir nol. Ada biaya per GB-bulan dan biaya transfer data untuk Elastic throughput (cek harga terbaru Region Jakarta) |
+| Mount target, access point, IAM | Tanpa biaya |
+
+Total kurang dari USD 1 kalau cleanup langsung setelah lab (cek dokumentasi terbaru).
+
+## Langkah-langkah
+
+### 1. Set variabel
+
+Jalankan di CloudShell atau terminal lokal. Semua langkah berikut memakai variabel ini.
+
+```bash
+export AWS_REGION=ap-southeast-3
+export AWS_PAGER=""
+REGION=ap-southeast-3
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+PREFIX=rimba-lab
+AZ_A=${REGION}a
+AZ_B=${REGION}b
+
+VPC_ID=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true \
+  --query 'Vpcs[0].VpcId' --output text)
+SUBNET_A=$(aws ec2 describe-subnets \
+  --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=$AZ_A Name=default-for-az,Values=true \
+  --query 'Subnets[0].SubnetId' --output text)
+SUBNET_B=$(aws ec2 describe-subnets \
+  --filters Name=vpc-id,Values=$VPC_ID Name=availability-zone,Values=$AZ_B Name=default-for-az,Values=true \
+  --query 'Subnets[0].SubnetId' --output text)
+
+echo "ACCOUNT=$ACCOUNT_ID VPC=$VPC_ID A=$SUBNET_A B=$SUBNET_B"
+```
+
+Output yang diharapkan: tiga ID terisi, tidak ada nilai `None`.
+
+```text
+ACCOUNT=111122223333 VPC=vpc-0a1b2c3d4e5f60789 A=subnet-0aaa... B=subnet-0bbb...
+```
+
+### 2. Security group: klien dan mount target
+
+Console: **EC2 > Security Groups > Create**. SG klien tanpa inbound. SG EFS hanya mengizinkan NFS dari SG klien.
+
+```bash
+SG_CLIENT=$(aws ec2 create-security-group --group-name ${PREFIX}-client-sg \
+  --description "EFS clients - no inbound" --vpc-id $VPC_ID \
+  --query GroupId --output text)
+
+SG_EFS=$(aws ec2 create-security-group --group-name ${PREFIX}-efs-sg \
+  --description "EFS mount targets - NFS from client SG only" --vpc-id $VPC_ID \
+  --query GroupId --output text)
+
+aws ec2 authorize-security-group-ingress --group-id $SG_EFS \
+  --protocol tcp --port 2049 --source-group $SG_CLIENT
+
+echo "SG_CLIENT=$SG_CLIENT SG_EFS=$SG_EFS"
+```
+
+Akses ke instance memakai Session Manager, jadi port 22 tidak perlu dibuka.
+
+### 3. IAM role per tim (instance profile)
+
+Tiap tim dapat role sendiri. Role inilah yang nanti jadi `Principal` di file system policy.
+
+```bash
+cat > trust-ec2.json <<'EOF'
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": { "Service": "ec2.amazonaws.com" },
+    "Action": "sts:AssumeRole"
+  }]
+}
+EOF
+
+for TEAM in survey gis; do
+  aws iam create-role --role-name ${PREFIX}-${TEAM}-ec2 \
+    --assume-role-policy-document file://trust-ec2.json >/dev/null
+  aws iam attach-role-policy --role-name ${PREFIX}-${TEAM}-ec2 \
+    --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+  aws iam create-instance-profile --instance-profile-name ${PREFIX}-${TEAM}-ec2 >/dev/null
+  aws iam add-role-to-instance-profile --instance-profile-name ${PREFIX}-${TEAM}-ec2 \
+    --role-name ${PREFIX}-${TEAM}-ec2
+done
+
+ROLE_SURVEY_ARN=arn:aws:iam::${ACCOUNT_ID}:role/${PREFIX}-survey-ec2
+ROLE_GIS_ARN=arn:aws:iam::${ACCOUNT_ID}:role/${PREFIX}-gis-ec2
+```
+
+Role ini tidak diberi identity policy EFS. Izin mount datang dari file system policy di langkah 6.
+
+### 4. Buat file system EFS Regional (terenkripsi)
+
+Console: **EFS > Create file system > Customize**. Pilih File system type **Regional**, aktifkan **Encryption**.
+
+Encryption at rest hanya bisa diaktifkan saat pembuatan file system.
+
+```bash
+FS_ID=$(aws efs create-file-system \
+  --creation-token ${PREFIX}-fs \
+  --encrypted \
+  --performance-mode generalPurpose \
+  --throughput-mode elastic \
+  --tags Key=Name,Value=${PREFIX}-datasets \
+  --query FileSystemId --output text)
+echo "FS_ID=$FS_ID"
+
+until [ "$(aws efs describe-file-systems --file-system-id $FS_ID \
+  --query 'FileSystems[0].LifeCycleState' --output text)" = "available" ]; do
+  echo "menunggu file system..."; sleep 5
+done
+```
+
+Output yang diharapkan: `FS_ID=fs-0123456789abcdef0`, lalu loop berhenti.
+
+### 5. Mount target di setiap AZ
+
+Satu AZ hanya bisa punya satu mount target per file system. Instance memakai mount target di AZ-nya sendiri, supaya latensi rendah dan tidak ada biaya transfer data antar-AZ.
+
+```bash
+MT_A=$(aws efs create-mount-target --file-system-id $FS_ID \
+  --subnet-id $SUBNET_A --security-groups $SG_EFS \
+  --query MountTargetId --output text)
+MT_B=$(aws efs create-mount-target --file-system-id $FS_ID \
+  --subnet-id $SUBNET_B --security-groups $SG_EFS \
+  --query MountTargetId --output text)
+
+sleep 60
+aws efs describe-mount-targets --file-system-id $FS_ID \
+  --query 'MountTargets[].[AvailabilityZoneName,IpAddress,LifeCycleState]' --output table
+```
+
+Output yang diharapkan:
+
+```text
+---------------------------------------------------
+|              DescribeMountTargets               |
++-----------------+---------------+---------------+
+|  ap-southeast-3a|  172.31.5.21  |  available    |
+|  ap-southeast-3b|  172.31.22.87 |  available    |
++-----------------+---------------+---------------+
+```
+
+### 6. Access point per tim
+
+Kedua access point memakai root `/datasets` yang sama, tapi identitas POSIX-nya berbeda. Pengaturan `CreationInfo` membuat `/datasets` saat pertama kali dipakai dengan detail berikut:
+
+- Owner `0`, group `3000`.
+- Mode `1775`: grup boleh membuat subdirektori, dan sticky bit mencegah user menghapus milik user lain.
+
+```bash
+AP_SURVEY=$(aws efs create-access-point --file-system-id $FS_ID \
+  --posix-user Uid=2001,Gid=3000 \
+  --root-directory 'Path=/datasets,CreationInfo={OwnerUid=0,OwnerGid=3000,Permissions=1775}' \
+  --tags Key=Name,Value=${PREFIX}-ap-survey \
+  --query AccessPointId --output text)
+
+AP_GIS=$(aws efs create-access-point --file-system-id $FS_ID \
+  --posix-user Uid=2002,Gid=3000 \
+  --root-directory 'Path=/datasets,CreationInfo={OwnerUid=0,OwnerGid=3000,Permissions=1775}' \
+  --tags Key=Name,Value=${PREFIX}-ap-gis \
+  --query AccessPointId --output text)
+
+FS_ARN=arn:aws:elasticfilesystem:${REGION}:${ACCOUNT_ID}:file-system/${FS_ID}
+AP_SURVEY_ARN=arn:aws:elasticfilesystem:${REGION}:${ACCOUNT_ID}:access-point/${AP_SURVEY}
+AP_GIS_ARN=arn:aws:elasticfilesystem:${REGION}:${ACCOUNT_ID}:access-point/${AP_GIS}
+
+aws efs describe-access-points --file-system-id $FS_ID \
+  --query 'AccessPoints[].[Name,PosixUser.Uid,PosixUser.Gid,RootDirectory.Path,LifeCycleState]' \
+  --output table
+```
+
+Output yang diharapkan: dua baris, `rimba-lab-ap-survey | 2001 | 3000 | /datasets | available` dan `rimba-lab-ap-gis | 2002 | 3000 | /datasets | available`.
+
+### 7. File system policy: role terikat ke access point, wajib TLS
+
+Console: **EFS > file system > File system policy > Edit**.
+
+```bash
+cat > fs-policy.json <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyWithoutTLS",
+      "Effect": "Deny",
+      "Principal": { "AWS": "*" },
+      "Action": "*",
+      "Resource": "${FS_ARN}",
+      "Condition": { "Bool": { "aws:SecureTransport": "false" } }
+    },
+    {
+      "Sid": "SurveyOnlyViaSurveyAP",
+      "Effect": "Allow",
+      "Principal": { "AWS": "${ROLE_SURVEY_ARN}" },
+      "Action": ["elasticfilesystem:ClientMount", "elasticfilesystem:ClientWrite"],
+      "Resource": "${FS_ARN}",
+      "Condition": { "StringEquals": { "elasticfilesystem:AccessPointArn": "${AP_SURVEY_ARN}" } }
+    },
+    {
+      "Sid": "GisOnlyViaGisAP",
+      "Effect": "Allow",
+      "Principal": { "AWS": "${ROLE_GIS_ARN}" },
+      "Action": ["elasticfilesystem:ClientMount", "elasticfilesystem:ClientWrite"],
+      "Resource": "${FS_ARN}",
+      "Condition": { "StringEquals": { "elasticfilesystem:AccessPointArn": "${AP_GIS_ARN}" } }
+    }
+  ]
+}
+EOF
+
+aws efs put-file-system-policy --file-system-id $FS_ID --policy file://fs-policy.json
+```
+
+Catatan policy:
+
+- Tanpa file system policy, siapa pun yang punya akses jaringan ke mount target bisa mount dengan akses penuh. Policy ini mengubah default tersebut.
+- `elasticfilesystem:ClientRootAccess` sengaja **tidak** diberikan.
+- Principal harus role atau user. IAM group tidak valid sebagai `Principal`.
+
+### 8. Luncurkan EC2 di dua AZ
+
+User data menginstal `amazon-efs-utils` dan menyimpan ID resource ke `/etc/rimba-efs.env`.
+
+```bash
+cat > userdata.sh <<EOF
+#!/bin/bash
+dnf install -y amazon-efs-utils
+mkdir -p /mnt/datasets /mnt/test
+cat > /etc/rimba-efs.env <<ENV
+FS_ID=${FS_ID}
+AP_SURVEY=${AP_SURVEY}
+AP_GIS=${AP_GIS}
+REGION=${REGION}
+ENV
+EOF
+
+AMI="resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
+sleep 15   # propagasi instance profile
+
+INST_SURVEY=$(aws ec2 run-instances --image-id $AMI --instance-type t3.micro \
+  --subnet-id $SUBNET_A --security-group-ids $SG_CLIENT \
+  --iam-instance-profile Name=${PREFIX}-survey-ec2 \
+  --metadata-options HttpTokens=required \
+  --user-data file://userdata.sh \
+  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${PREFIX}-survey}]" \
+  --query 'Instances[0].InstanceId' --output text)
+
+INST_GIS=$(aws ec2 run-instances --image-id $AMI --instance-type t3.micro \
+  --subnet-id $SUBNET_B --security-group-ids $SG_CLIENT \
+  --iam-instance-profile Name=${PREFIX}-gis-ec2 \
+  --metadata-options HttpTokens=required \
+  --user-data file://userdata.sh \
+  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${PREFIX}-gis}]" \
+  --query 'Instances[0].InstanceId' --output text)
+
+aws ec2 wait instance-status-ok --instance-ids $INST_SURVEY $INST_GIS
+echo "SURVEY=$INST_SURVEY GIS=$INST_GIS"
+```
+
+### 9. Mount dan tulis data dari server `survey` (AZ 3a)
+
+```bash
+aws ssm start-session --target $INST_SURVEY
+```
+
+Jalankan di dalam sesi:
+
+```bash
+sudo -i
+source /etc/rimba-efs.env
+mount -t efs -o tls,iam,accesspoint=$AP_SURVEY $FS_ID:/ /mnt/datasets
+df -hT /mnt/datasets
+ls -ldn /mnt/datasets
+
+mkdir /mnt/datasets/survey
+chmod 750 /mnt/datasets/survey
+echo "ortofoto blok-07 resolusi 5cm" > /mnt/datasets/survey/blok-07.txt
+ls -ln /mnt/datasets/survey
+```
+
+Output yang diharapkan:
+
+```text
+Filesystem     Type  Size  Used Avail Use% Mounted on
+127.0.0.1:/    nfs4  8.0E     0  8.0E   0% /mnt/datasets
+drwxrwxr-t 2 0 3000 6144 ... /mnt/datasets
+-rw-r--r-- 1 2001 3000 30 ... blok-07.txt
+```
+
+Perhatikan dua hal:
+
+- File dibuat oleh `root`, tapi owner tercatat UID **2001**. Access point menimpa identitas klien.
+- Source `127.0.0.1:/` muncul karena mount helper membungkus NFS dengan tunnel TLS lokal.
+
+### 10. Mount dari server `gis` (AZ 3b)
+
+```bash
+aws ssm start-session --target $INST_GIS
+```
+
+```bash
+sudo -i
+source /etc/rimba-efs.env
+mount -t efs -o tls,iam,accesspoint=$AP_GIS $FS_ID:/ /mnt/datasets
+
+cat /mnt/datasets/survey/blok-07.txt
+mkdir /mnt/datasets/gis && chmod 750 /mnt/datasets/gis
+echo "peta batas lahan blok-07" > /mnt/datasets/gis/blok-07.geojson
+ls -ln /mnt/datasets
+```
+
+Output yang diharapkan:
+
+```text
+ortofoto blok-07 resolusi 5cm
+drwxr-x--- 2 2002 3000 6144 ... gis
+drwxr-x--- 2 2001 3000 6144 ... survey
+```
+
+Data yang ditulis dari AZ 3a langsung terbaca di AZ 3b.
+
+### 11. IAM group untuk akses manajemen level organisasi
+
+IAM group cocok untuk mengelola izin **API manajemen** EFS bagi banyak user manusia. Akses NFS tetap lewat role/user di file system policy.
+
+```bash
+aws iam create-group --group-name ${PREFIX}-storage-auditors
+
+cat > auditor-policy.json <<'EOF'
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Sid": "ReadOnlyEfsConfig",
+    "Effect": "Allow",
+    "Action": [
+      "elasticfilesystem:DescribeFileSystems",
+      "elasticfilesystem:DescribeMountTargets",
+      "elasticfilesystem:DescribeAccessPoints",
+      "elasticfilesystem:DescribeFileSystemPolicy",
+      "elasticfilesystem:ListTagsForResource"
+    ],
+    "Resource": "*"
+  }]
+}
+EOF
+
+aws iam put-group-policy --group-name ${PREFIX}-storage-auditors \
+  --policy-name efs-readonly --policy-document file://auditor-policy.json
+```
+
+User auditor tinggal ditambahkan dengan `aws iam add-user-to-group`. Tidak perlu mengedit policy per user.
+
+## Verifikasi
+
+Alur keputusan saat klien mount dan menulis:
+
+![Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.](/assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-alur-1.png)
+*Urutan pemeriksaan dari jaringan, IAM, access point, sampai POSIX.*
+
+### Uji 1: POSIX menolak tulis lintas tim (di server `gis`)
+
+```bash
+touch /mnt/datasets/survey/coba.txt
+rm /mnt/datasets/survey/blok-07.txt
+```
+
+```text
+touch: cannot touch '/mnt/datasets/survey/coba.txt': Permission denied
+rm: cannot remove '/mnt/datasets/survey/blok-07.txt': Permission denied
+```
+
+Root lokal tetap ditolak karena identitasnya dipaksa jadi UID 2002 oleh access point.
+
+### Uji 2: IAM menolak access point milik tim lain (di server `gis`)
+
+```bash
+umount /mnt/datasets
+mount -t efs -o tls,iam,accesspoint=$AP_SURVEY $FS_ID:/ /mnt/test
+```
+
+```text
+mount.nfs4: access denied by server while mounting 127.0.0.1:/
+```
+
+### Uji 3: mount tanpa access point ditolak
+
+```bash
+mount -t efs -o tls,iam $FS_ID:/ /mnt/test
+```
+
+Hasilnya `access denied by server`, karena tidak ada statement Allow tanpa kondisi `AccessPointArn`.
+
+### Uji 4: mount tanpa TLS ditolak
+
+```bash
+mount -t nfs4 -o nfsvers=4.1 $FS_ID.efs.$REGION.amazonaws.com:/ /mnt/test
+```
+
+Hasilnya `mount.nfs4: access denied by server ...`. Klien NFS polos tidak membawa identitas IAM dan tidak memakai TLS.
+
+### Uji 5: konfigurasi dari CLI
+
+```bash
+aws efs describe-file-system-policy --file-system-id $FS_ID --query Policy --output text | jq .
+aws efs describe-file-systems --file-system-id $FS_ID \
+  --query 'FileSystems[0].[Encrypted,PerformanceMode,ThroughputMode,NumberOfMountTargets]'
+```
+
+Output yang diharapkan: `[true, "generalPurpose", "elastic", 2]`.
+
+## Troubleshooting
+
+| Gejala | Penyebab umum | Solusi |
+|---|---|---|
+| `mount` menggantung atau timeout | SG mount target tidak mengizinkan 2049 dari SG klien, atau mount target belum `available` | Cek `describe-mount-targets` dan aturan inbound `SG_EFS` |
+| `Failed to resolve "fs-xxx.efs.ap-southeast-3.amazonaws.com"` | `enableDnsSupport`/`enableDnsHostnames` VPC mati, atau AZ belum punya mount target | Aktifkan atribut DNS VPC dan buat mount target di AZ tersebut |
+| `access denied by server` | Role instance bukan principal di policy, access point salah, atau opsi `iam` lupa | Cek role yang terpasang (`aws sts get-caller-identity` dari instance), lalu cocokkan ARN di policy |
+| `Permission denied` saat menulis | Izin POSIX direktori, karena UID/GID dipaksa access point | `ls -ln` untuk cek owner/mode. Ubah mode hanya oleh owner yang sah |
+| `mount: unknown filesystem type 'efs'` | `amazon-efs-utils` belum terinstal (user data gagal) | `dnf install -y amazon-efs-utils`, lalu cek `/var/log/cloud-init-output.log` |
+| `Invalid IAM Instance Profile name` saat `run-instances` | Instance profile belum terpropagasi | Tunggu 10–30 detik lalu ulangi |
+| Instance tidak muncul di Session Manager | Tidak ada jalur HTTPS keluar, atau role tanpa `AmazonSSMManagedInstanceCore` | Pastikan subnet default memberi public IP, atau pakai VPC endpoint SSM |
+| `put-file-system-policy` gagal dengan `InvalidPolicyException` | Principal belum ada atau JSON salah | Pastikan role sudah dibuat dan variabel di heredoc terisi |
+
+## Cleanup
+
+Urutan penting. Mount target harus dihapus sebelum file system, dan SG baru bisa dihapus setelah ENI mount target hilang.
+
+**Peringatan:** langkah ini menghapus semua data di file system secara permanen. Pastikan tidak ada data penting sebelum menjalankan `delete-file-system`.
+
+```bash
+# 1. Terminate instance
+aws ec2 terminate-instances --instance-ids $INST_SURVEY $INST_GIS
+aws ec2 wait instance-terminated --instance-ids $INST_SURVEY $INST_GIS
+
+# 2. Hapus access point
+aws efs delete-access-point --access-point-id $AP_SURVEY
+aws efs delete-access-point --access-point-id $AP_GIS
+
+# 3. Hapus mount target lalu tunggu sampai habis
+aws efs delete-mount-target --mount-target-id $MT_A
+aws efs delete-mount-target --mount-target-id $MT_B
+until [ "$(aws efs describe-mount-targets --file-system-id $FS_ID \
+  --query 'length(MountTargets)' --output text)" = "0" ]; do
+  echo "menunggu mount target terhapus..."; sleep 10
+done
+
+# 4. Hapus file system (permanen)
+aws efs delete-file-system --file-system-id $FS_ID
+
+# 5. Hapus security group (SG EFS dulu karena mereferensikan SG klien)
+sleep 30
+aws ec2 delete-security-group --group-id $SG_EFS
+aws ec2 delete-security-group --group-id $SG_CLIENT
+
+# 6. Hapus IAM role dan instance profile
+for TEAM in survey gis; do
+  aws iam remove-role-from-instance-profile --instance-profile-name ${PREFIX}-${TEAM}-ec2 \
+    --role-name ${PREFIX}-${TEAM}-ec2
+  aws iam delete-instance-profile --instance-profile-name ${PREFIX}-${TEAM}-ec2
+  aws iam detach-role-policy --role-name ${PREFIX}-${TEAM}-ec2 \
+    --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+  aws iam delete-role --role-name ${PREFIX}-${TEAM}-ec2
+done
+
+# 7. Hapus IAM group
+aws iam delete-group-policy --group-name ${PREFIX}-storage-auditors --policy-name efs-readonly
+aws iam delete-group --group-name ${PREFIX}-storage-auditors
+
+# 8. Bersihkan file lokal
+rm -f trust-ec2.json fs-policy.json auditor-policy.json userdata.sh
+```
+
+Kalau ada user yang sudah ditambahkan ke group, keluarkan dulu dengan `aws iam remove-user-from-group` sebelum `delete-group`.
+
+## Referensi
+
+- How Amazon EFS works: https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html
+- What is Amazon Elastic File System?: https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html
+- Working with EFS access points: https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html
+- Using IAM to control file system data access: https://docs.aws.amazon.com/efs/latest/ug/iam-access-control-nfs-efs.html
+- NFS-level users, groups, and permissions: https://docs.aws.amazon.com/efs/latest/ug/accessing-fs-nfs-permissions.html
+- Mounting with the EFS mount helper: https://docs.aws.amazon.com/efs/latest/ug/efs-mount-helper.html
+- Controlling network access (security groups): https://docs.aws.amazon.com/efs/latest/ug/network-access.html
+- AWS CLI `efs` reference: https://docs.aws.amazon.com/cli/latest/reference/efs/
+- PosixProfile (Uid, Gid, SecondaryGids) untuk akses EFS: https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/transfer/aws.sdk.kotlin.services.transfer.model/-create-user-request/posix-profile.html
