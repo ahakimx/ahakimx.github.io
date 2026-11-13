@@ -26,7 +26,7 @@ comments: true
 
 _Dua EC2 di dua AZ mount EFS yang sama lewat mount target di AZ masing-masing; file system policy mengikat role ke access point._
 
-> **Ringkasan 30 detik**
+> **Ringkasan**
 > - **Masalah:** dua tim di dua AZ butuh folder yang sama, tapi masing-masing hanya boleh menulis di direktorinya sendiri.
 > - **Solusi:** EFS Regional + access point per tim (UID/GID dipaksa) + file system policy yang mengikat role ke access point dan mewajibkan TLS.
 > - **Bukti:** root di server pun ditolak menulis ke direktori tim lain, dan mount dengan access point tim lain ditolak di tahap IAM.
@@ -234,12 +234,7 @@ aws efs describe-mount-targets --file-system-id $FS_ID \
 ```
 
 <details class="lab-fold"><summary>Output yang diharapkan: dua mount target <code>available</code><small>6 baris</small></summary><div class="lab-fold__body">
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><pre><code>---------------------------------------------------
-|              DescribeMountTargets               |
-+-----------------+---------------+---------------+
-|  ap-southeast-3a|  172.31.5.21  |  available    |
-|  ap-southeast-3b|  172.31.22.87 |  available    |
-+-----------------+---------------+---------------+</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><pre class="lab-term__pre"><code>---------------------------------------------------&#10;|              DescribeMountTargets               |&#10;+-----------------+---------------+---------------+&#10;|  ap-southeast-3a|  172.31.5.21  |  available    |&#10;|  ap-southeast-3b|  172.31.22.87 |  available    |&#10;+-----------------+---------------+---------------+</code></pre></div>
 </div></details>
 
 ### 6. Access point per tim
@@ -371,23 +366,11 @@ aws ssm start-session --target $INST_SURVEY
 
 Jalankan di dalam sesi:
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><pre><code>sudo -i
-source /etc/rimba-efs.env
-mount -t efs -o tls,iam,accesspoint=$AP_SURVEY $FS_ID:/ /mnt/datasets
-df -hT /mnt/datasets
-ls -ldn /mnt/datasets
-
-mkdir /mnt/datasets/survey
-chmod 750 /mnt/datasets/survey
-echo &quot;ortofoto blok-07 resolusi 5cm&quot; &gt; /mnt/datasets/survey/blok-07.txt
-ls -ln /mnt/datasets/survey</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><pre class="lab-term__pre"><code>sudo -i&#10;source /etc/rimba-efs.env&#10;mount -t efs -o tls,iam,accesspoint=$AP_SURVEY $FS_ID:/ /mnt/datasets&#10;df -hT /mnt/datasets&#10;ls -ldn /mnt/datasets&#10;&#10;mkdir /mnt/datasets/survey&#10;chmod 750 /mnt/datasets/survey&#10;echo &quot;ortofoto blok-07 resolusi 5cm&quot; &gt; /mnt/datasets/survey/blok-07.txt&#10;ls -ln /mnt/datasets/survey</code></pre></div>
 
 Output yang diharapkan:
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><pre><code>Filesystem     Type  Size  Used Avail Use% Mounted on
-127.0.0.1:/    nfs4  8.0E     0  8.0E   0% /mnt/datasets
-drwxrwxr-t 2 0 3000 6144 ... /mnt/datasets
--rw-r--r-- 1 2001 3000 30 ... blok-07.txt</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><pre class="lab-term__pre"><code>Filesystem     Type  Size  Used Avail Use% Mounted on&#10;127.0.0.1:/    nfs4  8.0E     0  8.0E   0% /mnt/datasets&#10;drwxrwxr-t 2 0 3000 6144 ... /mnt/datasets&#10;-rw-r--r-- 1 2001 3000 30 ... blok-07.txt</code></pre></div>
 
 Perhatikan dua hal:
 
@@ -401,20 +384,11 @@ Perhatikan dua hal:
 aws ssm start-session --target $INST_GIS
 ```
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><pre><code>sudo -i
-source /etc/rimba-efs.env
-mount -t efs -o tls,iam,accesspoint=$AP_GIS $FS_ID:/ /mnt/datasets
-
-cat /mnt/datasets/survey/blok-07.txt
-mkdir /mnt/datasets/gis &amp;&amp; chmod 750 /mnt/datasets/gis
-echo &quot;peta batas lahan blok-07&quot; &gt; /mnt/datasets/gis/blok-07.geojson
-ls -ln /mnt/datasets</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><pre class="lab-term__pre"><code>sudo -i&#10;source /etc/rimba-efs.env&#10;mount -t efs -o tls,iam,accesspoint=$AP_GIS $FS_ID:/ /mnt/datasets&#10;&#10;cat /mnt/datasets/survey/blok-07.txt&#10;mkdir /mnt/datasets/gis &amp;&amp; chmod 750 /mnt/datasets/gis&#10;echo &quot;peta batas lahan blok-07&quot; &gt; /mnt/datasets/gis/blok-07.geojson&#10;ls -ln /mnt/datasets</code></pre></div>
 
 Output yang diharapkan:
 
-<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><pre><code>ortofoto blok-07 resolusi 5cm
-drwxr-x--- 2 2002 3000 6144 ... gis
-drwxr-x--- 2 2001 3000 6144 ... survey</code></pre></div>
+<div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><pre class="lab-term__pre"><code>ortofoto blok-07 resolusi 5cm&#10;drwxr-x--- 2 2002 3000 6144 ... gis&#10;drwxr-x--- 2 2001 3000 6144 ... survey</code></pre></div>
 
 Data yang ditulis dari AZ 3a langsung terbaca di AZ 3b.
 
@@ -591,12 +565,12 @@ Kalau ada user yang sudah ditambahkan ke group, keluarkan dulu dengan `aws iam r
 
 ## Referensi
 
-- How Amazon EFS works: https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html
-- What is Amazon Elastic File System?: https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html
-- Working with EFS access points: https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html
-- Using IAM to control file system data access: https://docs.aws.amazon.com/efs/latest/ug/iam-access-control-nfs-efs.html
-- NFS-level users, groups, and permissions: https://docs.aws.amazon.com/efs/latest/ug/accessing-fs-nfs-permissions.html
-- Mounting with the EFS mount helper: https://docs.aws.amazon.com/efs/latest/ug/efs-mount-helper.html
-- Controlling network access (security groups): https://docs.aws.amazon.com/efs/latest/ug/network-access.html
-- AWS CLI `efs` reference: https://docs.aws.amazon.com/cli/latest/reference/efs/
-- PosixProfile (Uid, Gid, SecondaryGids) untuk akses EFS: https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/transfer/aws.sdk.kotlin.services.transfer.model/-create-user-request/posix-profile.html
+- How Amazon EFS works: <https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html>
+- What is Amazon Elastic File System?: <https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html>
+- Working with EFS access points: <https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html>
+- Using IAM to control file system data access: <https://docs.aws.amazon.com/efs/latest/ug/iam-access-control-nfs-efs.html>
+- NFS-level users, groups, and permissions: <https://docs.aws.amazon.com/efs/latest/ug/accessing-fs-nfs-permissions.html>
+- Mounting with the EFS mount helper: <https://docs.aws.amazon.com/efs/latest/ug/efs-mount-helper.html>
+- Controlling network access (security groups): <https://docs.aws.amazon.com/efs/latest/ug/network-access.html>
+- AWS CLI `efs` reference: <https://docs.aws.amazon.com/cli/latest/reference/efs/>
+- PosixProfile (Uid, Gid, SecondaryGids) untuk akses EFS: <https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/transfer/aws.sdk.kotlin.services.transfer.model/-create-user-request/posix-profile.html>

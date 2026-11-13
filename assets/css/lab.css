@@ -220,6 +220,7 @@
 
 /* ---------- terminal ---------- */
 .lab-term {
+  color: var(--lab-term-ink);
   border-radius: 12px;
   overflow: hidden;
   background: var(--lab-term-bg);
@@ -263,6 +264,10 @@
   font: 400 0.84rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   overflow-x: auto;
   border: 0;
+}
+.content .lab-term pre,
+.content .lab-term code {
+  white-space: pre; /* baris baru ditulis &#10; supaya tidak dirapatkan Jekyll */
 }
 .content .lab-term pre code {
   background: none;
