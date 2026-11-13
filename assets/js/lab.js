@@ -1,5 +1,7 @@
-// Kuis interaktif di artikel lab: klik jawaban, tampilkan benar/salah dan pembahasan.
+// Interaksi komponen artikel lab (markup dibuat scripts/publish-post.mjs di vault quartz-notes):
+// kuis, tombol salin di terminal, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
 document.addEventListener('DOMContentLoaded', () => {
+  /* ---------- kuis: klik jawaban, tampilkan benar/salah dan pembahasan ---------- */
   document.querySelectorAll('.lab-quiz').forEach((quiz) => {
     const qs = quiz.querySelectorAll('.lab-q');
     const score = quiz.querySelector('.lab-quiz__score');
@@ -22,4 +24,114 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  /* ---------- terminal: tombol salin (prompt "$ " / "# " di awal baris tidak ikut tersalin) ---------- */
+  const termText = (body) =>
+    [...body.querySelectorAll('.ln')]
+      .map((ln) => {
+        const c = ln.cloneNode(true);
+        const prompt = c.querySelector('.p');
+        if (prompt) prompt.remove();
+        return c.textContent.replace(/ /g, ' ').replace(prompt ? /^ / : /^$/, '');
+      })
+      .join('\n');
+  const copyText = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Clipboard API butuh HTTPS/izin: pakai cara lama sebagai cadangan.
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch { ok = false; }
+      ta.remove();
+      return ok;
+    }
+  };
+  document.querySelectorAll('.lab-term').forEach((term) => {
+    const bar = term.querySelector('.lab-term__bar');
+    const body = term.querySelector('.lab-term__body');
+    if (!bar || !body || bar.querySelector('.lab-term__copy')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'lab-term__copy';
+    btn.textContent = 'Salin';
+    btn.setAttribute('aria-label', 'Salin isi terminal');
+    let timer;
+    btn.addEventListener('click', async () => {
+      const ok = await copyText(termText(body));
+      btn.textContent = ok ? 'Tersalin ✓' : 'Gagal';
+      btn.classList.toggle('is-done', ok);
+      clearTimeout(timer);
+      timer = setTimeout(() => { btn.textContent = 'Salin'; btn.classList.remove('is-done'); }, 1600);
+    });
+    bar.appendChild(btn);
+  });
+
+  /* ---------- penanda langkah: "Langkah 4/11 · judul" + ‹ › selama bagian langkah terlihat ---------- */
+  const map = document.querySelector('.lab-steps');
+  const steps = map
+    ? [...map.querySelectorAll('a[href^="#langkah-"]')]
+        .map((a) => ({ el: document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))), title: a.textContent.trim() }))
+        .filter((s) => s.el)
+    : [];
+  if (steps.length >= 3) {
+    const bar = document.createElement('nav');
+    bar.className = 'lab-progress';
+    bar.setAttribute('aria-label', 'Posisi langkah');
+    bar.hidden = true;
+    bar.innerHTML =
+      '<button type="button" class="lab-progress__nav" data-go="-1" aria-label="Langkah sebelumnya">‹</button>' +
+      '<button type="button" class="lab-progress__label" title="Lihat peta langkah"><b></b><span></span></button>' +
+      '<button type="button" class="lab-progress__nav" data-go="1" aria-label="Langkah berikutnya">›</button>' +
+      '<i class="lab-progress__fill" aria-hidden="true"></i>';
+    document.body.appendChild(bar);
+    const num = bar.querySelector('b');
+    const name = bar.querySelector('span');
+    const fill = bar.querySelector('.lab-progress__fill');
+    const [prev, , next] = bar.querySelectorAll('button');
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const go = (el) => el.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    // Akhir bagian langkah = heading setingkat <h2> berikutnya setelah langkah terakhir (atau akhir artikel).
+    const endOf = () => {
+      let n = steps[steps.length - 1].el.nextElementSibling;
+      while (n && !/^H[12]$/.test(n.tagName)) n = n.nextElementSibling;
+      return n ? n.getBoundingClientRect().top : steps[steps.length - 1].el.parentElement.getBoundingClientRect().bottom;
+    };
+    let cur = -1;
+    const update = () => {
+      const line = window.innerHeight * 0.35;
+      let i = -1;
+      steps.forEach((s, k) => { if (s.el.getBoundingClientRect().top <= line) i = k; });
+      const show = i >= 0 && endOf() > line;
+      bar.hidden = !show;
+      if (!show || i === cur) return;
+      cur = i;
+      num.textContent = `Langkah ${i + 1}/${steps.length}`;
+      name.textContent = steps[i].title;
+      fill.style.width = `${((i + 1) / steps.length) * 100}%`;
+      prev.disabled = i === 0;
+      next.disabled = i === steps.length - 1;
+    };
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      if (b.dataset.go) { const t = steps[cur + Number(b.dataset.go)]; if (t) go(t.el); }
+      else go(map);
+    });
+    let tick = false;
+    const onScroll = () => {
+      if (tick) return;
+      tick = true;
+      requestAnimationFrame(() => { tick = false; update(); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
 });

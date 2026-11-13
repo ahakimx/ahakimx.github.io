@@ -256,6 +256,31 @@
   font-style: normal;
   color: #64748b;
 }
+.lab-term__copy {
+  margin-left: 0.6rem;
+  padding: 0.28rem 0.6rem;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 7px;
+  background: rgb(255 255 255 / 6%);
+  color: #cbd5e1;
+  font: 600 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  cursor: pointer;
+}
+.lab-term__bar span + .lab-term__copy {
+  margin-left: auto; /* terminal tanpa label bahasa */
+}
+.lab-term__copy:hover {
+  background: rgb(255 255 255 / 14%);
+  color: #fff;
+}
+.lab-term__copy:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: 2px;
+}
+.lab-term__copy.is-done {
+  border-color: #28c840;
+  color: #86efac;
+}
 /* Tanpa <pre>/<code>: Jekyll (kramdown + compress Chirpy) merusaknya. Isi terminal = div berisi satu span per baris. */
 .content .lab-term .lab-term__body,
 .lab-term .lab-term__body {
@@ -422,4 +447,160 @@ details.lab-fold > .lab-fold__body {
 }
 @media (prefers-reduced-motion: reduce) {
   .content .lab-steps a { transition: none; }
+}
+
+/* ---------- penanda langkah yang menempel (dibuat lab.js) ---------- */
+.lab-progress {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  max-width: min(92vw, 30rem);
+  padding: 0.3rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 999px;
+  background: var(--card-bg);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 18%);
+  overflow: hidden;
+}
+.lab-progress[hidden] {
+  display: none;
+}
+.lab-progress button {
+  border: 0;
+  background: none;
+  color: var(--heading-color);
+  cursor: pointer;
+  font: inherit;
+}
+.lab-progress__nav {
+  flex: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  font-size: 1.2rem !important;
+  line-height: 1;
+}
+.lab-progress__nav:hover:not(:disabled) {
+  background: var(--main-border-color);
+}
+.lab-progress__nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.lab-progress__label {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem !important;
+  text-align: left;
+}
+.lab-progress__label b {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+.lab-progress__label span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted-color);
+}
+.lab-progress button:focus-visible {
+  outline: 2px solid var(--lab-accent);
+  outline-offset: -2px;
+}
+.lab-progress__fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: var(--lab-accent);
+  transition: width 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-progress__fill {
+    transition: none;
+  }
+}
+@media print {
+  .lab-progress,
+  .lab-term__copy {
+    display: none !important;
+  }
+}
+
+/* ---------- lab berikutnya (akhir post) ---------- */
+.lab-next {
+  margin: 2.5rem 0 1rem;
+}
+.lab-next__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted-color);
+  margin-bottom: 0.7rem;
+}
+.lab-next__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.9rem;
+}
+.content a.lab-next__card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--main-border-color);
+  border-radius: var(--lab-radius);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--main-border-color);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.content a.lab-next__card:hover {
+  transform: translateY(-3px);
+  border-color: var(--lab-accent);
+}
+.lab-next__img {
+  display: block;
+  aspect-ratio: 1200 / 630;
+  background: var(--lab-navy) center / cover no-repeat;
+}
+.lab-next__body {
+  display: block;
+  padding: 0.8rem 1rem 1rem;
+}
+.lab-next__title {
+  display: block;
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1.35;
+}
+.lab-next__meta {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted-color);
+}
+.lab-next__go {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--lab-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .content a.lab-next__card {
+    transition: none;
+  }
 }

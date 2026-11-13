@@ -13,6 +13,9 @@ image:
   path: /assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/cover.png
 toc: true
 comments: true
+lab:
+  level: "Intermediate"
+  durasi: "60–75 menit"
 ---
 <section class="lab-card" aria-label="Ringkasan lab">
 <div class="lab-card__kicker">Hasil lab</div>
