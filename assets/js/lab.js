@@ -44,11 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const b = document.createElement('button');
       b.type = 'button';
       b.dataset.view = v;
-      b.innerHTML = `<i class="fas ${icon} fa-fw" aria-hidden="true"></i><span>${label}</span>`;
+      b.innerHTML = `<i class="fas ${icon} fa-fw" aria-hidden="true"></i>${label}`;
       bar.appendChild(b);
       return b;
     };
-    const btns = [mk('list', 'List', 'fa-list'), mk('grid', 'Grid', 'fa-border-all')];
+    // Di layar lebar pilihan kedua = grid kartu; di HP = daftar ringkas (gambar kecil + judul), supaya lebih banyak post terlihat per layar.
+    const btns = [mk('list', '<span class="hv-wide">List</span><span class="hv-narrow">Cards</span>', 'fa-list'), mk('grid', '<span class="hv-wide">Grid</span><span class="hv-narrow">Compact</span>', 'fa-border-all')];
     const apply = (v) => {
       postList.classList.toggle('is-grid', v === 'grid');
       btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));

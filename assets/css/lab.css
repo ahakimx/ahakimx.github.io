@@ -1065,38 +1065,102 @@ details.lab-fold > .lab-fold__body {
 
 /* ---------- halaman depan: tombol Daftar / Grid dan tampilan grid (hanya layar lebar) ---------- */
 .home-view {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin: 0 0 0.9rem;
+}
+.home-view button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.2rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-muted-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.home-view button[aria-pressed='true'] {
+  border-color: var(--lab-accent, #f59e0b);
+  color: var(--heading-color);
+}
+.home-view button:focus-visible {
+  outline: 2px solid var(--lab-accent, #f59e0b);
+  outline-offset: 2px;
+}
+.home-view + #post-list {
+  margin-top: 0;
+}
+.home-view .hv-wide {
   display: none;
 }
+
+/* HP: "Compact" = baris ringkas (gambar kecil di kiri, judul, tanggal), tanpa deskripsi. Sekitar 6–7 post per layar. */
+@media (max-width: 767.98px) {
+  #post-list.is-grid .card-wrapper {
+    margin-bottom: 0.6rem !important;
+  }
+  #post-list.is-grid .post-preview {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+  #post-list.is-grid .post-preview > [class*='col-md-']:has(.preview-img) {
+    flex: 0 0 32%;
+    max-width: 32%;
+  }
+  #post-list.is-grid .preview-img {
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 0.5rem 0 0 0.5rem;
+  }
+  #post-list.is-grid .preview-img img {
+    width: 100%;
+    height: 100%;
+    min-height: 4.6rem;
+    object-fit: cover;
+    object-position: left center;
+    border-radius: 0.5rem 0 0 0.5rem;
+  }
+  #post-list.is-grid .post-preview > [class*='col-md-']:has(.card-body) {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+  }
+  #post-list.is-grid .card-body {
+    padding: 0.6rem 0.8rem;
+  }
+  #post-list.is-grid .card-title {
+    margin: 0 0 0.3rem !important;
+    font-size: 0.95rem !important; /* tema memaksa 1.25rem */
+    line-height: 1.32 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #post-list.is-grid .card-text {
+    display: none;
+  }
+  #post-list.is-grid .post-meta {
+    font-size: 0.76rem;
+  }
+  #post-list.is-grid .post-meta .fa-folder-open,
+  #post-list.is-grid .post-meta .categories {
+    display: none;
+  }
+}
 @media (min-width: 768px) {
-  .home-view {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.35rem;
-    margin: 0 0 0.9rem;
+  .home-view .hv-wide {
+    display: inline;
   }
-  .home-view button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.7rem;
-    border: 1px solid var(--main-border-color);
-    border-radius: 8px;
-    background: var(--card-bg);
-    color: var(--text-muted-color);
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .home-view button[aria-pressed='true'] {
-    border-color: var(--lab-accent, #f59e0b);
-    color: var(--heading-color);
-  }
-  .home-view button:focus-visible {
-    outline: 2px solid var(--lab-accent, #f59e0b);
-    outline-offset: 2px;
-  }
-  .home-view + #post-list {
-    margin-top: 0;
+  .home-view .hv-narrow {
+    display: none;
   }
   #post-list.is-grid {
     display: grid;
@@ -1136,8 +1200,8 @@ details.lab-fold > .lab-fold__body {
     border-radius: 0.5rem 0.5rem 0 0;
   }
   #post-list.is-grid .card-title {
-    font-size: 1.1rem;
-    line-height: 1.35;
+    font-size: 1.1rem !important;
+    line-height: 1.35 !important;
   }
   #post-list.is-grid .card-text p {
     display: -webkit-box;
