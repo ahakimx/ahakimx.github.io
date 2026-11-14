@@ -1550,3 +1550,22 @@ details.lab-fold > .lab-fold__body {
     flex: 1 1 auto;
   }
 }
+
+/* HP: kotak catatan (Summary, Info, Tip, Warning) selebar teks dan bersudut seperti komponen lain.
+   Tema melebarkannya sampai tepi layar di layar kecil (margin negatif, tanpa sudut). */
+@media (max-width: 576px) {
+  main .content > blockquote[class^='prompt-'] {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0.6rem;
+    padding: 0.85rem 0.95rem 0.85rem 2.5rem;
+  }
+  main .content > blockquote[class^='prompt-']::before {
+    width: 2.5rem;
+    left: 0;
+  }
+  main .content > blockquote[class^='prompt-'] ul,
+  main .content > blockquote[class^='prompt-'] ol {
+    padding-left: 1.1rem;
+  }
+}
