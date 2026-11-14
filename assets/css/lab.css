@@ -744,3 +744,10 @@ details.lab-fold > .lab-fold__body {
 .content .lab-lang a::before {
   content: "🌐 ";
 }
+
+/* ---------- cover bermerek di daftar post ----------
+ * Kotak gambar di halaman depan lebih sempit dari cover 1200×630, jadi gambar dipotong di kiri-kanan dan judul di
+ * cover ikut terpotong. Cover bermerek dirapatkan ke kiri: yang terpotong hanya hiasan di sisi kanan. */
+#post-list .preview-img img[src$='/cover.png'] {
+  object-position: left center;
+}
