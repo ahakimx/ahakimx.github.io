@@ -34,10 +34,12 @@ This blog is where I document my projects, share technical deep dives, and write
 
 ## Certifications
 
-<!-- Add your certifications here, for example: -->
-
-- AWS Certified Solutions Architect – Associate
-- Certified Kubernetes Administrator (CKA)
+<ul class="cert-list">
+<li><b>AWS Certified CloudOps Engineer – Associate</b><span>2026 – 2029</span></li>
+<li><b>AWS Certified Solutions Architect – Associate</b><span>2025 – 2028</span></li>
+<li><b>Certified OpenStack Administrator</b></li>
+<li><b>Certified Kubernetes Administrator (CKA)</b></li>
+</ul>
 
 ## Get in Touch
 

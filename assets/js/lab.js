@@ -1,5 +1,5 @@
 // Interaksi komponen artikel lab (markup dibuat scripts/publish-post.mjs di vault quartz-notes):
-// perkenalan + penanda bahasa di halaman depan, kuis, tombol salin di terminal, lipatan blok kode panjang, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
+// perkenalan + penanda bahasa + pilihan Daftar/Grid di halaman depan, tombol bagikan di atas post, halaman Explore, kuis, tombol salin di terminal, lipatan blok kode panjang, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
 document.addEventListener('DOMContentLoaded', () => {
   // Bahasa label mengikuti kartu lab (data-lang), lalu <html lang>; bawaan Indonesia.
   const card = document.querySelector('.lab-card[data-lang]');
@@ -32,6 +32,180 @@ document.addEventListener('DOMContentLoaded', () => {
         meta.append(badge);
       });
     }
+  }
+
+  /* ---------- halaman depan: pilihan tampilan Daftar / Grid (diingat per browser, hanya di layar lebar) ---------- */
+  if (postList && !document.querySelector('.home-view')) {
+    const bar = document.createElement('div');
+    bar.className = 'home-view';
+    bar.setAttribute('role', 'group');
+    bar.setAttribute('aria-label', 'Post layout');
+    const mk = (v, label, icon) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.view = v;
+      b.innerHTML = `<i class="fas ${icon} fa-fw" aria-hidden="true"></i><span>${label}</span>`;
+      bar.appendChild(b);
+      return b;
+    };
+    const btns = [mk('list', 'List', 'fa-list'), mk('grid', 'Grid', 'fa-border-all')];
+    const apply = (v) => {
+      postList.classList.toggle('is-grid', v === 'grid');
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+    };
+    let saved = 'list';
+    try { saved = localStorage.getItem('home-view') === 'grid' ? 'grid' : 'list'; } catch { saved = 'list'; }
+    apply(saved);
+    bar.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      apply(b.dataset.view);
+      try { localStorage.setItem('home-view', b.dataset.view); } catch { /* penyimpanan diblokir: pilihan berlaku untuk kunjungan ini saja */ }
+    });
+    postList.before(bar);
+  }
+
+  /* ---------- post: tombol bagikan juga di bagian atas (salinan dari yang di akhir post) ---------- */
+  const shareBottom = document.querySelector('.post-tail-wrapper .share-wrapper, .share-wrapper');
+  const postMeta = document.querySelector('article header .post-meta');
+  if (shareBottom && postMeta && !document.querySelector('.share-top')) {
+    const top = document.createElement('div');
+    top.className = 'share-top';
+    const label = document.createElement('span');
+    label.className = 'share-top__label';
+    label.textContent = (shareBottom.querySelector('.share-label')?.textContent || 'Share').trim();
+    top.appendChild(label);
+    if (navigator.share) {
+      const nb = document.createElement('button');
+      nb.type = 'button';
+      nb.setAttribute('aria-label', 'Share via…');
+      nb.title = 'Share via…';
+      nb.innerHTML = '<i class="fa-fw fas fa-share-nodes" aria-hidden="true"></i>';
+      nb.addEventListener('click', () => { navigator.share({ title: document.title, url: location.href }).catch(() => {}); });
+      top.appendChild(nb);
+    }
+    shareBottom.querySelectorAll('.share-icons a[href]').forEach((a) => {
+      const c = document.createElement('a');
+      c.href = a.href;
+      c.target = '_blank';
+      c.rel = 'noopener';
+      const name = a.getAttribute('aria-label') || a.getAttribute('data-bs-original-title') || a.title || 'Share';
+      c.setAttribute('aria-label', name);
+      c.title = name;
+      c.innerHTML = a.innerHTML;
+      top.appendChild(c);
+    });
+    const cp = document.createElement('button');
+    cp.type = 'button';
+    cp.setAttribute('aria-label', 'Copy link');
+    cp.title = 'Copy link';
+    cp.innerHTML = '<i class="fa-fw fas fa-link" aria-hidden="true"></i>';
+    cp.addEventListener('click', async () => {
+      let ok = true;
+      try { await navigator.clipboard.writeText(location.href); } catch { ok = false; }
+      cp.classList.toggle('is-done', ok);
+      cp.title = ok ? 'Link copied' : 'Copy failed';
+      setTimeout(() => { cp.classList.remove('is-done'); cp.title = 'Copy link'; }, 1600);
+    });
+    top.appendChild(cp);
+    postMeta.after(top);
+  }
+
+  /* ---------- halaman Explore: saring semua post menurut topik, tag, bahasa, tahun, dan judul ---------- */
+  const exList = document.getElementById('explore-list');
+  const exUi = document.getElementById('explore-ui');
+  if (exList && exUi) {
+    const items = [...exList.querySelectorAll('li[data-year]')].map((li) => ({
+      li, year: li.dataset.year, lang: (li.dataset.lang || 'en').toLowerCase().startsWith('id') ? 'id' : 'en',
+      cats: (li.dataset.cats || '').split('|').map((x) => x.trim()).filter(Boolean),
+      tags: (li.dataset.tags || '').split('|').map((x) => x.trim()).filter(Boolean),
+      title: (li.querySelector('a')?.textContent || '').toLowerCase()
+    }));
+    const count = (key) => {
+      const m = new Map();
+      items.forEach((it) => it[key].forEach((v) => m.set(v, (m.get(v) || 0) + 1)));
+      return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    };
+    const state = { q: '', cat: '', tag: '', lang: '', year: '' };
+    const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+    const chipRow = (title, key, entries, limit) => {
+      const row = el('div', 'explore__row');
+      row.appendChild(el('span', 'explore__label', title));
+      const box = el('div', 'explore__chips');
+      entries.forEach(([name, n, label], i) => {
+        const b = el('button', 'explore__chip');
+        b.type = 'button';
+        b.dataset.key = key;
+        b.dataset.value = name;
+        b.setAttribute('aria-pressed', 'false');
+        b.appendChild(document.createTextNode(label || name));
+        if (n !== undefined) b.appendChild(el('small', '', String(n)));
+        if (limit && i >= limit) b.classList.add('is-extra');
+        box.appendChild(b);
+      });
+      if (limit && entries.length > limit) {
+        const more = el('button', 'explore__more', `+${entries.length - limit} more`);
+        more.type = 'button';
+        more.addEventListener('click', () => { const open = box.classList.toggle('is-open'); more.textContent = open ? 'Show fewer' : `+${entries.length - limit} more`; });
+        box.appendChild(more);
+      }
+      row.appendChild(box);
+      return row;
+    };
+    const search = el('input', 'explore__search');
+    search.type = 'search';
+    search.placeholder = 'Search titles…';
+    search.setAttribute('aria-label', 'Search post titles');
+    const years = [...new Set(items.map((it) => it.year))].sort().reverse();
+    const yearSel = el('select', 'explore__year');
+    yearSel.setAttribute('aria-label', 'Year');
+    yearSel.appendChild(new Option('All years', ''));
+    years.forEach((y) => yearSel.appendChild(new Option(`${y} (${items.filter((it) => it.year === y).length})`, y)));
+    const top = el('div', 'explore__top');
+    top.append(search, yearSel);
+    const status = el('p', 'explore__status');
+    status.setAttribute('aria-live', 'polite');
+    const reset = el('button', 'explore__reset', 'Clear filters');
+    reset.type = 'button';
+    const nId = items.filter((it) => it.lang === 'id').length;
+    exUi.append(top,
+      chipRow('Topic', 'cat', count('cats').filter(([, n]) => n >= 2)),
+      chipRow('Language', 'lang', [['en', items.length - nId, 'English'], ['id', nId, 'Bahasa Indonesia']]),
+      chipRow('Tag', 'tag', count('tags'), 14),
+      status);
+    const render = () => {
+      const q = state.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      let shown = 0;
+      let lastYear = '';
+      exList.querySelectorAll('.explore__yearhead').forEach((h) => h.remove());
+      items.forEach((it) => {
+        const ok = (!state.cat || it.cats.includes(state.cat)) && (!state.tag || it.tags.includes(state.tag)) && (!state.lang || it.lang === state.lang)
+          && (!state.year || it.year === state.year) && q.every((w) => it.title.includes(w));
+        it.li.hidden = !ok;
+        if (!ok) return;
+        shown += 1;
+        if (it.year !== lastYear) { const h = el('li', 'explore__yearhead', it.year); h.setAttribute('role', 'presentation'); it.li.before(h); lastYear = it.year; }
+      });
+      const active = Boolean(state.q || state.cat || state.tag || state.lang || state.year);
+      status.textContent = `${shown} of ${items.length} posts`;
+      if (active) status.append(' · ', reset);
+      exUi.querySelectorAll('.explore__chip').forEach((b) => b.setAttribute('aria-pressed', String(state[b.dataset.key] === b.dataset.value)));
+    };
+    exUi.addEventListener('click', (e) => {
+      const b = e.target.closest('.explore__chip');
+      if (!b) return;
+      state[b.dataset.key] = state[b.dataset.key] === b.dataset.value ? '' : b.dataset.value;
+      render();
+    });
+    search.addEventListener('input', () => { state.q = search.value; render(); });
+    yearSel.addEventListener('change', () => { state.year = yearSel.value; render(); });
+    reset.addEventListener('click', () => { Object.assign(state, { q: '', cat: '', tag: '', lang: '', year: '' }); search.value = ''; yearSel.value = ''; render(); });
+    // Tautan dari luar boleh langsung menyaring: /explore/?tag=aws-s3 atau ?topic=sre&lang=id
+    const qs = new URLSearchParams(location.search);
+    state.tag = qs.get('tag') || '';
+    state.cat = qs.get('topic') || '';
+    state.lang = /^(en|id)$/.test(qs.get('lang') || '') ? qs.get('lang') : '';
+    render();
   }
 
   /* ---------- kuis: klik jawaban, tampilkan benar/salah dan pembahasan ---------- */
