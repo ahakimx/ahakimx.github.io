@@ -6,12 +6,14 @@ description: Guide to building a Python based SRE Agent and ChatOps commands
 categories:
   - ai agent
   - sre
-tags: [sre, ai-agent]
+tags:
+  - sre
+  - ai-agent
 image:
   path: /uploads/diagram.drawio.png
   alt: ''
   lqip: ''
-pin: true
+pin: false
 toc: true
 comments: true
 math: false
