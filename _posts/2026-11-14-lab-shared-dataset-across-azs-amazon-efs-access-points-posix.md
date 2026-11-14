@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 'Lab: A Shared Dataset Across AZs with Amazon EFS, Access Points, and POSIX Permissions'
-date: 2026-11-14T08:15:00
-description: Build one Regional EFS file system mounted by two EC2 instances in two AZs. Each team gets its own POSIX identity enforced by an access point, and…
+title: "Lab: A Shared Dataset Across AZs with Amazon EFS, Access Points, and POSIX Permissions"
+date: 2026-11-14T08:15:00+0700
+description: "Build one Regional EFS file system mounted by two EC2 instances in two AZs. Each team gets its own POSIX identity enforced by an access point, and…"
 categories:
   - aws
   - efs
@@ -12,23 +12,15 @@ tags:
   - english
 image:
   path: /assets/img/posts/lab-shared-dataset-across-azs-amazon-efs-access-points-posix/cover.png
-  alt: ''
-  lqip: ''
-pin: false
 toc: true
 comments: true
-math: false
-mermaid: false
-media_subpath: ''
-render_with_liquid: true
-lab:
-  durasi: 60–75 minutes
-  lang: en
-  level: Intermediate
-  pair: efs-access-point-posix
 lang: en
+lab:
+  level: "Intermediate"
+  durasi: "60–75 minutes"
+  lang: "en"
+  pair: "efs-access-point-posix"
 ---
-
 <section class="lab-card" data-lang="en" aria-label="Lab summary">
 <div class="lab-card__kicker">What you'll build</div>
 <p class="lab-card__result">One dataset shared by two teams in two AZs, with 4 layers of access control proven to reject unauthorized access.</p>
