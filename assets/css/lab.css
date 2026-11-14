@@ -379,7 +379,13 @@ details.lab-fold > summary::before {
   transition: transform 0.15s;
 }
 details.lab-fold[open] > summary::before { transform: rotate(90deg); }
+details.lab-fold > summary .lab-fold__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 details.lab-fold > summary small {
+  flex: none;
+  white-space: nowrap;
   margin-left: auto;
   font-weight: 400;
   color: var(--text-muted-color);
@@ -669,7 +675,8 @@ details.lab-fold > .lab-fold__body {
     padding-left: 1rem;
   }
   /* kode sebaris: lebih kecil, latar tipis, boleh patah di tengah supaya tidak mendorong baris */
-  main .content :not(pre) > code {
+  /* .highlight > code adalah pembungkus blok kode, bukan kode sebaris: kalau diberi padding, muncul baris kosong di atas-bawah blok */
+  main .content :not(pre):not(.highlight) > code {
     font-size: 0.84em;
     padding: 0.08em 0.32em;
     border-radius: 4px;
@@ -683,6 +690,21 @@ details.lab-fold > .lab-fold__body {
   }
   main .content .lab-term .lab-term__body {
     font-size: 0.76rem;
+  }
+  /* Tema melebarkan blok kode sampai tepi layar di HP (margin negatif, tanpa sudut). Disamakan dengan komponen lain:
+     selebar teks, bersudut, dan header-nya ikut membulat. */
+  main .content > div[class^='language-'],
+  main .content > figure.highlight,
+  main .content div.highlighter-rouge,
+  main .content figure.highlight {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 0.6rem !important;
+    overflow: hidden;
+  }
+  main .content div.highlighter-rouge .highlight,
+  main .content figure.highlight .highlight {
+    border-radius: 0 !important;
   }
   main .content table {
     font-size: 0.84rem;
@@ -1514,4 +1536,17 @@ details.lab-fold > .lab-fold__body {
 #sidebar .nav-item:has(> a[href$='/tags/']),
 #sidebar .nav-item:has(> a[href$='/archives/']) {
   display: none;
+}
+
+/* HP: penanda langkah tidak menutupi tombol "ke atas" milik tema di pojok kanan bawah */
+@media (max-width: 576px) {
+  .lab-progress {
+    left: 0.75rem;
+    right: 4.4rem;
+    transform: none;
+    max-width: none;
+  }
+  .lab-progress__label {
+    flex: 1 1 auto;
+  }
 }

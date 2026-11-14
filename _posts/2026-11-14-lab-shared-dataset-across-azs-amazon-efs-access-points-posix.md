@@ -272,7 +272,7 @@ aws efs describe-mount-targets --file-system-id $FS_ID \
   --query 'MountTargets[].[AvailabilityZoneName,IpAddress,LifeCycleState]' --output table
 ```
 
-<details class="lab-fold"><summary>Expected output: two mount targets, both <code>available</code><small>6 lines</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Expected output: two mount targets, both <code>available</code></span><small>6 lines</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><div class="lab-term__body"><span class="ln">---------------------------------------------------</span><span class="ln">&#124;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;DescribeMountTargets&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#124;</span><span class="ln">+-----------------+---------------+---------------+</span><span class="ln">&#124;&#32;&#32;ap-southeast-3a&#124;&#32;&#32;172.31.5.21&#32;&#32;&#124;&#32;&#32;available&#32;&#32;&#32;&#32;&#124;</span><span class="ln">&#124;&#32;&#32;ap-southeast-3b&#124;&#32;&#32;172.31.22.87&#32;&#124;&#32;&#32;available&#32;&#32;&#32;&#32;&#124;</span><span class="ln">+-----------------+---------------+---------------+</span></div></div>
 </div></details>
 
@@ -306,7 +306,7 @@ aws efs describe-access-points --file-system-id $FS_ID \
   --output table
 ```
 
-<details class="lab-fold"><summary>Expected output: two access points, both <code>available</code><small>2 lines</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Expected output: two access points, both <code>available</code></span><small>2 lines</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><div class="lab-term__body"><span class="ln">rimba-lab-ap-survey&#32;&#124;&#32;2001&#32;&#124;&#32;3000&#32;&#124;&#32;/datasets&#32;&#124;&#32;available</span><span class="ln">rimba-lab-ap-gis&#32;&#32;&#32;&#32;&#124;&#32;2002&#32;&#124;&#32;3000&#32;&#124;&#32;/datasets&#32;&#124;&#32;available</span></div></div>
 </div></details>
 
@@ -409,7 +409,7 @@ Run this inside the session:
 
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><div class="lab-term__body"><span class="ln">sudo&#32;-i</span><span class="ln">source&#32;/etc/rimba-efs.env</span><span class="ln">mount&#32;-t&#32;efs&#32;-o&#32;tls,iam,accesspoint=$AP_SURVEY&#32;$FS_ID:/&#32;/mnt/datasets</span><span class="ln">df&#32;-hT&#32;/mnt/datasets</span><span class="ln">ls&#32;-ldn&#32;/mnt/datasets</span><span class="ln"></span><span class="ln">mkdir&#32;/mnt/datasets/survey</span><span class="ln">chmod&#32;750&#32;/mnt/datasets/survey</span><span class="ln">echo&#32;&quot;orthophoto&#32;block-07&#32;5cm&#32;resolution&quot;&#32;&gt;&#32;/mnt/datasets/survey/block-07.txt</span><span class="ln">ls&#32;-ln&#32;/mnt/datasets/survey</span></div></div>
 
-<details class="lab-fold"><summary>Expected output · survey<small>4 lines</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Expected output · survey</span><small>4 lines</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><div class="lab-term__body"><span class="ln">Filesystem&#32;&#32;&#32;&#32;&#32;Type&#32;&#32;Size&#32;&#32;Used&#32;Avail&#32;Use%&#32;Mounted&#32;on</span><span class="ln">127.0.0.1:/&#32;&#32;&#32;&#32;nfs4&#32;&#32;8.0E&#32;&#32;&#32;&#32;&#32;0&#32;&#32;8.0E&#32;&#32;&#32;0%&#32;/mnt/datasets</span><span class="ln">drwxrwxr-t&#32;2&#32;0&#32;3000&#32;6144&#32;...&#32;/mnt/datasets</span><span class="ln">-rw-r--r--&#32;1&#32;2001&#32;3000&#32;35&#32;...&#32;block-07.txt</span></div></div>
 </div></details>
 
@@ -427,7 +427,7 @@ aws ssm start-session --target $INST_GIS
 
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><div class="lab-term__body"><span class="ln">sudo&#32;-i</span><span class="ln">source&#32;/etc/rimba-efs.env</span><span class="ln">mount&#32;-t&#32;efs&#32;-o&#32;tls,iam,accesspoint=$AP_GIS&#32;$FS_ID:/&#32;/mnt/datasets</span><span class="ln"></span><span class="ln">cat&#32;/mnt/datasets/survey/block-07.txt</span><span class="ln">mkdir&#32;/mnt/datasets/gis&#32;&amp;&amp;&#32;chmod&#32;750&#32;/mnt/datasets/gis</span><span class="ln">echo&#32;&quot;parcel&#32;boundary&#32;map&#32;block-07&quot;&#32;&gt;&#32;/mnt/datasets/gis/block-07.geojson</span><span class="ln">ls&#32;-ln&#32;/mnt/datasets</span></div></div>
 
-<details class="lab-fold"><summary>Expected output · gis<small>3 lines</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Expected output · gis</span><small>3 lines</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><div class="lab-term__body"><span class="ln">orthophoto&#32;block-07&#32;5cm&#32;resolution</span><span class="ln">drwxr-x---&#32;2&#32;2002&#32;3000&#32;6144&#32;...&#32;gis</span><span class="ln">drwxr-x---&#32;2&#32;2001&#32;3000&#32;6144&#32;...&#32;survey</span></div></div>
 </div></details>
 

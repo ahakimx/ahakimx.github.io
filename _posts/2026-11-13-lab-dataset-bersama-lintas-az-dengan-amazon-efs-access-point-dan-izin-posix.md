@@ -13,12 +13,12 @@ image:
   path: /assets/img/posts/lab-dataset-bersama-lintas-az-dengan-amazon-efs-access-point-dan-izin-posix/cover.png
 toc: true
 comments: true
+lang: id
 lab:
   level: "Intermediate"
   durasi: "60–75 menit"
   lang: "id"
   pair: "efs-access-point-posix"
-lang: id
 ---
 <section class="lab-card" data-lang="id" aria-label="Ringkasan lab">
 <div class="lab-card__kicker">Hasil lab</div>
@@ -271,7 +271,7 @@ aws efs describe-mount-targets --file-system-id $FS_ID \
   --query 'MountTargets[].[AvailabilityZoneName,IpAddress,LifeCycleState]' --output table
 ```
 
-<details class="lab-fold"><summary>Output yang diharapkan: dua mount target <code>available</code><small>6 baris</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Output yang diharapkan: dua mount target <code>available</code></span><small>6 baris</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><div class="lab-term__body"><span class="ln">---------------------------------------------------</span><span class="ln">&#124;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;DescribeMountTargets&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#124;</span><span class="ln">+-----------------+---------------+---------------+</span><span class="ln">&#124;&#32;&#32;ap-southeast-3a&#124;&#32;&#32;172.31.5.21&#32;&#32;&#124;&#32;&#32;available&#32;&#32;&#32;&#32;&#124;</span><span class="ln">&#124;&#32;&#32;ap-southeast-3b&#124;&#32;&#32;172.31.22.87&#32;&#124;&#32;&#32;available&#32;&#32;&#32;&#32;&#124;</span><span class="ln">+-----------------+---------------+---------------+</span></div></div>
 </div></details>
 
@@ -305,7 +305,7 @@ aws efs describe-access-points --file-system-id $FS_ID \
   --output table
 ```
 
-<details class="lab-fold"><summary>Output yang diharapkan: dua access point <code>available</code><small>2 baris</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Output yang diharapkan: dua access point <code>available</code></span><small>2 baris</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output</span><em>text</em></div><div class="lab-term__body"><span class="ln">rimba-lab-ap-survey&#32;&#124;&#32;2001&#32;&#124;&#32;3000&#32;&#124;&#32;/datasets&#32;&#124;&#32;available</span><span class="ln">rimba-lab-ap-gis&#32;&#32;&#32;&#32;&#124;&#32;2002&#32;&#124;&#32;3000&#32;&#124;&#32;/datasets&#32;&#124;&#32;available</span></div></div>
 </div></details>
 
@@ -408,7 +408,7 @@ Jalankan di dalam sesi:
 
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@survey · ap-southeast-3a</span><em>bash</em></div><div class="lab-term__body"><span class="ln">sudo&#32;-i</span><span class="ln">source&#32;/etc/rimba-efs.env</span><span class="ln">mount&#32;-t&#32;efs&#32;-o&#32;tls,iam,accesspoint=$AP_SURVEY&#32;$FS_ID:/&#32;/mnt/datasets</span><span class="ln">df&#32;-hT&#32;/mnt/datasets</span><span class="ln">ls&#32;-ldn&#32;/mnt/datasets</span><span class="ln"></span><span class="ln">mkdir&#32;/mnt/datasets/survey</span><span class="ln">chmod&#32;750&#32;/mnt/datasets/survey</span><span class="ln">echo&#32;&quot;ortofoto&#32;blok-07&#32;resolusi&#32;5cm&quot;&#32;&gt;&#32;/mnt/datasets/survey/blok-07.txt</span><span class="ln">ls&#32;-ln&#32;/mnt/datasets/survey</span></div></div>
 
-<details class="lab-fold"><summary>Output yang diharapkan · survey<small>4 baris</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Output yang diharapkan · survey</span><small>4 baris</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · survey</span><em>text</em></div><div class="lab-term__body"><span class="ln">Filesystem&#32;&#32;&#32;&#32;&#32;Type&#32;&#32;Size&#32;&#32;Used&#32;Avail&#32;Use%&#32;Mounted&#32;on</span><span class="ln">127.0.0.1:/&#32;&#32;&#32;&#32;nfs4&#32;&#32;8.0E&#32;&#32;&#32;&#32;&#32;0&#32;&#32;8.0E&#32;&#32;&#32;0%&#32;/mnt/datasets</span><span class="ln">drwxrwxr-t&#32;2&#32;0&#32;3000&#32;6144&#32;...&#32;/mnt/datasets</span><span class="ln">-rw-r--r--&#32;1&#32;2001&#32;3000&#32;30&#32;...&#32;blok-07.txt</span></div></div>
 </div></details>
 
@@ -426,7 +426,7 @@ aws ssm start-session --target $INST_GIS
 
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>root@gis · ap-southeast-3b</span><em>bash</em></div><div class="lab-term__body"><span class="ln">sudo&#32;-i</span><span class="ln">source&#32;/etc/rimba-efs.env</span><span class="ln">mount&#32;-t&#32;efs&#32;-o&#32;tls,iam,accesspoint=$AP_GIS&#32;$FS_ID:/&#32;/mnt/datasets</span><span class="ln"></span><span class="ln">cat&#32;/mnt/datasets/survey/blok-07.txt</span><span class="ln">mkdir&#32;/mnt/datasets/gis&#32;&amp;&amp;&#32;chmod&#32;750&#32;/mnt/datasets/gis</span><span class="ln">echo&#32;&quot;peta&#32;batas&#32;lahan&#32;blok-07&quot;&#32;&gt;&#32;/mnt/datasets/gis/blok-07.geojson</span><span class="ln">ls&#32;-ln&#32;/mnt/datasets</span></div></div>
 
-<details class="lab-fold"><summary>Output yang diharapkan · gis<small>3 baris</small></summary><div class="lab-fold__body">
+<details class="lab-fold"><summary><span class="lab-fold__title">Output yang diharapkan · gis</span><small>3 baris</small></summary><div class="lab-fold__body">
 <div class="lab-term"><div class="lab-term__bar"><i></i><i></i><i></i><span>output · gis</span><em>text</em></div><div class="lab-term__body"><span class="ln">ortofoto&#32;blok-07&#32;resolusi&#32;5cm</span><span class="ln">drwxr-x---&#32;2&#32;2002&#32;3000&#32;6144&#32;...&#32;gis</span><span class="ln">drwxr-x---&#32;2&#32;2001&#32;3000&#32;6144&#32;...&#32;survey</span></div></div>
 </div></details>
 
