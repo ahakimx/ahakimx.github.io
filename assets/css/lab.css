@@ -605,75 +605,129 @@ details.lab-fold > .lab-fold__body {
   }
 }
 
-/* ---------- ritme baca di HP (hanya post yang punya kartu lab) ----------
- * Satu skala ukuran: teks 1rem, kode sebaris sedikit lebih kecil dan tidak mencolok, heading berjenjang jelas,
- * dan garis tipis sebelum tiap bagian (h2) supaya mata punya tempat berhenti. */
+/* ---------- ukuran huruf di HP (semua post dan halaman) ----------
+ * Satu skala yang lebih kecil dari bawaan tema: judul 1.5rem (tema: 2rem), teks 0.95rem (tema: 1.08rem),
+ * h2 1.2rem, h3 1.05rem. Selisih ukuran heading kecil, jadi jenjangnya dibantu ketebalan huruf dan garis tipis di h2.
+ * Awalan "main" menaikkan prioritas di atas aturan tema. */
 @media (max-width: 576px) {
-  .content:has(.lab-card) {
-    font-size: 1rem;
+  main article header h1,
+  main h1.dynamic-title {
+    font-size: 1.5rem;
+    line-height: 1.28;
+  }
+  main article header .post-desc {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    margin-bottom: 1rem !important;
+  }
+  main .content {
+    font-size: 0.95rem;
     line-height: 1.7;
   }
-  .content:has(.lab-card) p,
-  .content:has(.lab-card) li,
-  .content:has(.lab-card) blockquote {
-    font-size: 1rem;
+  main .content p,
+  main .content li,
+  main .content dd,
+  main .content dt,
+  main .content blockquote {
+    font-size: 0.95rem;
     line-height: 1.7;
   }
-  .content:has(.lab-card) h2 {
-    font-size: 1.3rem;
+  main .content h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
     line-height: 1.3;
-    margin: 2.6rem 0 0.9rem;
-    padding-top: 1.4rem;
+    margin: 2.4rem 0 0.8rem;
+    padding-top: 1.3rem;
     border-top: 1px solid var(--main-border-color);
   }
-  .content:has(.lab-card) h3 {
-    font-size: 1.1rem;
+  main .content > h2:first-child {
+    margin-top: 0.5rem;
+    padding-top: 0;
+    border-top: 0;
+  }
+  main .content h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
     line-height: 1.35;
-    margin: 2rem 0 0.6rem;
+    margin: 1.8rem 0 0.55rem;
   }
-  .content:has(.lab-card) h4 {
-    font-size: 1rem;
-    margin: 1.4rem 0 0.4rem;
+  main .content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 1.3rem 0 0.4rem;
   }
-  .content:has(.lab-card) ul,
-  .content:has(.lab-card) ol {
+  main .content ul,
+  main .content ol {
     padding-left: 1.2rem;
   }
-  .content:has(.lab-card) li + li {
+  main .content li + li {
     margin-top: 0.3rem;
   }
-  .content:has(.lab-card) li > ul,
-  .content:has(.lab-card) li > ol {
+  main .content li > ul,
+  main .content li > ol {
     margin-top: 0.3rem;
     padding-left: 1rem;
   }
   /* kode sebaris: lebih kecil, latar tipis, boleh patah di tengah supaya tidak mendorong baris */
-  .content:has(.lab-card) :not(pre) > code {
+  main .content :not(pre) > code {
     font-size: 0.84em;
     padding: 0.08em 0.32em;
     border-radius: 4px;
     overflow-wrap: anywhere;
     word-break: normal;
   }
-  .content:has(.lab-card) .highlight pre,
-  .content:has(.lab-card) .highlight code {
-    font-size: 0.8rem;
+  main .content .highlight pre,
+  main .content .highlight code {
+    font-size: 0.78rem;
     line-height: 1.6;
   }
-  .content:has(.lab-card) .lab-term .lab-term__body {
-    font-size: 0.78rem;
+  main .content .lab-term .lab-term__body {
+    font-size: 0.76rem;
   }
-  .content:has(.lab-card) table {
-    font-size: 0.88rem;
+  main .content table {
+    font-size: 0.84rem;
     line-height: 1.5;
   }
-  .content:has(.lab-card) th,
-  .content:has(.lab-card) td {
+  main .content th,
+  main .content td {
     padding: 0.45rem 0.6rem;
-    font-size: inherit;
+    font-size: 0.86rem;
   }
-  .content:has(.lab-card) .lab-card {
+  main .content .lab-card {
     padding: 1rem 1.05rem;
+  }
+  main .content .lab-card__result,
+  main .content .lab-fold > summary,
+  main .content .lab-q p {
+    font-size: 0.95rem;
+  }
+  /* daftar isi/kartu di halaman lain ikut skala yang sama */
+  .home-intro {
+    padding: 1.1rem 1.15rem;
+  }
+  .home-intro__title {
+    font-size: 1.2rem;
+  }
+  .home-intro__text {
+    font-size: 0.92rem;
+  }
+  #post-list .card-title {
+    font-size: 1.08rem !important;
+    line-height: 1.32 !important;
+  }
+  #post-list .card-text {
+    font-size: 0.9rem;
+  }
+  #related-posts .card-title,
+  #related-posts h4 {
+    font-size: 1rem !important;
+  }
+  .proj-card__title,
+  .content a.proj-link {
+    font-size: 0.98rem;
+  }
+  .about-hero__name {
+    font-size: 1.2rem;
   }
 }
 
