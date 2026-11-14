@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/NqOInJ-ttqM/upload/dace69ee0c97fb44abf2d79e0dac8e8d.jpeg
   alt: "Konfigurasi Subnet Publik dan Jumpbox di AWS"
 comments: true
+lang: id
 ---
 
 ## Overview:

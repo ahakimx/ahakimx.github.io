@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/2ta8OjluZuI/upload/718ecebe90d61b5df9023da8b103bd03.jpeg
   alt: "Membuat Amazon Machine Images (AMI) pada AWS"
 comments: true
+lang: id
 ---
 
 ## Overview:

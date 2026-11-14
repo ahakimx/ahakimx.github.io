@@ -3,11 +3,12 @@ layout: post
 title: "Deploy Website Statis menggunakan AWS"
 date: 2022-11-15 10:38:40 +0000
 categories: []
-tags: [aws, cloudfront, s3]
+tags: [aws, cloudfront, aws-s3]
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/DtDlVpy-vvQ/upload/c90a829b695ae4f5ada35572772dcfa2.jpeg
   alt: "Deploy Website Statis menggunakan AWS"
 comments: true
+lang: id
 ---
 
 ## Overview

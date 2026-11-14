@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - automation-evolution
 image:
-  path: https://picsum.photos/id/641/1920/1280.webp
-  alt: Advanced SRE - Automation Evolution dari Scripts ke Self-Healing Systems
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-automation-evolution/cover.png
+  alt: "Advanced SRE - Automation Evolution dari Scripts ke Self-Healing Systems"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Automation bukan sesuatu yang binary — bukan cuma "manual" atau "otomatis". Ini adalah spektrum, dari runbook yang dijalankan manusia sampai sistem yang bisa detect, diagnose, dan resolve masalah sendiri tanpa campur tangan.

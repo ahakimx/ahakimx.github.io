@@ -10,9 +10,8 @@ tags:
   - sre-intermediate
   - alerting-strategy
 image:
-  path: https://picsum.photos/id/6/1920/1280.webp
-  alt: Intermediate SRE - Alerting Strategy
-  lqip: ''
+  path: /assets/img/posts/intermediate-sre-alerting-strategy/cover.png
+  alt: "Intermediate SRE - Alerting Strategy"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Alert fatigue adalah salah satu masalah paling umum dan berbahaya dalam operasi sistem modern. Ketika tim menerima ratusan alert setiap hari, sebagian besar tidak actionable, mereka mulai mengabaikan alert, termasuk yang benar-benar kritis. Artikel ini membahas bagaimana merancang alerting strategy yang mengurangi noise, meningkatkan signal-to-noise ratio, dan memastikan tim hanya di-page untuk hal yang benar-benar membutuhkan perhatian.

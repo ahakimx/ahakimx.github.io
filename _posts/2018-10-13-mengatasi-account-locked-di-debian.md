@@ -6,7 +6,7 @@ layout: post
 title: Mengatasi Account Locked di Debian
 date: 2018-10-13 05:01:00 +0000
 comments: 'true'
-
+lang: id
 ---
 Awal nya ini terjadi pada linux saya setelah beberapa kali mengalami crash pada hardisk yang terkadang sering tidak terbaca. Meskipun kadang sempat kesal kenapa hal itu bisa terjadi, kemudian saya coba browsing-browsing di google dan berdiskusi di komunitas distronya ternyata belum mendapatkan solusi juga, bahkan saya sempat bertanya pada developernya yang berasal dari Italy, dia menyarankan agar saya mengupgrade OS saya ke versi terbaru, dan ternyata sama saja.
 

@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - distributed-consensus
 image:
-  path: https://picsum.photos/id/22/1920/1280.webp
-  alt: Advanced SRE - Distributed Consensus dan Critical State Management
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-distributed-consensus/cover.png
+  alt: "Advanced SRE - Distributed Consensus dan Critical State Management"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Distributed consensus adalah fondasi dari setiap sistem terdistribusi yang reliable. Intinya: bagaimana beberapa node bisa sepakat soal shared state, padahal network tidak selalu reliable dan mesin bisa mati kapan saja.

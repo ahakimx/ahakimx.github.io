@@ -751,3 +751,106 @@ details.lab-fold > .lab-fold__body {
 #post-list .preview-img img[src$='/cover.png'] {
   object-position: left center;
 }
+
+/* ================= halaman depan ================= */
+
+/* ---------- perkenalan singkat di atas daftar post (isi: _includes/metadata-hook.html) ---------- */
+.home-intro {
+  margin: 0.25rem 0 1.5rem;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: var(--lab-radius, 12px);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  border-left: 4px solid var(--lab-accent, #f59e0b);
+}
+.home-intro__kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lab-accent, #f59e0b);
+}
+.home-intro__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--heading-color);
+}
+.home-intro__text {
+  margin: 0;
+  max-width: 62ch;
+  line-height: 1.65;
+  color: var(--text-color);
+}
+.home-intro__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.home-intro__actions a {
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  text-decoration: none;
+}
+.home-intro__actions a:first-child {
+  border-color: var(--lab-accent, #f59e0b);
+  background: var(--lab-accent, #f59e0b);
+  color: #1a1206;
+}
+.home-intro__actions a:hover {
+  border-color: var(--lab-accent, #f59e0b);
+}
+.home-intro__actions a:focus-visible {
+  outline: 2px solid var(--lab-accent, #f59e0b);
+  outline-offset: 2px;
+}
+
+/* ---------- penanda bahasa di kartu post (dipasang lab.js) ---------- */
+#post-list .post-lang {
+  display: inline-block;
+  margin-left: 0.9rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  color: var(--text-muted-color);
+  vertical-align: 1px;
+}
+
+/* ---------- kartu post tanpa gambar: panel pengganti, supaya tinggi dan lebar teks seragam ---------- */
+@media (min-width: 768px) {
+  #post-list .post-preview:not(:has(.preview-img)) > [class*='col-md-12'] {
+    flex: 0 0 58.33333%;
+    max-width: 58.33333%;
+  }
+  /* ::before sudah dipakai Chirpy (efek sorot kartu), jadi panelnya ::after; order -1 = sisi kanan pada baris terbalik */
+  #post-list .post-preview:not(:has(.preview-img))::after {
+    content: 'ahakimx.id';
+    order: -1;
+    flex: 0 0 41.66667%;
+    max-width: 41.66667%;
+    aspect-ratio: 40 / 21;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    font: 700 0.8rem/1 Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    letter-spacing: 0.02em;
+    color: rgb(255 255 255 / 75%);
+    background:
+      radial-gradient(circle at 82% 38%, transparent 0 2.4rem, rgb(245 158 11 / 28%) 2.4rem 2.45rem, transparent 2.45rem 4rem, rgb(245 158 11 / 16%) 4rem 4.05rem, transparent 4.05rem),
+      radial-gradient(circle at 82% 38%, rgb(245 158 11 / 22%), transparent 55%),
+      linear-gradient(135deg, #1b2434, #0c111b);
+  }
+}

@@ -7,10 +7,7 @@ categories:
   - ai
   - aws
   - amazon bedrock
-tags:
-  - aws
-  - ai
-  - amazon bedrock
+tags: [aws, ai, amazon-bedrock]
 image:
   path: /uploads/pasted-image-1776934011325.png
   alt: ''

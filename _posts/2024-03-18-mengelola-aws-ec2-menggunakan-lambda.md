@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/6liebVeAfrY/upload/7db69e081d01c389c0a50a59fe2cc07b.jpeg
   alt: "Mengelola AWS EC2 Menggunakan Lambda"
 comments: true
+lang: id
 ---
 
 # Overview

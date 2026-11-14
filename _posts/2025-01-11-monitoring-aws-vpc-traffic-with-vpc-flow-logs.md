@@ -3,7 +3,7 @@ layout: post
 title: "Monitoring AWS VPC Traffic with VPC Flow Logs"
 date: 2025-01-11 05:33:10 +0000
 categories: []
-tags: [aws, vpc, cloudwatch-logs]
+tags: [aws, aws-vpc, cloudwatch-logs]
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/a4uPQcJkAL8/upload/3763aa1ae0b64356d972d3f12a157f72.jpeg
   alt: "Monitoring AWS VPC Traffic with VPC Flow Logs"

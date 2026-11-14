@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/SjAlldS_6r8/upload/bd739102582be8f512678b1d9cc080be.jpeg
   alt: "Cara Setup IPSec Strongswan di Ubuntu 20.04"
 comments: true
+lang: id
 ---
 
 ## Kebutuhan:

@@ -18,6 +18,7 @@ lab:
   durasi: "60–75 menit"
   lang: "id"
   pair: "efs-access-point-posix"
+lang: id
 ---
 <section class="lab-card" data-lang="id" aria-label="Ringkasan lab">
 <div class="lab-card__kicker">Hasil lab</div>

@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - toil-reduction
 image:
-  path: https://picsum.photos/id/15/1920/1280.webp
-  alt: Advanced SRE - Toil Reduction dan Automation untuk Engineering Velocity
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-toil-reduction/cover.png
+  alt: "Advanced SRE - Toil Reduction dan Automation untuk Engineering Velocity"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Toil adalah pekerjaan manual, repetitif, automatable, tactical, tanpa enduring value, dan yang skalanya linear dengan pertumbuhan service. Google SRE mendefinisikan target bahwa SRE engineer seharusnya menghabiskan maksimal 50% waktu untuk toil dan sisanya untuk engineering work. Artikel ini membahas cara mengidentifikasi toil, memprioritaskan automation menggunakan ROI matrix, dan mengukur dampak toil reduction.

@@ -7,9 +7,7 @@ categories:
   - kubernetes
 tags: []
 image:
-  path: https://picsum.photos/id/41/1920/1280.webp
-  alt: Photo by Lorem Picsum
-  lqip: ''
+  path: /assets/img/posts/service-accounts-kubernetes-security/cover.png
 pin: false
 toc: true
 comments: true

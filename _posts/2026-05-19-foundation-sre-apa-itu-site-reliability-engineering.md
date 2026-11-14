@@ -10,9 +10,8 @@ tags:
   - sre-foundation
   - what-is-sre
 image:
-  path: https://picsum.photos/id/2/1920/1280.webp
-  alt: Foundation SRE - Pengantar Site Reliability Engineering
-  lqip: ''
+  path: /assets/img/posts/foundation-sre-apa-itu-site-reliability-engineering/cover.png
+  alt: "Foundation SRE - Pengantar Site Reliability Engineering"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 ## Overview

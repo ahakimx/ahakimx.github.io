@@ -1,3 +1,20 @@
 <!-- Komponen artikel lab (kartu lab, peta langkah, terminal, galeri, kuis). Dipakai post yang dibuat scripts/publish-post.mjs. -->
 <link rel="stylesheet" href="{{ '/assets/css/lab.css' | relative_url }}">
 <script defer src="{{ '/assets/js/lab.js' | relative_url }}"></script>
+{% if page.layout == 'home' %}
+<!-- Halaman depan: daftar URL post berbahasa Indonesia (penanda ID/EN di kartu) dan perkenalan singkat.
+     Keduanya dipasang ke halaman oleh assets/js/lab.js. Ubah teks perkenalan di sini. -->
+<script type="application/json" id="post-langs">[{% assign sep = '' %}{% for p in site.posts %}{% if p.lang == 'id' %}{{ sep }}"{{ p.url | relative_url }}"{% assign sep = ',' %}{% endif %}{% endfor %}]</script>
+<template id="home-intro">
+  <section class="home-intro" aria-label="About this blog">
+    <p class="home-intro__kicker">Cloud · SRE · AWS</p>
+    <p class="home-intro__title">Hi, I'm Abdul Hakim.</p>
+    <p class="home-intro__text">Cloud / Site Reliability Engineer and AWS Community Builder. I write hands-on AWS labs, SRE notes, and the things I build along the way, in English and Bahasa Indonesia.</p>
+    <div class="home-intro__actions">
+      <a href="{{ '/series/' | relative_url }}">Browse the series</a>
+      <a href="{{ '/projects/' | relative_url }}">Projects</a>
+      <a href="{{ '/about/' | relative_url }}">About me</a>
+    </div>
+  </section>
+</template>
+{% endif %}

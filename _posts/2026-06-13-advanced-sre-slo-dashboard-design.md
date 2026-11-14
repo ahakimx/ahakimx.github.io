@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - slo-dashboard
 image:
-  path: https://picsum.photos/id/16/1920/1280.webp
-  alt: Advanced SRE - SLO Dashboard Design dengan Error Budget dan Burn Rate
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-slo-dashboard-design/cover.png
+  alt: "Advanced SRE - SLO Dashboard Design dengan Error Budget dan Burn Rate"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 SLO dashboard mentransformasi raw SLI metrics menjadi actionable insights untuk berbagai stakeholder — dari executive leadership hingga on-call engineers. Berbeda dengan monitoring dashboard tradisional yang hanya memberi tahu "ada yang error", SLO dashboard memberikan konteks bisnis: seberapa banyak error budget tersisa, seberapa cepat budget terkonsumsi, dan kapan harus mengambil tindakan. Artikel ini membahas error budget visualization, multi-window burn rate alerting, SLO compliance heatmaps, dan dashboard-as-code practices.

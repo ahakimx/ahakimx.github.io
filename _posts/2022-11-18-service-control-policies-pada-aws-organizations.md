@@ -3,11 +3,12 @@ layout: post
 title: "Service Control Policies pada AWS Organizations"
 date: 2022-11-18 12:24:31 +0000
 categories: []
-tags: [awsorganization, aws-service-control-policies]
+tags: [aws-organizations, aws-service-control-policies]
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/0zRt0bQysMw/upload/676b9d76c640f7d0e9b6ca7eaf627d60.jpeg
   alt: "Service Control Policies pada AWS Organizations"
 comments: true
+lang: id
 ---
 
 ### Overview

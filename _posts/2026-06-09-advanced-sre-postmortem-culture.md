@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - postmortem
 image:
-  path: https://picsum.photos/id/14/1920/1280.webp
-  alt: Advanced SRE - Blameless Postmortem Culture dan Learning from Failure
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-postmortem-culture/cover.png
+  alt: "Advanced SRE - Blameless Postmortem Culture dan Learning from Failure"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Postmortem adalah proses terstruktur untuk menganalisis incident setelah terjadi, dengan tujuan utama belajar dari kegagalan dan mencegah kejadian serupa di masa depan. Konsep blameless postmortem adalah pilar fundamental dalam budaya SRE — alih-alih mencari siapa yang salah, fokus pada apa yang salah dalam sistem. Artikel ini membahas cara membangun blameless culture, template postmortem, root cause analysis, dan action item tracking.

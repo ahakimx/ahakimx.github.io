@@ -6,7 +6,7 @@ categories: linux
 comments: 'true'
 categorie:
 - linux
-
+lang: id
 ---
 Kali ini kita akan membuat banner di linux
 

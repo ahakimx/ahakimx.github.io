@@ -8,9 +8,7 @@ categories:
 tags:
   - kubernetes
 image:
-  path: https://picsum.photos/id/208/1920/1280.webp
-  alt: Photo by Lorem Picsum
-  lqip: ''
+  path: /assets/img/posts/tls-in-kubernetes-cluster-setup-and-hardening/cover.png
 pin: false
 toc: true
 comments: true

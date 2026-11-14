@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/j-0olYcaihg/upload/12075fa1466b0b028999ddd2b0715901.jpeg
   alt: "Menginstall Amazon EBS CSI Driver di Cluster EKS"
 comments: true
+lang: id
 ---
 
 # Ikhtisar

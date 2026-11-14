@@ -10,9 +10,8 @@ tags:
   - sre-foundation
   - monitoring-basics
 image:
-  path: https://picsum.photos/id/3/1920/1280.webp
-  alt: Foundation SRE - Monitoring Basics dan Observability
-  lqip: ''
+  path: /assets/img/posts/foundation-sre-monitoring-basics/cover.png
+  alt: "Foundation SRE - Monitoring Basics dan Observability"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Monitoring adalah mata dan telinga dari setiap SRE team. Tanpa monitoring yang baik, Anda seperti mengemudikan mobil di malam hari tanpa lampu, mungkin tetap bisa berjalan, tapi tidak akan tahu ada masalah di perjalanan. Artikel ini membahas fondasi monitoring dari perspektif SRE: four golden signals, perbedaan monitoring vs observability, dan hands-on setup Prometheus dan Grafana untuk memantau kesehatan service.

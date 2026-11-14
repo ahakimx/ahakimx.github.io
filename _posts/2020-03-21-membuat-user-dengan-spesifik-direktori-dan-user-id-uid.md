@@ -6,7 +6,7 @@ categories: linux
 comments: 'true'
 categorie:
 - linux
-
+lang: id
 ---
 Kali ini kita akan membuat user dengan nama yousuf, kemudian kita akan mengeset `UID` nya menjadi `1656` dan home direktorinya di `/var/www/yousuf`
 

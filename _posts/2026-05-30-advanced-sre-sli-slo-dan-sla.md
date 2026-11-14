@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - sli-slo-sla
 image:
-  path: https://picsum.photos/id/9/1920/1280.webp
-  alt: Advanced SRE - SLI SLO dan SLA sebagai fondasi reliability engineering
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-sli-slo-dan-sla/cover.png
+  alt: "Advanced SRE - SLI SLO dan SLA sebagai fondasi reliability engineering"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Service Level Indicators (SLI), Objectives (SLO), dan Agreements (SLA) adalah fondasi SRE practices yang memungkinkan tim engineering mengukur, menargetkan, dan menjanjikan reliability kepada stakeholders. Tanpa framework ini, diskusi tentang reliability menjadi subjektif dan tidak actionable. Artikel ini membahas definisi, implementasi dengan Prometheus dan Sloth, serta error budget policy yang data-driven.

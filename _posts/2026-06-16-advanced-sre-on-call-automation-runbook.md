@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - oncall-automation
 image:
-  path: https://picsum.photos/id/17/1920/1280.webp
-  alt: Advanced SRE - On-Call Automation dan Runbook Engineering
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-on-call-automation-runbook/cover.png
+  alt: "Advanced SRE - On-Call Automation dan Runbook Engineering"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 On-call automation dan runbook engineering adalah dua pilar fundamental dalam operasi SRE modern yang bertujuan mengurangi Mean Time to Recovery (MTTR). Manual runbook yang tersimpan di wiki sering outdated, sulit ditemukan saat panik, dan tidak bisa dieksekusi secara otomatis. Pendekatan runbook-as-code mentransformasi runbook dari dokumen pasif menjadi executable code yang bisa di-test, di-review melalui pull request, dan dieksekusi secara otomatis. Dikombinasikan dengan auto-remediation dan escalation automation, pendekatan ini memungkinkan tim SRE untuk fokus pada masalah yang membutuhkan human judgment.

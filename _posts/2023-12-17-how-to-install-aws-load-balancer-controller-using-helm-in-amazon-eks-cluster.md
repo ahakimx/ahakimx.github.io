@@ -3,7 +3,7 @@ layout: post
 title: "How to Install AWS Load Balancer Controller using Helm in Amazon EKS Cluster"
 date: 2023-12-17 17:00:00 +0000
 categories: []
-tags: [eks, aws-eks]
+tags: [aws-eks]
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/Nr5TYxCuwc8/upload/4382a8ca1f8ad240bdd8d74ca3950d06.jpeg
   alt: "How to Install AWS Load Balancer Controller using Helm in Amazon EKS Cluster"

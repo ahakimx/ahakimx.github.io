@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/FKetb2QJzEo/upload/2f676b5ff2205aeae1961bb1dea18d1a.jpeg
   alt: "Copy dan Sharing Amazon Machine Images (AMI) di beda Region pada AWS"
 comments: true
+lang: id
 ---
 
 # Overview

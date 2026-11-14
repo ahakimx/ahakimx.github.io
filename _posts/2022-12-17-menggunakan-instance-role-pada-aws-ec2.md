@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/upload/v1671264213577/ZQtawEOqM.jpeg
   alt: "Menggunakan Instance Role pada AWS EC2"
 comments: true
+lang: id
 ---
 
 ## Overview:

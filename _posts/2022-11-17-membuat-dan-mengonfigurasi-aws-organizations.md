@@ -3,11 +3,12 @@ layout: post
 title: "Membuat dan Mengonfigurasi AWS Organizations"
 date: 2022-11-17 03:10:19 +0000
 categories: []
-tags: [aws, awsorganization]
+tags: [aws, aws-organizations]
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/2RKhuWvrpIc/upload/9da7d625758c438ad053f654c160bb9a.jpeg
   alt: "Membuat dan Mengonfigurasi AWS Organizations"
 comments: true
+lang: id
 ---
 
 ## Ikhtisar

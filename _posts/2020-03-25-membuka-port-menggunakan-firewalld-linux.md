@@ -8,7 +8,7 @@ comments: 'true'
 categories:
 - linux
 - firewall
-
+lang: id
 ---
 **`Octopus`** system admins team just deployed a web UI application for their backup utility running on **`Octopus backup server`** in **`SC Datacenter`**. The application is running on port **`6400`** . They have **`firewalld`** installed on that server. Some requirements have came up as mentioned below:
 

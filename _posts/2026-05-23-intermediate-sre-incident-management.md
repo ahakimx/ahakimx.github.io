@@ -10,9 +10,8 @@ tags:
   - sre-intermediate
   - incident-management
 image:
-  path: https://picsum.photos/id/5/1920/1280.webp
-  alt: Intermediate SRE - Incident Management Framework
-  lqip: ''
+  path: /assets/img/posts/intermediate-sre-incident-management/cover.png
+  alt: "Intermediate SRE - Incident Management Framework"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Incident management terstruktur adalah evolusi natural dari incident response dasar. Jika di level Foundation kita belajar "apa itu incident dan bagaimana merespons secara basic," sekarang kita membangun sistem yang memastikan setiap incident ditangani dengan koordinasi yang jelas, roles yang terdefinisi, dan proses yang repeatable. Artikel ini membahas bagaimana membangun incident management framework, mulai dari mendefinisikan roles, merancang workflow, melakukan post-incident review, hingga setup war room yang produktif.

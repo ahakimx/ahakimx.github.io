@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/S0j-5wSN3YQ/upload/50e453d9f9cdc1807d5e5b54bc000c18.jpeg
   alt: "Membuat EBS Volume di Amazon Web Services"
 comments: true
+lang: id
 ---
 
 ## Overview:

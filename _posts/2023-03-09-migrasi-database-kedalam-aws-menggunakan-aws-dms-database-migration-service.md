@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/faCwTallTC0/upload/9d61ee11642d1da6001b6f863945afd8.jpeg
   alt: "Migrasi Database kedalam AWS menggunakan AWS DMS (Database Migration Service)"
 comments: true
+lang: id
 ---
 
 ## Ikhtisar

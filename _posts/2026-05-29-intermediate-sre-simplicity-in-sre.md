@@ -10,9 +10,8 @@ tags:
   - sre-intermediate
   - simplicity
 image:
-  path: https://picsum.photos/id/8/1920/1280.webp
-  alt: Intermediate SRE - Simplicity in SRE
-  lqip: ''
+  path: /assets/img/posts/intermediate-sre-simplicity-in-sre/cover.png
+  alt: "Intermediate SRE - Simplicity in SRE"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Simplicity adalah prerequisite untuk reliability. Sistem yang complex lebih sulit dipahami, lebih sulit di-debug, dan lebih rentan terhadap failure yang tidak terduga. Google SRE Book Chapter 9 menegaskan bahwa semakin complex sebuah sistem, semakin banyak failure modes yang mungkin terjadi. Artikel ini membahas bagaimana mengidentifikasi unnecessary complexity, menerapkan complexity budget, dan memilih boring technology yang proven.

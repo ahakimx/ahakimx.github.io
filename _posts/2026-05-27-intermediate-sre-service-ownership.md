@@ -10,9 +10,8 @@ tags:
   - sre-intermediate
   - service-ownership
 image:
-  path: https://picsum.photos/id/7/1920/1280.webp
-  alt: Intermediate SRE - Service Ownership Model
-  lqip: ''
+  path: /assets/img/posts/intermediate-sre-service-ownership/cover.png
+  alt: "Intermediate SRE - Service Ownership Model"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Service ownership adalah fondasi dari operasi microservices yang sehat. Ketika organisasi bermigrasi dari monolith ke microservices, pertanyaan "siapa yang bertanggung jawab atas service ini?" menjadi kritis. Tanpa ownership yang jelas, incidents berlangsung lebih lama, technical debt menumpuk, dan on-call menjadi beban yang tidak merata. Artikel ini membahas bagaimana membangun service ownership model yang jelas — mulai dari service catalog, RACI matrix, production readiness checklist (PRR), hingga on-call per service.

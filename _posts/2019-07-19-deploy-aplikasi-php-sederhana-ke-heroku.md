@@ -8,6 +8,7 @@ image:
   path: https://cdn-images-1.medium.com/max/800/1*qK8OEhg2KdznL4QDM-joTA.png
   alt: "Deploy Aplikasi PHP Sederhana ke Heroku"
 comments: true
+lang: id
 ---
 
 ### Deploy Aplikasi PHP Sederhana ke Heroku

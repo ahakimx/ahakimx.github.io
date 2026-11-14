@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/9cXMJHaViTM/upload/3df4e7cf901a6362779971b38e2ddbd1.jpeg
   alt: "Membuat Cluster EKS dengan eksctl"
 comments: true
+lang: id
 ---
 
 # Overview

@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - release-engineering
 image:
-  path: https://picsum.photos/id/20/1920/1280.webp
-  alt: Advanced SRE - Release Engineering dan Automated Deployment Pipeline
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-release-engineering/cover.png
+  alt: "Advanced SRE - Release Engineering dan Automated Deployment Pipeline"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Release engineering adalah proses build, package, dan deploy software secara reliable dalam skala besar. Bukan sekadar "deploy code" — ini mencakup seluruh perjalanan software dari source control sampai production, dengan tetap menjaga kecepatan delivery.

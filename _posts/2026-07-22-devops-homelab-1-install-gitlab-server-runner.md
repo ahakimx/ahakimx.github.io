@@ -3,14 +3,10 @@ layout: post
 title: 'DevOps Homelab #1 - Install GitLab Server & Runner'
 date: 2026-07-22T10:31
 description: Install GitLab CE and GitLab Runner using Docker Compose on Ubuntu Server. Part one of building a complete CI/CD pipeline on-premise from scratch.
-categories:
-  - devops, gitlab,ci/cd
-tags:
-  - devops, gitlab, ci/cd
+categories: [devops, gitlab]
+tags: [devops, gitlab, ci-cd]
 image:
-  path: https://picsum.photos/id/444/1920/1280.webp
-  alt: ''
-  lqip: ''
+  path: /assets/img/posts/devops-homelab-1-install-gitlab-server-runner/cover.png
 pin: false
 toc: true
 comments: true

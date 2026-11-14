@@ -10,9 +10,8 @@ tags:
   - sre-foundation
   - incident-response
 image:
-  path: https://picsum.photos/id/4/1920/1280.webp
-  alt: Foundation SRE - Incident Response dan Komunikasi
-  lqip: ''
+  path: /assets/img/posts/foundation-sre-pengantar-incident-response/cover.png
+  alt: "Foundation SRE - Incident Response dan Komunikasi"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Incident response adalah salah satu kemampuan paling kritis yang harus dimiliki oleh setiap engineering team. Ketika production system mengalami masalah — downtime total, degradasi performa, atau data inconsistency — cara tim merespons menentukan seberapa besar dampak yang dirasakan user. Dalam konteks SRE, incident response bukan sekadar "fix the problem as fast as possible," melainkan proses terstruktur yang mencakup deteksi, triase, komunikasi, mitigasi, dan pembelajaran.

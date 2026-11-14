@@ -3,11 +3,12 @@ layout: post
 title: "Membuat Bucket dengan Versioning pada Amazon S3"
 date: 2022-11-27 17:08:57 +0000
 categories: []
-tags: [amazon-s3, aws-s3-versioning]
+tags: [aws-s3, aws-s3-versioning]
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/IF5G2tmZ7cg/upload/2c377c591dfc6edd6929ebf5510c5161.jpeg
   alt: "Membuat Bucket dengan Versioning pada Amazon S3"
 comments: true
+lang: id
 ---
 
 ## Overview:

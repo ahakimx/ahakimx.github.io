@@ -3,14 +3,10 @@ layout: post
 title: Building an AI-Powered English Interview Prep App on AWS
 date: 2025-12-30T11:20:00
 description: A fullstack web app that uses AI to simulate English job interviews.
-categories:
-  - ai, aws
-tags:
-  - ai, aws
+categories: [ai, aws]
+tags: [ai, aws]
 image:
-  path: https://picsum.photos/id/1015/1920/1280.webp
-  alt: Photo by Lorem Picsum
-  lqip: ''
+  path: /assets/img/posts/building-an-ai-powered-english-interview-prep-app-a-complete-technical-deep-dive/cover.png
 pin: true
 toc: true
 comments: true

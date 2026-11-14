@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - reliability-patterns
 image:
-  path: https://picsum.photos/id/16/1920/1280.webp
-  alt: Advanced SRE - Reliability Patterns untuk Resilient Distributed Systems
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-reliability-patterns/cover.png
+  alt: "Advanced SRE - Reliability Patterns untuk Resilient Distributed Systems"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Reliability patterns adalah kumpulan design patterns yang dirancang untuk membuat distributed systems lebih resilient terhadap failure. Dalam dunia microservices, failure bukan pertanyaan "apakah" melainkan "kapan" — dan reliability patterns memastikan bahwa ketika satu komponen gagal, seluruh sistem tidak ikut runtuh. Artikel ini membahas circuit breaker, retry with exponential backoff, bulkhead, timeout, graceful degradation, dan PodDisruptionBudget.

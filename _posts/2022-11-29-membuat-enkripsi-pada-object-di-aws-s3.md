@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/OjSG0E_qcbo/upload/2677b9965c744793a301f74c38a4021e.jpeg
   alt: "Membuat Enkripsi pada Object di AWS S3"
 comments: true
+lang: id
 ---
 
 ## Overview:

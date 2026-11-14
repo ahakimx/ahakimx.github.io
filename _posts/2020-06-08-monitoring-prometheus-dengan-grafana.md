@@ -5,6 +5,7 @@ date: 2020-06-08 21:38:24 +0000
 categories: []
 tags: []
 comments: true
+lang: id
 ---
 
 ### Monitoring Prometheus dengan Grafana

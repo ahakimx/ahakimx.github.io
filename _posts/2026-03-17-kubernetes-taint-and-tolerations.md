@@ -8,9 +8,7 @@ categories:
 tags:
   - kubernetes
 image:
-  path: https://picsum.photos/id/314/1920/1280.webp
-  alt: Photo by Lorem Picsum
-  lqip: ''
+  path: /assets/img/posts/kubernetes-taint-and-tolerations/cover.png
 pin: false
 toc: true
 comments: true

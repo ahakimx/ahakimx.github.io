@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - chaos-engineering
 image:
-  path: https://picsum.photos/id/11/1920/1280.webp
-  alt: Advanced SRE - Chaos Engineering untuk proactive reliability testing
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-chaos-engineering/cover.png
+  alt: "Advanced SRE - Chaos Engineering untuk proactive reliability testing"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Chaos Engineering adalah disiplin untuk membangun kepercayaan terhadap kemampuan sistem dalam menghadapi kondisi turbulent di production. Dengan melakukan controlled experiments, tim dapat menemukan kelemahan sistem sebelum menjadi incident yang berdampak pada pengguna. Artikel ini membahas implementasi chaos engineering menggunakan Chaos Mesh dan AWS FIS, termasuk GameDay planning.

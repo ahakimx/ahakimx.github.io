@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - data-integrity
 image:
-  path: https://picsum.photos/id/19/1920/1280.webp
-  alt: Advanced SRE - Data Integrity dan Backup Strategy untuk Reliability
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-data-integrity/cover.png
+  alt: "Advanced SRE - Data Integrity dan Backup Strategy untuk Reliability"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: false
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Data integrity adalah aspek reliability yang sering diabaikan sampai terjadi data loss atau corruption. Google SRE Book Chapter 26 menegaskan bahwa data loss adalah salah satu failure mode paling berbahaya, berbeda dengan downtime yang bersifat sementara, data loss bisa bersifat permanen dan irreversible. Dalam praktik SRE, data integrity bukan hanya tentang "punya backup" — ini tentang memastikan backup benar-benar bisa di-restore, data yang di-read konsisten dengan data yang di-write, dan recovery process sudah teruji. Prinsip utamanya: **backup yang tidak pernah di-test sama dengan tidak punya backup**.

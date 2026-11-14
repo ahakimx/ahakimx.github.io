@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - capacity-planning
 image:
-  path: https://picsum.photos/id/12/1920/1280.webp
-  alt: Advanced SRE - Capacity Planning dan Load Testing untuk flash sale
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-capacity-planning/cover.png
+  alt: "Advanced SRE - Capacity Planning dan Load Testing untuk flash sale"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Capacity planning adalah proses sistematis untuk memastikan sistem memiliki resources yang cukup untuk handle expected dan unexpected load. Untuk e-commerce, capacity planning menjadi critical terutama menjelang flash sale events yang bisa menghasilkan 10x traffic spike. Artikel ini membahas demand forecasting, capacity modeling, load testing dengan k6, dan autoscaling strategies.

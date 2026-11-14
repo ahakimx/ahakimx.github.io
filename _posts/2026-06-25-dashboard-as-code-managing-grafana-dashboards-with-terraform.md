@@ -3,14 +3,10 @@ layout: post
 title: 'Dashboard as Code: Managing Grafana Dashboards with Terraform'
 date: 2026-08-28T08:04
 description: A comprehensive guide to building a Dashboard-as-Code system using Terraform and Grafana. From local setup to a CI/CD pipeline for production
-categories:
-  - grafana, terraform, observability, sre, devops, infrastructure-as-code
-tags:
-  - grafana, terraform, observability, sre, devops, infrastructure-as-code
+categories: [sre, observability]
+tags: [grafana, terraform, observability, sre, devops, infrastructure-as-code]
 image:
-  path: https://picsum.photos/id/802/1920/1280.webp
-  alt: ''
-  lqip: ''
+  path: /assets/img/posts/dashboard-as-code-managing-grafana-dashboards-with-terraform/cover.png
 pin: false
 toc: true
 comments: true

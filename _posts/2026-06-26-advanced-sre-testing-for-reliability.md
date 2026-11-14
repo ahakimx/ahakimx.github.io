@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - testing-reliability
 image:
-  path: https://picsum.photos/id/23/1920/1280.webp
-  alt: Advanced SRE - Testing for Reliability dari Unit Tests ke DR Drills
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-testing-for-reliability/cover.png
+  alt: "Advanced SRE - Testing for Reliability dari Unit Tests ke DR Drills"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Reliability tidak terjadi secara kebetulan — reliability harus di-test sampai terbukti ada. Artikel ini membahas spektrum penuh reliability testing: dari unit test yang menangkap regresi, sampai disaster recovery drill yang membuktikan sistem bisa survive saat kegagalan besar.

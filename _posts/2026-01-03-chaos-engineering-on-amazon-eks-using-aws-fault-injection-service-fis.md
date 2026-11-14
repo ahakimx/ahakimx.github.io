@@ -5,12 +5,9 @@ date: 2026-01-03T17:20:00
 description: This lab walks you through running AWS Fault Injection Service (FIS) experiments on an EKS cluster to test application resilience using a fully managed.
 categories:
   - aws
-tags:
-  - aws, eks, chaos-engineering, fis
+tags: [aws, aws-eks, chaos-engineering, fis]
 image:
-  path: https://picsum.photos/id/797/1920/1280.webp
-  alt: Photo by Lorem Picsum
-  lqip: ''
+  path: /assets/img/posts/chaos-engineering-on-amazon-eks-using-aws-fault-injection-service-fis/cover.png
 pin: false
 toc: true
 comments: true

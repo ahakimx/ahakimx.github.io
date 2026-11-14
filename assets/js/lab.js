@@ -1,5 +1,5 @@
 // Interaksi komponen artikel lab (markup dibuat scripts/publish-post.mjs di vault quartz-notes):
-// kuis, tombol salin di terminal, lipatan blok kode panjang, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
+// perkenalan + penanda bahasa di halaman depan, kuis, tombol salin di terminal, lipatan blok kode panjang, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
 document.addEventListener('DOMContentLoaded', () => {
   // Bahasa label mengikuti kartu lab (data-lang), lalu <html lang>; bawaan Indonesia.
   const card = document.querySelector('.lab-card[data-lang]');
@@ -9,6 +9,30 @@ document.addEventListener('DOMContentLoaded', () => {
         showAll: (n) => `Show all (${n} lines)`, fold: 'Collapse', step: 'Step', stepPos: 'Step position', prev: 'Previous step', next: 'Next step', map: 'See the step map' }
     : { perfect: ' · mantap!', review: ' · cek pembahasannya', copy: 'Salin', copied: 'Tersalin ✓', failed: 'Gagal', copyLabel: 'Salin isi terminal',
         showAll: (n) => `Tampilkan semua (${n} baris)`, fold: 'Lipat', step: 'Langkah', stepPos: 'Posisi langkah', prev: 'Langkah sebelumnya', next: 'Langkah berikutnya', map: 'Lihat peta langkah' };
+
+  /* ---------- halaman depan: perkenalan dan penanda bahasa di kartu post ---------- */
+  // Datanya disiapkan _includes/metadata-hook.html: <template id="home-intro"> dan daftar URL post berbahasa Indonesia.
+  const postList = document.getElementById('post-list');
+  if (postList) {
+    const intro = document.getElementById('home-intro');
+    if (intro && !document.querySelector('.home-intro') && /^\/(index\.html)?$/.test(location.pathname)) postList.before(intro.content.cloneNode(true));
+    const langs = document.getElementById('post-langs');
+    if (langs) {
+      let ids = [];
+      try { ids = JSON.parse(langs.textContent || '[]'); } catch { ids = []; }
+      const indo = new Set(ids);
+      postList.querySelectorAll('a.post-preview[href]').forEach((a) => {
+        const meta = a.querySelector('.post-meta .me-auto') || a.querySelector('.post-meta');
+        if (!meta || meta.querySelector('.post-lang')) return;
+        const id = indo.has(new URL(a.href, location.href).pathname);
+        const badge = document.createElement('span');
+        badge.className = 'post-lang';
+        badge.textContent = id ? 'ID' : 'EN';
+        badge.title = id ? 'Bahasa Indonesia' : 'English';
+        meta.append(badge);
+      });
+    }
+  }
 
   /* ---------- kuis: klik jawaban, tampilkan benar/salah dan pembahasan ---------- */
   document.querySelectorAll('.lab-quiz').forEach((quiz) => {

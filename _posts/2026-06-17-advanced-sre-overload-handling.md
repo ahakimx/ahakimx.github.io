@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - overload-handling
 image:
-  path: https://picsum.photos/id/18/1920/1280.webp
-  alt: Advanced SRE - Overload Handling dengan Load Shedding dan Rate Limiting
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-overload-handling/cover.png
+  alt: "Advanced SRE - Overload Handling dengan Load Shedding dan Rate Limiting"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: false
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Overload handling adalah kemampuan sistem untuk tetap berfungsi (meskipun dalam kapasitas terbatas) ketika menerima traffic yang melebihi kapasitasnya. Google SRE Book Chapter 21 menegaskan bahwa sistem yang baik harus bisa menolak sebagian request dengan graceful daripada collapse sepenuhnya. Dalam dunia nyata, overload bisa terjadi karena flash sale, viral moment, DDoS attack, atau cascading failure. Artikel ini membahas tiga strategi utama: load shedding, rate limiting/throttling, dan graceful degradation.

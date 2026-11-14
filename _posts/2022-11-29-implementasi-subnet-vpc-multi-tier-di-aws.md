@@ -8,6 +8,7 @@ image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/zMbxBDg4qBc/upload/4b48528e0978ed1ba746c860a4932017.jpeg
   alt: "Implementasi Subnet VPC Multi-Tier di AWS"
 comments: true
+lang: id
 ---
 
 ## Overview:

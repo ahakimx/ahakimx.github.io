@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - error-budget
 image:
-  path: https://picsum.photos/id/10/1920/1280.webp
-  alt: Advanced SRE - Error Budget dan framework reliability vs velocity
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-error-budget/cover.png
+  alt: "Advanced SRE - Error Budget dan framework reliability vs velocity"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 Error budget adalah konsep fundamental dalam SRE yang menyediakan framework kuantitatif untuk menyeimbangkan reliability dengan feature velocity. Dengan error budget, keputusan tentang kapan boleh deploy dan kapan harus freeze menjadi data-driven, bukan subjektif. Artikel ini membahas error budget calculation, policy framework, burn rate alerting, dan CI/CD integration.

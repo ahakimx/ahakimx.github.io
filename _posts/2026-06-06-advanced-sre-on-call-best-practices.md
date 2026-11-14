@@ -10,9 +10,8 @@ tags:
   - sre-advanced
   - oncall
 image:
-  path: https://picsum.photos/id/13/1920/1280.webp
-  alt: Advanced SRE - On-Call Best Practices dan Runbook Creation
-  lqip: ''
+  path: /assets/img/posts/advanced-sre-on-call-best-practices/cover.png
+  alt: "Advanced SRE - On-Call Best Practices dan Runbook Creation"
 pin: false
 toc: true
 comments: true
@@ -20,6 +19,7 @@ math: false
 mermaid: true
 media_subpath: ''
 render_with_liquid: true
+lang: id
 ---
 
 On-call adalah komponen kritis dalam SRE yang memastikan sistem production mendapat respons cepat saat terjadi incident. Effective on-call practices bukan hanya tentang "siapa yang menjawab alert", tetapi juga tentang membangun sustainable system yang menjaga keseimbangan antara reliability dan kesejahteraan tim. Artikel ini membahas rotation design, escalation policy, runbook creation, dan alert quality management.
