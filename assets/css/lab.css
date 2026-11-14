@@ -734,3 +734,13 @@ details.lab-fold > .lab-fold__body {
     display: none !important;
   }
 }
+
+/* ---------- tautan ke versi bahasa lain (di bawah kartu lab) ---------- */
+.content .lab-lang {
+  margin: -1.2rem 0 1.6rem;
+  font-size: 0.85rem;
+  text-align: right;
+}
+.content .lab-lang a::before {
+  content: "🌐 ";
+}

@@ -1,6 +1,15 @@
 // Interaksi komponen artikel lab (markup dibuat scripts/publish-post.mjs di vault quartz-notes):
 // kuis, tombol salin di terminal, lipatan blok kode panjang, dan penanda "Langkah N/M" yang menempel saat membaca langkah-langkah.
 document.addEventListener('DOMContentLoaded', () => {
+  // Bahasa label mengikuti kartu lab (data-lang), lalu <html lang>; bawaan Indonesia.
+  const card = document.querySelector('.lab-card[data-lang]');
+  const en = (card ? card.dataset.lang : document.documentElement.lang || '').toLowerCase().startsWith('en');
+  const T = en
+    ? { perfect: ' · nice work!', review: ' · review the explanations', copy: 'Copy', copied: 'Copied ✓', failed: 'Failed', copyLabel: 'Copy terminal contents',
+        showAll: (n) => `Show all (${n} lines)`, fold: 'Collapse', step: 'Step', stepPos: 'Step position', prev: 'Previous step', next: 'Next step', map: 'See the step map' }
+    : { perfect: ' · mantap!', review: ' · cek pembahasannya', copy: 'Salin', copied: 'Tersalin ✓', failed: 'Gagal', copyLabel: 'Salin isi terminal',
+        showAll: (n) => `Tampilkan semua (${n} baris)`, fold: 'Lipat', step: 'Langkah', stepPos: 'Posisi langkah', prev: 'Langkah sebelumnya', next: 'Langkah berikutnya', map: 'Lihat peta langkah' };
+
   /* ---------- kuis: klik jawaban, tampilkan benar/salah dan pembahasan ---------- */
   document.querySelectorAll('.lab-quiz').forEach((quiz) => {
     const qs = quiz.querySelectorAll('.lab-q');
@@ -19,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
           else b.classList.add('is-wrong');
           q.classList.add('is-done');
           done += 1;
-          if (score) score.textContent = `${right}/${qs.length}` + (done === qs.length ? (right === qs.length ? ' · mantap!' : ' · cek pembahasannya') : '');
+          if (score) score.textContent = `${right}/${qs.length}` + (done === qs.length ? (right === qs.length ? T.perfect : T.review) : '');
         });
       });
     });
@@ -60,15 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'lab-term__copy';
-    btn.textContent = 'Salin';
-    btn.setAttribute('aria-label', 'Salin isi terminal');
+    btn.textContent = T.copy;
+    btn.setAttribute('aria-label', T.copyLabel);
     let timer;
     btn.addEventListener('click', async () => {
       const ok = await copyText(termText(body));
-      btn.textContent = ok ? 'Tersalin ✓' : 'Gagal';
+      btn.textContent = ok ? T.copied : T.failed;
       btn.classList.toggle('is-done', ok);
       clearTimeout(timer);
-      timer = setTimeout(() => { btn.textContent = 'Salin'; btn.classList.remove('is-done'); }, 1600);
+      timer = setTimeout(() => { btn.textContent = T.copy; btn.classList.remove('is-done'); }, 1600);
     });
     bar.appendChild(btn);
   });
@@ -94,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foot.className = 'lab-codefold';
       const btn = document.createElement('button');
       btn.type = 'button';
-      const label = () => { btn.textContent = view.classList.contains('is-folded') ? `Tampilkan semua (${lines} baris)` : 'Lipat'; };
+      const label = () => { btn.textContent = view.classList.contains('is-folded') ? T.showAll(lines) : T.fold; };
       btn.setAttribute('aria-expanded', 'false');
       btn.addEventListener('click', () => {
         const folded = view.classList.toggle('is-folded');
@@ -111,19 +120,19 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- penanda langkah: "Langkah 4/11 · judul" + ‹ › selama bagian langkah terlihat ---------- */
   const map = document.querySelector('.lab-steps');
   const steps = map
-    ? [...map.querySelectorAll('a[href^="#langkah-"]')]
+    ? [...map.querySelectorAll('a[href^="#"]')]
         .map((a) => ({ el: document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))), title: a.textContent.trim() }))
         .filter((s) => s.el)
     : [];
   if (steps.length >= 3) {
     const bar = document.createElement('nav');
     bar.className = 'lab-progress';
-    bar.setAttribute('aria-label', 'Posisi langkah');
+    bar.setAttribute('aria-label', T.stepPos);
     bar.hidden = true;
     bar.innerHTML =
-      '<button type="button" class="lab-progress__nav" data-go="-1" aria-label="Langkah sebelumnya">‹</button>' +
-      '<button type="button" class="lab-progress__label" title="Lihat peta langkah"><b></b><span></span></button>' +
-      '<button type="button" class="lab-progress__nav" data-go="1" aria-label="Langkah berikutnya">›</button>' +
+      '<button type="button" class="lab-progress__nav" data-go="-1" aria-label="' + T.prev + '">‹</button>' +
+      '<button type="button" class="lab-progress__label" title="' + T.map + '"><b></b><span></span></button>' +
+      '<button type="button" class="lab-progress__nav" data-go="1" aria-label="' + T.next + '">›</button>' +
       '<i class="lab-progress__fill" aria-hidden="true"></i>';
     document.body.appendChild(bar);
     const num = bar.querySelector('b');
@@ -147,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
       bar.hidden = !show;
       if (!show || i === cur) return;
       cur = i;
-      num.textContent = `Langkah ${i + 1}/${steps.length}`;
+      num.textContent = `${T.step} ${i + 1}/${steps.length}`;
       name.textContent = steps[i].title;
       fill.style.width = `${((i + 1) / steps.length) * 100}%`;
       prev.disabled = i === 0;

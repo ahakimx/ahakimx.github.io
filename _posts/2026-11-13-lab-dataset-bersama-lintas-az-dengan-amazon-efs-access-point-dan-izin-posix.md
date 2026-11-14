@@ -16,14 +16,20 @@ comments: true
 lab:
   level: "Intermediate"
   durasi: "60–75 menit"
+  lang: "id"
+  pair: "efs-access-point-posix"
 ---
-<section class="lab-card" aria-label="Ringkasan lab">
+<section class="lab-card" data-lang="id" aria-label="Ringkasan lab">
 <div class="lab-card__kicker">Hasil lab</div>
 <p class="lab-card__result">Satu dataset dipakai dua tim di dua AZ, dengan 4 lapis kontrol akses yang terbukti menolak akses yang tidak berhak.</p>
 <ul class="lab-stats"><li><span>Level</span><b>Intermediate</b></li><li><span>Durasi</span><b>60–75 menit</b></li><li><span>Biaya</span><b>&lt; USD 1</b></li><li><span>Region</span><b>ap-southeast-3</b></li></ul>
 <ul class="lab-services"><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/efs.svg')" aria-hidden="true"></span>Amazon EFS</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/ec2.svg')" aria-hidden="true"></span>Amazon EC2</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/iam-role.svg')" aria-hidden="true"></span>IAM</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/ssm.svg')" aria-hidden="true"></span>Systems Manager</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/vpc.svg')" aria-hidden="true"></span>VPC</li></ul>
 <div class="lab-actions"><a class="lab-btn" href="#langkah-1">Langsung ke langkah ↓</a></div>
 </section>
+
+<!-- lab-lang:start -->
+<p class="lab-lang"><a href="/posts/lab-shared-dataset-across-azs-amazon-efs-access-points-posix/" hreflang="en" lang="en">Read this lab in English</a></p>
+<!-- lab-lang:end -->
 
 > **Ringkasan**
 > - **Masalah:** dua tim di dua AZ butuh folder yang sama, tapi masing-masing hanya boleh menulis di direktorinya sendiri.
@@ -219,7 +225,7 @@ ROLE_SURVEY_ARN=arn:aws:iam::${ACCOUNT_ID}:role/${PREFIX}-survey-ec2
 ROLE_GIS_ARN=arn:aws:iam::${ACCOUNT_ID}:role/${PREFIX}-gis-ec2
 ```
 
-Role ini tidak diberi identity policy EFS. Izin mount datang dari file system policy di langkah 6.
+Role ini tidak diberi identity policy EFS. Izin mount datang dari file system policy di langkah 7.
 
 ### 4. Buat file system EFS Regional (terenkripsi)
 {: #langkah-4 }
