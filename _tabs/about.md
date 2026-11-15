@@ -9,6 +9,7 @@ order: 7
 <div class="about-hero__text">
 <div class="about-hero__name">Abdul Hakim</div>
 <div class="about-hero__role">Cloud / Site Reliability Engineer · AWS Community Builder</div>
+<div class="about-hero__certs" aria-label="Certifications"><a class="cert-badge cert-badge--new" href="https://www.credly.com/badges/8dbdadc8-0dd5-4434-b953-2b5771b2eb38" target="_blank" rel="noopener" title="Verify on Credly">AWS CloudOps Engineer – Associate<em>New</em></a><span class="cert-badge">AWS Solutions Architect – Associate</span><span class="cert-badge">CKA</span><span class="cert-badge">OpenStack COA</span></div>
 <div class="about-hero__links"><a href="https://linkedin.com/in/ahakimx">LinkedIn</a><a href="https://github.com/ahakimx">GitHub</a><a href="https://twitter.com/a_hakimx">X</a><a href="{{ '/projects/' | relative_url }}">Projects</a></div>
 </div>
 </div>
@@ -18,6 +19,15 @@ Hi, I'm Abdul Hakim — a Cloud / Site Reliability Engineer & AWS Community Buil
 Currently exploring the intersection of AI and infrastructure — learning how to build and operate AI/ML systems.
 
 This blog is where I document my projects, share technical deep dives, and write tutorials on topics I work with daily.
+
+## Certifications
+
+<ul class="cert-list">
+<li><b>AWS Certified CloudOps Engineer – Associate</b><span>2026 – 2029 · <a href="https://www.credly.com/badges/8dbdadc8-0dd5-4434-b953-2b5771b2eb38" target="_blank" rel="noopener">Verify on Credly ↗</a></span></li>
+<li><b>AWS Certified Solutions Architect – Associate</b><span>2025 – 2028</span></li>
+<li><b>Certified Kubernetes Administrator (CKA)</b></li>
+<li><b>Certified OpenStack Administrator</b></li>
+</ul>
 
 ## Skills & Tech Stack
 
@@ -31,15 +41,6 @@ This blog is where I document my projects, share technical deep dives, and write
 <div class="skill-group"><b>Networking</b><span class="proj-tags"><i>VPC</i><i>IPSec/StrongSwan</i><i>Overlay Networks</i></span></div>
 <div class="skill-group"><b>Other</b><span class="proj-tags"><i>Apache Kafka</i><i>OpenStack</i></span></div>
 </div>
-
-## Certifications
-
-<ul class="cert-list">
-<li><b>AWS Certified CloudOps Engineer – Associate</b><span>2026 – 2029</span></li>
-<li><b>AWS Certified Solutions Architect – Associate</b><span>2025 – 2028</span></li>
-<li><b>Certified OpenStack Administrator</b></li>
-<li><b>Certified Kubernetes Administrator (CKA)</b></li>
-</ul>
 
 ## Get in Touch
 

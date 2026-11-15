@@ -1775,3 +1775,44 @@ details.lab-fold > .lab-fold__body {
   font-size: 0.85rem;
   color: var(--text-muted-color);
 }
+
+/* ================= halaman About: badge sertifikasi di kotak perkenalan ================= */
+.about-hero__certs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+}
+.content .about-hero__certs .cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.18rem 0.6rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  text-decoration: none;
+}
+.content .about-hero__certs .cert-badge::before {
+  content: "🏅";
+  font-size: 0.85em;
+}
+.content .about-hero__certs .cert-badge--new {
+  border-color: var(--lab-accent, #f59e0b);
+}
+.content .about-hero__certs .cert-badge--new:hover {
+  background: rgb(245 158 11 / 12%);
+}
+.about-hero__certs em {
+  padding: 0 0.35rem;
+  border-radius: 4px;
+  background: var(--lab-accent, #f59e0b);
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1a1206;
+}
