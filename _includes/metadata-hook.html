@@ -31,11 +31,10 @@
 <link rel="alternate" hreflang="{{ other_lang }}" href="{{ other.url | absolute_url }}">
 <template id="lang-switch">
   <nav class="lang-switch" aria-label="Language / Bahasa">
-    <span class="lang-switch__icon" aria-hidden="true">🌐</span>
     {%- if my_lang == 'en' -%}
-    <span aria-current="page" lang="en">English</span><a href="{{ other.url | relative_url }}" hreflang="{{ other_lang }}" lang="id">Bahasa Indonesia</a>
+    <span aria-current="page" lang="en"><svg class="lang-flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="lf-s"><path d="M0,0v30h60V0z"/></clipPath><clipPath id="lf-t"><path d="M30,15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#lf-s)"><path d="M0,0v30h60V0z" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30M60,0 0,30" clip-path="url(#lf-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></g></svg>English</span><a href="{{ other.url | relative_url }}" hreflang="{{ other_lang }}" lang="id"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="1" fill="#CE1126"/><rect y="1" width="3" height="1" fill="#fff"/></svg>Bahasa Indonesia</a>
     {%- else -%}
-    <a href="{{ other.url | relative_url }}" hreflang="{{ other_lang }}" lang="en">English</a><span aria-current="page" lang="id">Bahasa Indonesia</span>
+    <a href="{{ other.url | relative_url }}" hreflang="{{ other_lang }}" lang="en"><svg class="lang-flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="lf-s"><path d="M0,0v30h60V0z"/></clipPath><clipPath id="lf-t"><path d="M30,15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#lf-s)"><path d="M0,0v30h60V0z" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30M60,0 0,30" clip-path="url(#lf-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></g></svg>English</a><span aria-current="page" lang="id"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="1" fill="#CE1126"/><rect y="1" width="3" height="1" fill="#fff"/></svg>Bahasa Indonesia</span>
     {%- endif -%}
   </nav>
 </template>

@@ -1581,12 +1581,18 @@ details.lab-fold > .lab-fold__body {
   border-radius: 999px;
   font-size: 0.82rem;
 }
-.lang-switch__icon {
-  padding: 0 0.35rem 0 0.45rem;
-  color: var(--text-muted-color);
+.lang-flag {
+  width: 1.15em;
+  height: 0.77em;
+  margin-right: 0.4em;
+  vertical-align: -0.08em;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 18%);
 }
 .lang-switch a,
 .lang-switch span[aria-current] {
+  display: inline-flex;
+  align-items: center;
   padding: 0.2rem 0.75rem;
   border-radius: 999px;
   text-decoration: none;
