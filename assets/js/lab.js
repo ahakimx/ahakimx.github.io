@@ -459,4 +459,321 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('search-input');
     if (input) { input.focus(); input.scrollIntoView({ block: 'center' }); }
   }));
+  /* ================= fitur interaktif lab (nilai milikmu, progres, diagram) dan komponen umum ================= */
+  const I = en
+    ? { varsTitle: 'Your values', varsHint: 'Fill these in once: every command on this page updates, ready to copy.', reset: 'Reset',
+        doneMark: (n) => `Mark step ${n} as done`, doneOk: (n) => `Step ${n} done`, progress: (d, n) => `${d}/${n} steps done`,
+        diagHint: 'Click a component to see what it does and where it appears in the steps.', diagSteps: 'In the steps:', diagNone: 'Not used directly in the steps.',
+        close: 'Close', perMonth: '/month', save: (p) => `${p}% cheaper`, more: (p) => `${p}% more`, base: 'baseline', unitDay: 'questions per day' }
+    : { varsTitle: 'Nilai milikmu', varsHint: 'Isi sekali: semua perintah di halaman ini ikut berubah, siap disalin.', reset: 'Kembalikan',
+        doneMark: (n) => `Tandai langkah ${n} selesai`, doneOk: (n) => `Langkah ${n} selesai`, progress: (d, n) => `${d}/${n} langkah selesai`,
+        diagHint: 'Klik komponen untuk melihat fungsinya dan di langkah mana ia muncul.', diagSteps: 'Di langkah:', diagNone: 'Tidak dipakai langsung di langkah-langkah.',
+        close: 'Tutup', perMonth: '/bulan', save: (p) => `${p}% lebih murah`, more: (p) => `${p}% lebih mahal`, base: 'pembanding', unitDay: 'pertanyaan per hari' };
+  const store = {
+    get: (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+    set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage off: fitur tetap jalan tanpa disimpan */ } },
+  };
+  const content = document.querySelector('article .content');
+  const isLab = Boolean(document.querySelector('.lab-card'));
+  const sectionOf = (i) => {
+    // Elemen milik langkah ke-i: dari heading langkah sampai heading langkah berikutnya / heading <h2> berikutnya.
+    const out = [];
+    let n = steps[i].el.nextElementSibling;
+    const stop = steps[i + 1] ? steps[i + 1].el : null;
+    while (n && n !== stop && !/^H[12]$/.test(n.tagName)) { out.push(n); n = n.nextElementSibling; }
+    return out;
+  };
+
+  /* ---------- 1. nilai milikmu: variabel literal di blok kode langkah 1 jadi isian ---------- */
+  // Baris seperti `export AWS_REGION=ap-southeast-3` atau `PREFIX=rimba-lab` di blok kode pertama langkah 1.
+  // Mengubah isian mengganti nilai itu di semua teks artikel (perintah, output, catatan), dan tersimpan di browser.
+  if (isLab && content && steps.length) {
+    const firstCode = sectionOf(0).find((el) => el.matches('div.highlighter-rouge, figure.highlight') || el.querySelector('pre'));
+    const pre = firstCode && (firstCode.querySelector('td.rouge-code pre') || firstCode.querySelector('pre'));
+    const assign = /^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)=([A-Za-z0-9][A-Za-z0-9._:/-]{2,})\s*$/;
+    const fields = [];
+    if (pre) {
+      pre.textContent.split('\n').forEach((line) => {
+        const m = line.match(assign);
+        if (!m) return;
+        const same = fields.find((f) => f.value === m[2]);
+        if (same) same.names.push(m[1]);
+        else fields.push({ names: [m[1]], value: m[2], current: m[2] });
+      });
+    }
+    if (fields.length) {
+      const replaceText = (from, to) => {
+        if (!from || from === to) return;
+        const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, {
+          acceptNode: (n) => (n.parentElement.closest('.lab-vars, script, style') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+        });
+        const hits = [];
+        while (walker.nextNode()) if (walker.currentNode.nodeValue.includes(from)) hits.push(walker.currentNode);
+        hits.forEach((n) => { n.nodeValue = n.nodeValue.split(from).join(to); });
+      };
+      const saved = store.get('lab-vars', {});
+      const box = document.createElement('div');
+      box.className = 'lab-vars';
+      box.innerHTML = `<p class="lab-vars__title">${I.varsTitle}</p><p class="lab-vars__hint">${I.varsHint}</p><div class="lab-vars__grid"></div>`;
+      const grid = box.querySelector('.lab-vars__grid');
+      const ok = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
+      const apply = (f, v) => {
+        if (!v || !ok.test(v) || v === f.current) return;
+        replaceText(f.current, v);
+        f.current = v;
+      };
+      fields.forEach((f) => {
+        const label = document.createElement('label');
+        label.innerHTML = `<span>${f.names.join(' / ')}</span>`;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.spellcheck = false;
+        input.autocomplete = 'off';
+        input.value = f.value;
+        input.placeholder = f.value;
+        let t;
+        input.addEventListener('input', () => {
+          clearTimeout(t);
+          t = setTimeout(() => {
+            const v = input.value.trim();
+            input.classList.toggle('is-bad', Boolean(v) && !ok.test(v));
+            apply(f, v || f.value);
+            const s = store.get('lab-vars', {});
+            f.names.forEach((nm) => { if (v && ok.test(v) && v !== f.value) s[nm] = v; else delete s[nm]; });
+            store.set('lab-vars', s);
+          }, 250);
+        });
+        f.input = input;
+        label.appendChild(input);
+        grid.appendChild(label);
+        const mine = f.names.map((nm) => saved[nm]).find(Boolean);
+        if (mine && ok.test(mine)) { input.value = mine; apply(f, mine); }
+      });
+      const reset = document.createElement('button');
+      reset.type = 'button';
+      reset.className = 'lab-vars__reset';
+      reset.textContent = I.reset;
+      reset.addEventListener('click', () => {
+        const s = store.get('lab-vars', {});
+        fields.forEach((f) => { f.input.value = f.value; apply(f, f.value); f.names.forEach((nm) => delete s[nm]); });
+        store.set('lab-vars', s);
+      });
+      box.appendChild(reset);
+      firstCode.before(box);
+    }
+  }
+
+  /* ---------- 2. progres lab: tandai langkah selesai, tersimpan di browser ---------- */
+  if (isLab && map && steps.length >= 3) {
+    const key = `lab-done:${location.pathname}`;
+    const done = new Set(store.get(key, []));
+    const items = [...map.querySelectorAll('li')];
+    const head = document.createElement('div');
+    head.className = 'lab-done';
+    head.innerHTML = '<span class="lab-done__text"></span><span class="lab-done__bar"><i></i></span>';
+    const resetBtn = document.createElement('button');
+    resetBtn.type = 'button';
+    resetBtn.className = 'lab-done__reset';
+    resetBtn.textContent = I.reset;
+    head.appendChild(resetBtn);
+    map.before(head);
+    const toggles = [];
+    const paint = () => {
+      head.querySelector('.lab-done__text').textContent = I.progress(done.size, steps.length);
+      head.querySelector('.lab-done__bar i').style.width = `${(done.size / steps.length) * 100}%`;
+      resetBtn.hidden = done.size === 0;
+      steps.forEach((s, i) => {
+        const on = done.has(i + 1);
+        if (items[i]) items[i].classList.toggle('is-done', on);
+        const b = toggles[i];
+        b.setAttribute('aria-pressed', String(on));
+        b.textContent = on ? `✓ ${I.doneOk(i + 1)}` : I.doneMark(i + 1);
+      });
+      store.set(key, [...done]);
+    };
+    steps.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'lab-done__toggle';
+      b.addEventListener('click', () => { if (done.has(i + 1)) done.delete(i + 1); else done.add(i + 1); paint(); });
+      toggles.push(b);
+      const part = sectionOf(i);
+      const last = part[part.length - 1] || s.el;
+      last.after(b);
+    });
+    resetBtn.addEventListener('click', () => { done.clear(); paint(); });
+    paint();
+  }
+
+  /* ---------- 3. diagram arsitektur: komponen bisa diklik ---------- */
+  // Hanya untuk gambar SVG diagram arsitektur (nama berisi "-diagram-") dari exam-prep. Posisi komponen dibaca dari SVG-nya,
+  // lalu tombol transparan diletakkan di atas gambar. Isi penjelasan: label dan keterangan di diagram + langkah yang menyebutnya.
+  if (content) {
+    const stop = new Set(['the', 'and', 'with', 'for', 'dan', 'yang', 'aws', 'amazon', 'ec2', 'az', 'sg', 'tcp', 'uid', 'gid']);
+    const stepsFor = (label) => {
+      if (!steps.length) return [];
+      // Peringkat: judul langkah yang menyebut komponen dulu, lalu isi langkah; maksimal 3 langkah.
+      const whole = label.toLowerCase();
+      const words = whole.split(/[^a-z0-9-]+/).filter((w) => w.length >= 3 && !stop.has(w));
+      const has = (t) => t.includes(whole) || (words.length > 0 && words.every((w) => t.includes(w)));
+      const scored = steps.map((s, i) => {
+        const title = s.title.toLowerCase();
+        const body = sectionOf(i).map((e) => e.textContent).join(' ').toLowerCase();
+        const score = has(title) ? 3 : (words.some((w) => title.includes(w)) && has(body) ? 2 : (has(body) ? 1 : 0));
+        return { i, score };
+      }).filter((x) => x.score > 0);
+      scored.sort((a, b) => b.score - a.score || a.i - b.i);
+      return scored.slice(0, 3).map((x) => x.i).sort((a, b) => a - b);
+    };
+    let pop = null;
+    const closePop = () => { if (pop) { pop.remove(); pop = null; } };
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePop(); });
+    document.addEventListener('click', (e) => { if (pop && !e.target.closest('.dg-pop, .dg-hot')) closePop(); });
+    content.querySelectorAll('img[src*="-diagram-"][src$=".svg"]').forEach(async (img) => {
+      let svgText;
+      try { svgText = await fetch(img.getAttribute('src')).then((r) => (r.ok ? r.text() : Promise.reject())); } catch { return; }
+      const holder = document.createElement('div');
+      holder.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden';
+      holder.innerHTML = svgText;
+      document.body.appendChild(holder);
+      const svg = holder.querySelector('svg');
+      if (!svg) { holder.remove(); return; }
+      const vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+      const [vx, vy, vw, vh] = vb.length === 4 ? vb : [0, 0, Number(svg.getAttribute('width')), Number(svg.getAttribute('height'))];
+      svg.querySelectorAll('.dg-node').forEach((g) => { g.style.animation = 'none'; g.style.opacity = '1'; });
+      const nodes = [...svg.querySelectorAll('g.dg-node')].map((g) => {
+        const bb = g.getBBox();
+        const texts = [...g.querySelectorAll('text')].map((t) => t.textContent.trim()).filter(Boolean);
+        return { bb, label: texts[0] || '', sub: texts.slice(1).join(' · ') };
+      }).filter((n) => n.label && n.bb.width > 0);
+      holder.remove();
+      if (!nodes.length) return;
+      const anchor = img.closest('a.popup') || img;
+      const wrap = document.createElement('span');
+      wrap.className = 'dg-hotwrap';
+      // Ikut kelas light/dark tautan gambarnya, supaya tombolnya ikut tersembunyi bersama gambar tema lain.
+      ['light', 'dark'].forEach((c) => { if (anchor.classList.contains(c)) wrap.classList.add(c); });
+      anchor.before(wrap);
+      wrap.appendChild(anchor);
+      nodes.forEach((n) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'dg-hot';
+        b.setAttribute('aria-label', n.label);
+        const pad = 4;
+        b.style.left = `${((n.bb.x - pad - vx) / vw) * 100}%`;
+        b.style.top = `${((n.bb.y - pad - vy) / vh) * 100}%`;
+        b.style.width = `${((n.bb.width + pad * 2) / vw) * 100}%`;
+        b.style.height = `${((n.bb.height + pad * 2) / vh) * 100}%`;
+        b.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          closePop();
+          const idx = stepsFor(n.label);
+          pop = document.createElement('div');
+          pop.className = 'dg-pop';
+          pop.setAttribute('role', 'dialog');
+          pop.innerHTML = `<button type="button" class="dg-pop__x" aria-label="${I.close}">×</button><b></b><p class="dg-pop__sub"></p><p class="dg-pop__steps"></p>`;
+          pop.querySelector('b').textContent = n.label;
+          pop.querySelector('.dg-pop__sub').textContent = n.sub;
+          const sp = pop.querySelector('.dg-pop__steps');
+          if (idx.length) {
+            sp.textContent = `${I.diagSteps} `;
+            idx.forEach((i, k) => {
+              const a = document.createElement('a');
+              a.href = `#${steps[i].el.id}`;
+              a.textContent = `${i + 1}. ${steps[i].title}`;
+              a.addEventListener('click', closePop);
+              sp.append(a);
+              if (k < idx.length - 1) sp.append(' · ');
+            });
+          } else sp.textContent = steps.length ? I.diagNone : '';
+          pop.querySelector('.dg-pop__x').addEventListener('click', closePop);
+          wrap.appendChild(pop);
+          const r = b.getBoundingClientRect();
+          const w = wrap.getBoundingClientRect();
+          const left = Math.min(Math.max(r.left - w.left, 0), Math.max(w.width - pop.offsetWidth, 0));
+          pop.style.left = `${left}px`;
+          pop.style.top = `${r.bottom - w.top + 6}px`;
+        });
+        wrap.appendChild(b);
+      });
+      if (!wrap.parentElement.querySelector('.dg-hint')) {
+        const hint = document.createElement('p');
+        hint.className = 'dg-hint';
+        hint.textContent = I.diagHint;
+        wrap.after(hint);
+      }
+    });
+  }
+
+  /* ---------- 4. kalkulator biaya: <div class="cost-calc" data-scenarios='[...]'> di artikel ---------- */
+  // data-scenarios: [{"name":"All to Nova 2 Lite","per1k":0.889}, ...] (biaya per 1.000 permintaan, USD).
+  // Opsional: data-default (permintaan/hari, bawaan 1000), data-max (bawaan 100000), data-unit (teks satuan).
+  document.querySelectorAll('.cost-calc[data-scenarios]').forEach((calc) => {
+    let sc;
+    try { sc = JSON.parse(calc.dataset.scenarios); } catch { return; }
+    if (!Array.isArray(sc) || !sc.length) return;
+    const max = Number(calc.dataset.max) || 100000;
+    const unit = calc.dataset.unit || I.unitDay;
+    const def = Number(calc.dataset.default) || 1000;
+    const steps10 = (v) => Math.round(Math.pow(10, (v / 100) * Math.log10(max)));
+    const toSlider = (q) => Math.round((Math.log10(Math.max(q, 1)) / Math.log10(max)) * 100);
+    calc.innerHTML = `<label class="cost-calc__in"><span></span><input type="range" min="0" max="100" step="1"><input type="number" min="1" max="${max}"></label><div class="cost-calc__rows"></div>`;
+    calc.querySelector('.cost-calc__in span').textContent = unit;
+    const [range, num] = calc.querySelectorAll('input');
+    const rows = calc.querySelector('.cost-calc__rows');
+    const fmt = (v) => (v >= 100 ? `$${Math.round(v).toLocaleString('en-US')}` : v >= 1 ? `$${v.toFixed(2)}` : `$${v.toFixed(3)}`);
+    const render = (q) => {
+      const costs = sc.map((s) => (s.per1k * q * 30) / 1000);
+      const top = Math.max(...costs);
+      rows.innerHTML = '';
+      sc.forEach((s, i) => {
+        const r = document.createElement('div');
+        r.className = 'cost-calc__row';
+        const diff = i === 0 ? I.base : costs[i] <= costs[0] ? I.save(Math.round((1 - costs[i] / costs[0]) * 100)) : I.more(Math.round((costs[i] / costs[0] - 1) * 100));
+        r.innerHTML = '<span class="cost-calc__name"></span><span class="cost-calc__bar"><i></i></span><b></b><em></em>';
+        r.querySelector('.cost-calc__name').textContent = s.name;
+        r.querySelector('i').style.width = `${top ? (costs[i] / top) * 100 : 0}%`;
+        r.querySelector('b').textContent = `${fmt(costs[i])}${I.perMonth}`;
+        r.querySelector('em').textContent = diff;
+        rows.appendChild(r);
+      });
+    };
+    const set = (q, from) => {
+      q = Math.min(Math.max(Math.round(q) || 1, 1), max);
+      if (from !== 'range') range.value = toSlider(q);
+      if (from !== 'num') num.value = q;
+      render(q);
+    };
+    range.addEventListener('input', () => set(steps10(Number(range.value)), 'range'));
+    num.addEventListener('input', () => set(Number(num.value), 'num'));
+    set(def);
+  });
+
+  /* ---------- 5. halaman About: chip skill menaut ke Explore bila ada post-nya ---------- */
+  const tagData = document.getElementById('tag-counts');
+  if (tagData && content) {
+    let data = {};
+    try { data = JSON.parse(tagData.textContent); } catch { data = {}; }
+    const tags = data.tags || {};
+    const cats = data.categories || {};
+    const alias = { 'amazon eks': 'eks', 'elk stack': 'elk', 'ipsec/strongswan': 'ipsec', 'overlay networks': 'networking', 'apache kafka': 'kafka', 'github actions': 'ci-cd' };
+    content.querySelectorAll('.skill-group i').forEach((chip) => {
+      const name = chip.textContent.trim().toLowerCase();
+      const slug = alias[name] || name.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      let href = '';
+      let n = 0;
+      // Pakai yang postnya lebih banyak: kategori (topik) atau tag. Contoh: "linux" lebih banyak sebagai kategori.
+      if ((cats[slug] || 0) > (tags[slug] || 0)) { href = `/explore/?topic=${encodeURIComponent(slug)}`; n = cats[slug]; }
+      else if (tags[slug]) { href = `/explore/?tag=${encodeURIComponent(slug)}`; n = tags[slug]; }
+      if (!href) return;
+      const a = document.createElement('a');
+      a.href = href;
+      a.className = 'skill-link';
+      a.title = en ? `${n} post${n > 1 ? 's' : ''}` : `${n} post`;
+      a.innerHTML = `${chip.innerHTML}<sup>${n}</sup>`;
+      chip.replaceWith(a);
+    });
+  }
 });

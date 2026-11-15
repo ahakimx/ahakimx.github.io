@@ -61,3 +61,7 @@
   </aside>
 </template>
 {% endif %}
+{% if page.url == '/about/' %}
+<!-- Halaman About: jumlah post per tag dan kategori, dipakai assets/js/lab.js untuk menautkan chip skill ke Explore. -->
+<script type="application/json" id="tag-counts">{"tags":{ {%- for t in site.tags -%}{{ t[0] | jsonify }}:{{ t[1].size }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} },"categories":{ {%- for c in site.categories -%}{{ c[0] | jsonify }}:{{ c[1].size }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} }}</script>
+{% endif %}

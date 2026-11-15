@@ -1817,3 +1817,266 @@ details.lab-fold > .lab-fold__body {
   text-transform: uppercase;
   color: #1a1206;
 }
+
+/* ================= lab: "Nilai milikmu" (isian variabel, dipasang lab.js) ================= */
+.lab-vars {
+  margin: 0.25rem 0 1rem;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px dashed var(--lab-accent, #ff9900);
+  border-radius: 12px;
+  background: var(--card-bg);
+}
+.lab-vars__title {
+  margin: 0 0 0.15rem !important;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+.lab-vars__hint {
+  margin: 0 0 0.7rem !important;
+  font-size: 0.85rem;
+  color: var(--text-muted-color);
+}
+.lab-vars__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.6rem;
+}
+.lab-vars label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+}
+.lab-vars label span {
+  font-family: var(--bs-font-monospace, ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-muted-color);
+}
+.lab-vars input {
+  width: 100%;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  background: var(--main-bg);
+  color: var(--text-color);
+  font-family: var(--bs-font-monospace, ui-monospace, monospace);
+  font-size: 0.85rem;
+}
+.lab-vars input:focus {
+  outline: 2px solid var(--lab-accent, #ff9900);
+  outline-offset: 1px;
+}
+.lab-vars input.is-bad {
+  border-color: #dc3545;
+}
+.lab-vars__reset,
+.lab-done__reset {
+  margin-top: 0.7rem;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  background: none;
+  font-size: 0.8rem;
+  color: var(--text-muted-color);
+}
+
+/* ================= lab: progres langkah (dipasang lab.js) ================= */
+.lab-done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+.lab-done__bar {
+  flex: 1 1 8rem;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--main-border-color);
+  overflow: hidden;
+}
+.lab-done__bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--lab-accent, #ff9900);
+  transition: width 0.25s;
+}
+.lab-done__reset {
+  margin-top: 0;
+}
+.content .lab-steps li.is-done a {
+  border-color: #2f9e66;
+}
+.content .lab-steps li.is-done a::before {
+  content: "✓";
+  background: #2f9e66;
+  color: #fff;
+}
+.lab-done__toggle {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.4rem 0 1.4rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 999px;
+  background: var(--card-bg);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted-color);
+}
+.lab-done__toggle:hover {
+  border-color: #2f9e66;
+  color: var(--heading-color);
+}
+.lab-done__toggle[aria-pressed="true"] {
+  border-color: #2f9e66;
+  background: rgb(47 158 102 / 12%);
+  color: #2f9e66;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lab-done__bar i { transition: none; }
+}
+
+/* ================= diagram arsitektur: komponen bisa diklik (dipasang lab.js) ================= */
+.dg-hotwrap {
+  position: relative;
+  display: block;
+  margin: 0.5rem 0;
+}
+/* Tautan gambar tema punya margin sendiri; dinolkan supaya kotak pembungkus = kotak gambar (posisi tombol dalam %). */
+.dg-hotwrap > a.img-link {
+  display: block;
+  margin: 0;
+}
+.dg-hot {
+  position: absolute;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+.dg-hot:hover,
+.dg-hot:focus-visible {
+  border-color: var(--lab-accent, #ff9900);
+  background: rgb(255 153 0 / 8%);
+  outline: none;
+}
+.dg-pop {
+  position: absolute;
+  z-index: 5;
+  width: min(300px, 100%);
+  padding: 0.75rem 2rem 0.75rem 0.9rem;
+  border: 1px solid var(--main-border-color);
+  border-left: 4px solid var(--lab-accent, #ff9900);
+  border-radius: 10px;
+  background: var(--card-bg);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.dg-pop b {
+  display: block;
+  color: var(--heading-color);
+}
+.dg-pop p {
+  margin: 0.25rem 0 0 !important;
+}
+.dg-pop__sub {
+  color: var(--text-muted-color);
+}
+.dg-pop__steps:empty,
+.dg-pop__sub:empty {
+  display: none;
+}
+.dg-pop__x {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  border: 0;
+  background: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-muted-color);
+}
+.content .dg-hint {
+  margin: -0.4rem 0 1.2rem;
+  font-size: 0.78rem;
+  text-align: center;
+  color: var(--text-muted-color);
+}
+
+/* ================= kalkulator biaya (dipasang lab.js dari <div class="cost-calc">) ================= */
+.cost-calc {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 12px;
+  background: var(--card-bg);
+}
+.cost-calc__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+.cost-calc__in input[type="range"] {
+  flex: 1 1 10rem;
+  accent-color: var(--lab-accent, #ff9900);
+}
+.cost-calc__in input[type="number"] {
+  width: 7.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  background: var(--main-bg);
+  color: var(--text-color);
+}
+.cost-calc__row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1.2fr) 2fr auto;
+  grid-template-areas: "name bar cost" "name bar diff";
+  align-items: center;
+  gap: 0 0.8rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--main-border-color);
+  font-size: 0.85rem;
+}
+.cost-calc__name { grid-area: name; color: var(--heading-color); font-weight: 600; }
+.cost-calc__bar { grid-area: bar; height: 8px; border-radius: 999px; background: var(--main-border-color); overflow: hidden; }
+.cost-calc__bar i { display: block; height: 100%; background: var(--lab-accent, #ff9900); }
+.cost-calc__row b { grid-area: cost; text-align: right; color: var(--heading-color); }
+.cost-calc__row em { grid-area: diff; text-align: right; font-style: normal; font-size: 0.75rem; color: var(--text-muted-color); }
+@media (max-width: 576px) {
+  .cost-calc__row { grid-template-columns: 1fr auto; grid-template-areas: "name cost" "bar diff"; }
+}
+
+/* ================= halaman About: chip skill yang menaut ke Explore ================= */
+.proj-tags a.skill-link {
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--lab-accent, #f59e0b);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--heading-color) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.proj-tags a.skill-link:hover {
+  background: rgb(245 158 11 / 12%);
+}
+.proj-tags a.skill-link sup {
+  margin-left: 0.2rem;
+  font-size: 0.65rem;
+  color: var(--text-muted-color);
+}
