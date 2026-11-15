@@ -63,6 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
       apply(b.dataset.view);
       try { localStorage.setItem('home-view', b.dataset.view); } catch { /* penyimpanan diblokir: pilihan berlaku untuk kunjungan ini saja */ }
     });
+    // Judul kecil di kiri tombol, hanya di halaman pertama yang punya perkenalan ("Mulai dari sini" ada di atasnya).
+    if (document.querySelector('.home-intro')) {
+      const lt = document.createElement('p');
+      lt.className = 'home-latest';
+      lt.textContent = 'Latest posts';
+      bar.prepend(lt);
+    }
     postList.before(bar);
   }
 
