@@ -783,4 +783,47 @@ document.addEventListener('DOMContentLoaded', () => {
       chip.replaceWith(a);
     });
   }
+
+  /* ---------- 6. post: bilah progres baca di atas layar + sisa waktu baca di daftar isi ---------- */
+  // Progres dihitung dari awal sampai akhir isi artikel (bukan seluruh halaman), sisa waktu dari "N min read" bawaan tema.
+  const articleBody = document.querySelector('article .content');
+  const readtime = document.querySelector('article header .readtime em, .post-meta .readtime em');
+  if (articleBody && readtime && document.querySelector('article[data-toc]')) {
+    const total = parseInt(readtime.textContent, 10) || 0;
+    const bar = document.createElement('div');
+    bar.className = 'read-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+    const labels = [];
+    const addLabel = (host, before) => {
+      if (!host || !total) return;
+      const s = document.createElement('span');
+      s.className = 'read-left';
+      host.insertBefore(s, before || null);
+      labels.push(s);
+    };
+    // Panel daftar isi di layar lebar, dan bar judul yang muncul saat menggulir di layar sempit.
+    addLabel(document.querySelector('#toc-wrapper .panel-heading'));
+    const tocBar = document.getElementById('toc-bar');
+    if (tocBar) addLabel(tocBar, tocBar.querySelector('.toc-trigger'));
+    const leftText = (p) => {
+      if (p >= 0.98) return en ? 'Done reading ✓' : 'Selesai dibaca ✓';
+      const m = Math.max(1, Math.ceil(total * (1 - p)));
+      return en ? `≈ ${m} min left` : `± ${m} menit lagi`;
+    };
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const r = articleBody.getBoundingClientRect();
+      const span = r.height - window.innerHeight * 0.6;
+      const p = Math.min(Math.max((-r.top + window.innerHeight * 0.2) / Math.max(span, 1), 0), 1);
+      bar.style.setProperty('--read', p.toFixed(4));
+      const txt = leftText(p);
+      labels.forEach((l) => { if (l.textContent !== txt) l.textContent = txt; });
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
 });

@@ -2091,37 +2091,40 @@ h1, h2, h3, h4, h5,
   font-family: var(--font-head);
   letter-spacing: -0.015em;
 }
-article header h1 {
-  font-size: clamp(1.75rem, 1.2rem + 1.9vw, 2.35rem);
-  font-weight: 800;
-  line-height: 1.18;
-}
-article .content h2 {
-  margin-top: 2.6rem;
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1.25;
-}
-article .content h3 {
-  margin-top: 2rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-article .content h4 { font-weight: 700; }
 #post-list .card-title { font-weight: 700; line-height: 1.3; }
-article .content p,
-article .content li {
-  line-height: 1.75;
+/* Ukuran di layar lebar saja; di HP skala kecil di bagian "ukuran huruf di HP" tetap berlaku. */
+@media (min-width: 577px) {
+  article header h1 {
+    font-size: clamp(1.75rem, 1.2rem + 1.9vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.18;
+  }
+  article .content h2 {
+    margin-top: 2.6rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  article .content h3 {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  article .content h4 { font-weight: 700; }
+  article .content p,
+  article .content li {
+    line-height: 1.75;
+  }
+  article .content > p,
+  article .content > ul,
+  article .content > ol {
+    margin-bottom: 1.15rem;
+  }
+  article .content li + li { margin-top: 0.2rem; }
 }
-article .content > p,
-article .content > ul,
-article .content > ol {
-  margin-bottom: 1.15rem;
-}
-article .content li + li { margin-top: 0.2rem; }
 code, kbd, pre, samp, .highlight code { font-family: var(--font-code); font-feature-settings: 'calt' 0; }
-article .content :not(pre) > code {
+article .content :not(pre):not(.highlight) > code {
   font-size: 0.86em;
   padding: 0.1em 0.38em;
   border-radius: 5px;
@@ -2251,4 +2254,133 @@ article .content a:not(.img-link):not(.popup):not([class]) {
 @keyframes vt-in { from { opacity: 0; transform: translateY(8px); } }
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
+}
+
+/* ================= bilah progres baca + sisa waktu (dipasang lab.js di halaman post) ================= */
+.read-progress {
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--read, 0));
+  background: linear-gradient(90deg, var(--lab-accent, #f59e0b), #fbbf24);
+  view-transition-name: read-progress;
+}
+.read-left {
+  display: block;
+  margin: 0.15rem 0 0;
+  padding-left: 1rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--lab-accent, #f59e0b);
+}
+#toc-bar .read-left {
+  flex: 0 0 auto;
+  margin: 0 0.4rem 0 0.6rem;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* ================= "Further Reading": kartu dengan cover (_includes/related-posts.html) ================= */
+#related-posts .rp-card {
+  overflow: hidden;
+  border: 1px solid var(--main-border-color);
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+#related-posts .rp-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--lab-accent, #f59e0b);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 10%);
+}
+#related-posts .rp-card__img {
+  display: block;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  background: var(--main-border-color);
+}
+#related-posts .rp-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+#related-posts .rp-card:hover .rp-card__img img {
+  transform: scale(1.04);
+}
+#related-posts .rp-card__img--none {
+  display: flex;
+  align-items: flex-end;
+  padding: 0.8rem 1rem;
+  font: 700 0.75rem/1 var(--font-head, Lato, sans-serif);
+  color: rgb(255 255 255 / 75%);
+  background:
+    radial-gradient(circle at 82% 38%, rgb(245 158 11 / 22%), transparent 55%),
+    linear-gradient(135deg, #1b2434, #0c111b);
+}
+#related-posts .rp-card .card-body {
+  padding: 0.9rem 1rem 1rem;
+}
+#related-posts .rp-card h4 {
+  font-family: var(--font-head, Lato, sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+#related-posts .rp-card .text-muted p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+/* ================= efek kecil: garis bawah tautan di artikel tumbuh saat disorot ================= */
+article .content a:not([class]) {
+  background-image: linear-gradient(var(--lab-accent, #f59e0b), var(--lab-accent, #f59e0b));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.25s ease, color 0.2s ease;
+}
+article .content a:not([class]):hover {
+  background-size: 100% 2px;
+  border-bottom-color: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  #related-posts .rp-card,
+  #related-posts .rp-card__img img,
+  article .content a:not([class]) {
+    transition: none;
+  }
+  #related-posts .rp-card:hover,
+  #related-posts .rp-card:hover .rp-card__img img {
+    transform: none;
+  }
+}
+
+/* ================= mode gelap: kotak info/tips/peringatan lebih kalem (bawaan tema terlalu pekat) ================= */
+:root[data-bs-theme='dark'] {
+  --prompt-text-color: rgb(216 216 220 / 88%);
+  --prompt-info-bg: rgb(76 141 255 / 11%);
+  --prompt-tip-bg: rgb(63 185 80 / 10%);
+  --prompt-warning-bg: rgb(227 162 26 / 11%);
+  --prompt-danger-bg: rgb(248 81 73 / 11%);
+}
+:root[data-bs-theme='dark'] .content .prompt-info { border-left: 3px solid rgb(76 141 255 / 75%); }
+:root[data-bs-theme='dark'] .content .prompt-tip { border-left: 3px solid rgb(63 185 80 / 75%); }
+:root[data-bs-theme='dark'] .content .prompt-warning { border-left: 3px solid rgb(227 162 26 / 75%); }
+:root[data-bs-theme='dark'] .content .prompt-danger { border-left: 3px solid rgb(248 81 73 / 75%); }
+/* kartu yang terangkat saat disorot: di latar gelap bayangannya dibuat lebih pekat supaya tetap terlihat */
+:root[data-bs-theme='dark'] #post-list .card-wrapper:hover,
+:root[data-bs-theme='dark'] .home-path:hover,
+:root[data-bs-theme='dark'] #related-posts .rp-card:hover {
+  box-shadow: 0 10px 28px rgb(0 0 0 / 35%);
 }
