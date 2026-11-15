@@ -4,7 +4,9 @@ title: "Create IAM User and Policy in AWS"
 description: "Create an IAM user in AWS, attach a policy, and understand how IAM users, groups, and policies fit together."
 date: 2024-01-05 10:54:40 +0000
 categories: []
-tags: [aws, aws-iam, iam-policy]
+tags:
+  - aws
+  - iam
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/odygPOn67bM/upload/119d6e103933d6ace3751e1b91e7fc70.jpeg
   alt: "Create IAM User and Policy in AWS"

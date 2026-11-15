@@ -2,6 +2,8 @@
 layout: post
 title: Cara Membuat User tanpa Interaktif Shell di Linux
 description: "Membuat user Linux tanpa shell interaktif dengan adduser dan /sbin/nologin, lalu memverifikasinya di /etc/passwd."
+tags:
+  - user-management
 date: 2020-03-21 07:00:00 +0000
 categories: linux
 

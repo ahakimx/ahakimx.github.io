@@ -2,8 +2,13 @@
 layout: post
 title: Setup Sveltia CMS on GitHub Pages with Custom Domain
 description: "Replace Forestry with Sveltia CMS on a Jekyll site hosted on GitHub Pages: GitHub OAuth login, the CMS config, and a custom domain."
+tags:
+  - jekyll
+  - github-pages
+  - sveltia-cms
 date: 2026-03-15T00:01:00
-categories: []
+categories:
+  - devops
 comments: 'true'
 ---
 

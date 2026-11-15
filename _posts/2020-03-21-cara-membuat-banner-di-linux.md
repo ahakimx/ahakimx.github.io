@@ -2,6 +2,9 @@
 layout: post
 title: Cara Membuat Banner di Linux
 description: "Cara menampilkan banner saat login SSH di Linux: buat file /etc/motd, aktifkan opsi Banner di konfigurasi SSH, lalu restart sshd."
+tags:
+  - ssh
+  - motd
 date: 2020-03-21T17:00:00.000+00:00
 categories: linux
 comments: 'true'

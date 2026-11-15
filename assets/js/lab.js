@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     search.addEventListener('input', () => { state.q = search.value; render(); });
     yearSel.addEventListener('change', () => { state.year = yearSel.value; render(); });
     reset.addEventListener('click', () => { Object.assign(state, { q: '', cat: '', tag: '', lang: '', year: '' }); search.value = ''; yearSel.value = ''; render(); });
-    // Tautan dari luar boleh langsung menyaring: /explore/?tag=aws-s3 atau ?topic=sre&lang=id
+    // Tautan dari luar boleh langsung menyaring: /explore/?tag=s3 atau ?topic=sre&lang=id
     const qs = new URLSearchParams(location.search);
     state.tag = qs.get('tag') || '';
     state.cat = qs.get('topic') || '';
@@ -390,8 +390,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------- halaman Series: tiap bagian "## Nama series" jadi kartu ---------- */
-  // Isi tetap ditulis biasa di _tabs/series.md: judul (h2), deskripsi, tabel daftar artikel (opsional), lalu tautan "Mulai Series".
-  // Di sini bagian itu dibungkus kartu; tabel dilipat ke "Daftar artikel (N)" dan tautan terakhir jadi tombol.
+  // Isi tetap ditulis biasa di _tabs/series.md: judul (h2, boleh diberi {: data-lang="id" }), deskripsi, tabel daftar
+  // artikel (opsional), lalu tautan "Start the series". Di sini bagian itu dibungkus kartu; tabel dilipat ke
+  // "Articles (N)", tautan terakhir jadi tombol, dan data-lang="id" menambah penanda "In Bahasa Indonesia".
   if (/^\/series\/?$/.test(location.pathname)) {
     const content = document.querySelector('article .content') || document.querySelector('.content');
     const heads = content ? [...content.querySelectorAll(':scope > h2')] : [];
@@ -421,23 +422,41 @@ document.addEventListener('DOMContentLoaded', () => {
       const nPosts = list.reduce((s, el) => s + (el.matches('h3') ? 0 : el.querySelectorAll('tbody a, td a').length), 0);
       const kicker = document.createElement('p');
       kicker.className = 'series-card__kicker';
-      kicker.textContent = nPosts ? `Series · ${nPosts} artikel` : 'Series';
+      kicker.textContent = nPosts ? `Series · ${nPosts} posts` : 'Series';
+      if (h2.dataset.lang === 'id') {
+        const lang = document.createElement('span');
+        lang.className = 'series-card__lang';
+        lang.innerHTML = '<svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="1" fill="#CE1126"/><rect y="1" width="3" height="1" fill="#fff"/></svg>In Bahasa Indonesia';
+        kicker.append(lang);
+      }
       card.append(kicker, h2, body);
       if (list.length) {
         const det = document.createElement('details');
         det.className = 'series-card__list';
         const sum = document.createElement('summary');
-        sum.textContent = nPosts ? `Daftar artikel (${nPosts})` : 'Daftar artikel';
+        sum.textContent = nPosts ? `Articles (${nPosts})` : 'Articles';
         det.append(sum, ...list);
         card.append(det);
       }
       if (cta) {
         const a = cta.cloneNode(true);
         a.className = 'series-card__cta';
-        a.textContent = a.textContent.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').trim() || 'Mulai';
+        a.textContent = a.textContent.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').trim() || 'Start';
         card.append(a);
         cta.closest('p').remove();
       }
     });
   }
+  /* ---------- akhir post: ajakan follow (template dari _includes/metadata-hook.html) ---------- */
+  const cta = document.getElementById('post-cta');
+  const tail = document.querySelector('article .post-tail-wrapper');
+  if (cta && tail && !document.querySelector('.post-cta')) tail.before(cta.content.cloneNode(true));
+
+  /* ---------- halaman 404: tombol "Search the blog" membuka kotak pencarian di bar atas ---------- */
+  document.querySelectorAll('[data-open-search]').forEach((b) => b.addEventListener('click', () => {
+    const trigger = document.getElementById('search-trigger');
+    if (trigger && getComputedStyle(trigger).display !== 'none') trigger.click();
+    const input = document.getElementById('search-input');
+    if (input) { input.focus(); input.scrollIntoView({ block: 'center' }); }
+  }));
 });

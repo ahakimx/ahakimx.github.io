@@ -4,7 +4,9 @@ title: "Membuat EBS Volume di Amazon Web Services"
 description: "Membuat volume Amazon EBS dalam beberapa skenario: attach ke instance EC2, format dan mount, lalu mengatur kapasitas dan IOPS."
 date: 2022-12-02 01:39:58 +0000
 categories: []
-tags: [aws, aws-ebs]
+tags:
+  - aws
+  - ebs
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/S0j-5wSN3YQ/upload/50e453d9f9cdc1807d5e5b54bc000c18.jpeg
   alt: "Membuat EBS Volume di Amazon Web Services"

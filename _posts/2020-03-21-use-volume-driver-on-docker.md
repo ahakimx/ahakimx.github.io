@@ -2,8 +2,13 @@
 layout: post
 title: Use Volume Driver on Docker
 description: "Share storage between Docker hosts with a volume driver: install the vieux/sshfs plugin and mount a remote directory as a volume."
+tags:
+  - docker
+  - volumes
+  - sshfs
 date: 2019-07-21T06:03:00.000+00:00
-categories: docker volume
+categories:
+  - docker
 comments: 'true'
 categorie:
 - docker volume

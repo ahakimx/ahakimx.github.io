@@ -3,8 +3,12 @@ layout: post
 title: "Monitoring Prometheus dengan Grafana"
 description: "Monitoring dengan Prometheus dan visualisasi di Grafana: konsep metrics, instalasi, konfigurasi target, dan membuat dashboard."
 date: 2020-06-08 21:38:24 +0000
-categories: []
-tags: []
+categories:
+  - observability
+tags:
+  - prometheus
+  - grafana
+  - monitoring
 comments: true
 lang: id
 ---

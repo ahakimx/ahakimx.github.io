@@ -1,0 +1,24 @@
+---
+layout: page
+title: "404: Page not found"
+permalink: /404.html
+---
+
+<!-- Menggantikan assets/404.html bawaan tema Chirpy. Tombol pencarian dihubungkan oleh assets/js/lab.js (data-open-search). -->
+<div class="nf">
+  <p class="lead">This page doesn't exist, or it moved when the blog was reorganized.</p>
+  <p>Try searching for it, or start from one of these:</p>
+  <div class="nf__actions">
+    <button type="button" data-open-search>Search the blog</button>
+    <a href="{{ '/explore/' | relative_url }}">Browse by topic</a>
+    <a href="{{ '/series/' | relative_url }}">Series</a>
+    <a href="{{ '/projects/' | relative_url }}">Projects</a>
+    <a href="{{ '/' | relative_url }}">Home</a>
+  </div>
+  <h2>Latest posts</h2>
+  <ul class="nf__list">
+    {%- for p in site.posts limit: 6 -%}
+    <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a><span>{{ p.date | date: '%b %-d, %Y' }}</span></li>
+    {%- endfor -%}
+  </ul>
+</div>

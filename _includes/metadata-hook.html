@@ -41,3 +41,23 @@
 {%- endif -%}
 {%- endif -%}
 {% endif %}
+{% if page.layout == 'post' %}
+{%- assign cta_lang = page.lab.lang | default: page.lang | default: 'en' -%}
+<!-- Ajakan follow di akhir post (dipasang assets/js/lab.js sebelum kategori dan tag). Teks mengikuti bahasa post. -->
+<template id="post-cta">
+  <aside class="post-cta" aria-label="Follow">
+    {%- if cta_lang == 'id' -%}
+    <p class="post-cta__title">Artikel ini bermanfaat?</p>
+    <p class="post-cta__text">Saya menulis lab AWS hands-on dan catatan SRE. Follow supaya tidak ketinggalan tulisan berikutnya.</p>
+    {%- else -%}
+    <p class="post-cta__title">Found this useful?</p>
+    <p class="post-cta__text">I write hands-on AWS labs and SRE notes. Follow along so you don't miss the next one.</p>
+    {%- endif -%}
+    <div class="post-cta__actions">
+      <a href="https://linkedin.com/in/ahakimx" target="_blank" rel="noopener"><i class="fab fa-linkedin" aria-hidden="true"></i>LinkedIn</a>
+      <a href="https://github.com/ahakimx" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i>GitHub</a>
+      <a href="{{ '/feed.xml' | relative_url }}"><i class="fas fa-rss" aria-hidden="true"></i>RSS</a>
+    </div>
+  </aside>
+</template>
+{% endif %}

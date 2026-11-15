@@ -4,7 +4,10 @@ title: "Monitoring AWS VPC Traffic with VPC Flow Logs"
 description: "Capture and analyze IP traffic in a VPC with VPC Flow Logs: send them to CloudWatch Logs and query them to troubleshoot connectivity."
 date: 2025-01-11 05:33:10 +0000
 categories: []
-tags: [aws, aws-vpc, cloudwatch-logs]
+tags:
+  - aws
+  - vpc
+  - cloudwatch
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/a4uPQcJkAL8/upload/3763aa1ae0b64356d972d3f12a157f72.jpeg
   alt: "Monitoring AWS VPC Traffic with VPC Flow Logs"

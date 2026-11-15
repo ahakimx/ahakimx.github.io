@@ -4,7 +4,9 @@ title: "Copy dan Sharing Amazon Machine Images (AMI) di beda Region pada AWS"
 description: "Menyalin AMI dari Region Virginia ke Ohio, karena sebuah AMI hanya bisa dipakai di Region tempat ia dibuat."
 date: 2022-12-13 02:10:48 +0000
 categories: []
-tags: [aws, aws-ami]
+tags:
+  - aws
+  - ami
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/FKetb2QJzEo/upload/2f676b5ff2205aeae1961bb1dea18d1a.jpeg
   alt: "Copy dan Sharing Amazon Machine Images (AMI) di beda Region pada AWS"

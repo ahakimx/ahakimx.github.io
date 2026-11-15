@@ -4,7 +4,9 @@ title: "Replikasi Object S3 Menggunakan Cross-Region Replication pada AWS"
 description: "Mereplikasi objek Amazon S3 antar Region dengan Cross-Region Replication, dari bucket di Virginia ke bucket di California."
 date: 2022-11-28 10:25:39 +0000
 categories: []
-tags: [aws-s3, s3-replication]
+tags:
+  - aws
+  - s3
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/M4G5BSUo1p4/upload/7d3856d8697ab2bd025b7d0653613bb0.jpeg
   alt: "Replikasi Object S3 Menggunakan Cross-Region Replication pada AWS"

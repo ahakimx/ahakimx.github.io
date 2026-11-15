@@ -4,7 +4,10 @@ title: "Terraform with AWS -Setup AWS IAM"
 description: "Manage AWS IAM with Terraform: create IAM users, policies, and a group as code, then plan, apply, and destroy."
 date: 2024-01-06 04:43:09 +0000
 categories: []
-tags: [terraform, aws-iam]
+tags:
+  - aws
+  - terraform
+  - iam
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/B7FN7ZSmXB4/upload/b9ea35e1569386a009cdc2d9527221b8.jpeg
   alt: "Terraform with AWS -Setup AWS IAM"

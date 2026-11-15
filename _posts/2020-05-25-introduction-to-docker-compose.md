@@ -3,8 +3,11 @@ layout: post
 title: "Introduction to Docker Compose"
 description: "Define and run a multi-container app with Docker Compose: write docker-compose.yml, then start, inspect, and stop the services."
 date: 2020-05-25 12:52:17 +0000
-categories: []
-tags: []
+categories:
+  - docker
+tags:
+  - docker
+  - docker-compose
 image:
   path: https://cdn-images-1.medium.com/max/800/1*yuWPtmXOsZD_wf6L5bEzhA.png
   alt: "Introduction to Docker Compose"

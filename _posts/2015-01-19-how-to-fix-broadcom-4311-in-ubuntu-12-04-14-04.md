@@ -1,11 +1,13 @@
 ---
 categories:
-- linux
-- wireless
-- broadcom
+  - linux
 layout: post
 title: How To Fix Broadcom 4311 in Ubuntu 12.04/ 14.04
 description: "Fix Broadcom BCM4311 Wi-Fi on Ubuntu 12.04/14.04 by removing the bcmwl kernel driver and installing the b43 firmware instead."
+tags:
+  - ubuntu
+  - wifi
+  - drivers
 date: 2015-01-19 05:01:00 +0000
 comments: 'true'
 

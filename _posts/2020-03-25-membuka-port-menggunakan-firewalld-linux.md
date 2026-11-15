@@ -4,11 +4,13 @@ categorie:
 layout: post
 title: Membuka Port Menggunakan Firewalld Linux
 description: "Membuka port aplikasi dengan firewalld di Linux: tambahkan port ke zone public secara permanen, lalu verifikasi hasilnya."
+tags:
+  - firewalld
+  - networking
 date: 2020-03-25 05:01:00 +0000
 comments: 'true'
 categories:
-- linux
-- firewall
+  - linux
 lang: id
 ---
 **`Octopus`** system admins team just deployed a web UI application for their backup utility running on **`Octopus backup server`** in **`SC Datacenter`**. The application is running on port **`6400`** . They have **`firewalld`** installed on that server. Some requirements have came up as mentioned below:

@@ -5,7 +5,10 @@ date: 2026-02-01T12:32:00
 description: A Service Account is an identity used by processes running inside a Pod to interact with the Kubernetes API Server.
 categories:
   - kubernetes
-tags: []
+tags:
+  - kubernetes
+  - security
+  - rbac
 image:
   path: /assets/img/posts/service-accounts-kubernetes-security/cover.png
 pin: false

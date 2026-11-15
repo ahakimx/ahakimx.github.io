@@ -4,7 +4,9 @@ title: "Membuat IAM Identity Center (SSO) di AWS"
 description: "Menyiapkan IAM Identity Center (SSO) di AWS: buat permission set Administrator dan ViewOnly, lalu beri akses pengguna ke akun di organisasi."
 date: 2022-11-28 15:51:45 +0000
 categories: []
-tags: [aws, aws-sso, aws-identity-center]
+tags:
+  - aws
+  - iam-identity-center
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/rBW861ic2Hs/upload/b5ae45a0d969696c8d5d3469cf582ba0.jpeg
   alt: "Membuat IAM Identity Center (SSO) di AWS"

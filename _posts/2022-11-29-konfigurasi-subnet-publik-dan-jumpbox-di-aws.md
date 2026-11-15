@@ -4,7 +4,9 @@ title: "Konfigurasi Subnet Publik dan Jumpbox di AWS"
 description: "Membuat subnet publik dan jumpbox (bastion host) di VPC AWS: internet gateway, route table, lalu akses instance lewat jumpbox."
 date: 2022-11-29 06:49:31 +0000
 categories: []
-tags: [aws, networking, aws-networking]
+tags:
+  - aws
+  - networking
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/NqOInJ-ttqM/upload/dace69ee0c97fb44abf2d79e0dac8e8d.jpeg
   alt: "Konfigurasi Subnet Publik dan Jumpbox di AWS"

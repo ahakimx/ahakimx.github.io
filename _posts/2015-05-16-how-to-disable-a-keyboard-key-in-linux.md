@@ -1,10 +1,12 @@
 ---
 categories:
-- linux
-- keyboard
+  - linux
 layout: post
 title: How To Disable a Keyboard Key in Linux
 description: "Disable a broken or unwanted keyboard key on Linux: find its keycode with xev, then remap it to nothing with xmodmap."
+tags:
+  - keyboard
+  - xmodmap
 date: 2015-05-16 05:01:00 +0000
 comments: 'true'
 

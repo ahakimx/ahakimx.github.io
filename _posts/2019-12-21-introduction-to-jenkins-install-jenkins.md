@@ -2,8 +2,13 @@
 layout: post
 title: Introduction to Jenkins - Install Jenkins
 description: "Install Docker and Docker Compose on CentOS, then run Jenkins in a container and finish its initial setup."
+tags:
+  - jenkins
+  - ci-cd
+  - docker
 date: 2019-12-21T05:01:00.000+00:00
-categories: ci jenkins
+categories:
+  - devops
 comments: 'true'
 categorie:
 - ci

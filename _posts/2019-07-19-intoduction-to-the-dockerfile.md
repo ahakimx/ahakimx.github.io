@@ -2,8 +2,12 @@
 layout: post
 title: Introduction to the Dockerfile
 description: "Build your first Docker image from a Dockerfile: FROM, RUN, and CMD in a small example based on the whalesay image."
+tags:
+  - docker
+  - dockerfile
 date: 2019-07-19T05:01:00.000+00:00
-categories: docker linux
+categories:
+  - docker
 comments: 'true'
 categorie:
 - docker

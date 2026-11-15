@@ -1,6 +1,6 @@
 ---
 icon: fas fa-info-circle
-order: 4
+order: 7
 ---
 
 <!-- Kotak perkenalan dan kelompok skill ditata oleh assets/css/lab.css (bagian "halaman About"). -->

@@ -3,8 +3,11 @@ layout: post
 title: "Deploy Openstack All-in-one with Kolla-ansible"
 description: "Deploy an all-in-one OpenStack cloud on Ubuntu 18.04 with Kolla-Ansible: requirements, network setup, configuration, and deployment."
 date: 2021-02-12 08:59:33 +0000
-categories: []
-tags: []
+categories:
+  - cloud
+tags:
+  - openstack
+  - kolla-ansible
 comments: true
 ---
 

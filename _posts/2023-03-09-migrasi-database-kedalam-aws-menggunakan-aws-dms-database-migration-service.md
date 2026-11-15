@@ -4,7 +4,9 @@ title: "Migrasi Database kedalam AWS menggunakan AWS DMS (Database Migration Ser
 description: "Simulasi migrasi database aplikasi web dari on-premises ke AWS menggunakan AWS Database Migration Service (DMS)."
 date: 2023-03-09 05:56:55 +0000
 categories: []
-tags: [aws, aws-database, aws-dms]
+tags:
+  - aws
+  - dms
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/faCwTallTC0/upload/9d61ee11642d1da6001b6f863945afd8.jpeg
   alt: "Migrasi Database kedalam AWS menggunakan AWS DMS (Database Migration Service)"

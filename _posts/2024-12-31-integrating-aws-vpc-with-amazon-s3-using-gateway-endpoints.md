@@ -4,7 +4,9 @@ title: "Integrating Amazon VPC with Amazon S3 Using Gateway Endpoints"
 description: "Reach Amazon S3 privately from a VPC with a gateway endpoint: traffic stays on the AWS network, no NAT needed, and the route table does the work."
 date: 2024-12-31 13:24:32 +0000
 categories: []
-tags: [aws, vpc-endpoints]
+tags:
+  - aws
+  - vpc
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/9i3HoE7zryI/upload/37f26eba90293aa8e903301ace5b05be.jpeg
   alt: "Integrating Amazon VPC with Amazon S3 Using Gateway Endpoints"

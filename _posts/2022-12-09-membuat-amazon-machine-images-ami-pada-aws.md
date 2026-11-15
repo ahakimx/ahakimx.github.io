@@ -4,7 +4,9 @@ title: "Membuat Amazon Machine Images (AMI) pada AWS"
 description: "Membuat Amazon Machine Image (AMI) dari instance yang sudah terpasang WordPress, lalu meluncurkan instance baru dari image tersebut."
 date: 2022-12-09 23:37:26 +0000
 categories: []
-tags: [aws, aws-ami]
+tags:
+  - aws
+  - ami
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/2ta8OjluZuI/upload/718ecebe90d61b5df9023da8b103bd03.jpeg
   alt: "Membuat Amazon Machine Images (AMI) pada AWS"

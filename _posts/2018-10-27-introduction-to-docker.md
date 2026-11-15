@@ -4,6 +4,9 @@ categories:
 layout: post
 title: Introduction to Docker
 description: "What Docker is and why containers matter: images versus containers, and the basic commands to run your first container."
+tags:
+  - docker
+  - containers
 date: 2018-10-27 05:01:00 +0000
 comments: 'true'
 

@@ -2,8 +2,12 @@
 layout: post
 title: Introduction to the Docker Volumes
 description: "Persist container data with Docker volumes: why volumes beat bind mounts, and how to create, mount, and inspect them."
+tags:
+  - docker
+  - volumes
 date: 2019-07-21T06:02:00.000+00:00
-categories: docker volume
+categories:
+  - docker
 comments: 'true'
 categorie:
 - docker volume

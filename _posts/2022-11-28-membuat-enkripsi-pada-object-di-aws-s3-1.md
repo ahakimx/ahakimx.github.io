@@ -4,7 +4,10 @@ title: "Membuat Enkripsi pada Object di AWS S3"
 description: "Mengenkripsi objek di Amazon S3 dengan kunci AWS KMS, mengatur policy akses, lalu menguji siapa yang bisa membaca objeknya."
 date: 2022-11-28 23:26:09 +0000
 categories: []
-tags: [aws, aws-kms, aws-s3]
+tags:
+  - aws
+  - kms
+  - s3
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/tqbE33Z1qzw/upload/f6c151963b0eeee8db58176b9d74d2f8.jpeg
   alt: "Membuat Enkripsi pada Object di AWS S3"

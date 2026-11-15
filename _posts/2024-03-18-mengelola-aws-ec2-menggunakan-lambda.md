@@ -4,7 +4,10 @@ title: "Mengelola AWS EC2 Menggunakan Lambda"
 description: "Menyalakan dan mematikan instance EC2 dengan fungsi AWS Lambda (start_instances dan stop_instances), tanpa mengelola server sendiri."
 date: 2024-03-18 17:00:00 +0000
 categories: []
-tags: [ec2, aws, aws-lambda]
+tags:
+  - ec2
+  - aws
+  - lambda
 image:
   path: https://cdn.hashnode.com/res/hashnode/image/stock/unsplash/6liebVeAfrY/upload/7db69e081d01c389c0a50a59fe2cc07b.jpeg
   alt: "Mengelola AWS EC2 Menggunakan Lambda"
