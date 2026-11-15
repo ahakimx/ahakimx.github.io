@@ -9,7 +9,7 @@ order: 7
 <div class="about-hero__text">
 <div class="about-hero__name">Abdul Hakim</div>
 <div class="about-hero__role">Cloud / Site Reliability Engineer · AWS Community Builder</div>
-<div class="about-hero__certs" aria-label="Certifications"><a class="cert-badge cert-badge--new" href="https://www.credly.com/badges/8dbdadc8-0dd5-4434-b953-2b5771b2eb38" target="_blank" rel="noopener" title="Verify on Credly">AWS CloudOps Engineer – Associate<em>New</em></a><span class="cert-badge">AWS Solutions Architect – Associate</span><span class="cert-badge">CKA</span><span class="cert-badge">OpenStack COA</span></div>
+<div class="about-hero__certs" aria-label="Certifications"><a class="cert-badge cert-badge--new" href="https://www.credly.com/badges/8dbdadc8-0dd5-4434-b953-2b5771b2eb38" target="_blank" rel="noopener" title="Verify on Credly">AWS CloudOps Engineer – Associate<em>New</em></a><a class="cert-badge" href="https://www.credly.com/badges/884752f9-5f71-49eb-80ba-d82e4f4f1756" target="_blank" rel="noopener" title="Verify on Credly">AWS Solutions Architect – Associate</a><span class="cert-badge">CKA</span><span class="cert-badge">OpenStack COA</span></div>
 <div class="about-hero__links"><a href="https://linkedin.com/in/ahakimx">LinkedIn</a><a href="https://github.com/ahakimx">GitHub</a><a href="https://twitter.com/a_hakimx">X</a><a href="{{ '/projects/' | relative_url }}">Projects</a></div>
 </div>
 </div>
@@ -24,7 +24,7 @@ This blog is where I document my projects, share technical deep dives, and write
 
 <ul class="cert-list">
 <li><b>AWS Certified CloudOps Engineer – Associate</b><span>2026 – 2029 · <a href="https://www.credly.com/badges/8dbdadc8-0dd5-4434-b953-2b5771b2eb38" target="_blank" rel="noopener">Verify on Credly ↗</a></span></li>
-<li><b>AWS Certified Solutions Architect – Associate</b><span>2025 – 2028</span></li>
+<li><b>AWS Certified Solutions Architect – Associate</b><span>2025 – 2028 · <a href="https://www.credly.com/badges/884752f9-5f71-49eb-80ba-d82e4f4f1756" target="_blank" rel="noopener">Verify on Credly ↗</a></span></li>
 <li><b>Certified Kubernetes Administrator (CKA)</b></li>
 <li><b>Certified OpenStack Administrator</b></li>
 </ul>

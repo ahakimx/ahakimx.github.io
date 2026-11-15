@@ -1802,7 +1802,8 @@ details.lab-fold > .lab-fold__body {
 .content .about-hero__certs .cert-badge--new {
   border-color: var(--lab-accent, #f59e0b);
 }
-.content .about-hero__certs .cert-badge--new:hover {
+.content .about-hero__certs a.cert-badge:hover {
+  border-color: var(--lab-accent, #f59e0b);
   background: rgb(245 158 11 / 12%);
 }
 .about-hero__certs em {
