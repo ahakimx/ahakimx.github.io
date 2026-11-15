@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Default Bridge Network on Docker Networking
+description: "How Docker's default bridge network works: how containers on one host talk to each other, and its limits compared to user-defined bridges."
 date: 2019-07-22T05:01:00.000+00:00
 categories: docker network
 comments: 'true'

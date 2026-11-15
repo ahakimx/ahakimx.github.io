@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Amazon Q Developer for Infrastructure Troubleshooting
+description: "Use Amazon Q Developer to troubleshoot infrastructure: debug AWS services, Kubernetes issues, Terraform errors, and incidents faster."
 date: 2026-01-16T17:00:00
 categories:
   - aws

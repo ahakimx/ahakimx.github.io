@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Menginstall Amazon EBS CSI Driver di Cluster EKS"
+description: "Memasang Amazon EBS CSI driver di cluster EKS agar pod bisa memakai volume EBS sebagai persistent storage, lengkap dengan IAM role-nya."
 date: 2023-12-11 04:41:13 +0000
 categories: []
 tags: [aws]

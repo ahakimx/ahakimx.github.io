@@ -2,6 +2,7 @@
 categories: [linux, ubuntu]
 layout: post
 title: How To Reset Root Password on Ubuntu 16.04
+description: "Reset a forgotten root password on Ubuntu 16.04 from the GRUB menu: boot into a root shell, remount read/write, and run passwd."
 date: 2016-09-08 05:01:00 +0000
 comments: 'true'
 

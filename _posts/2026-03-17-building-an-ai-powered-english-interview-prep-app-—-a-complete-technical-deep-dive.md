@@ -2,7 +2,7 @@
 layout: post
 title: Building an AI-Powered English Interview Prep App on AWS
 date: 2025-12-30T11:20:00
-description: A fullstack web app that uses AI to simulate English job interviews.
+description: "How I built a full-stack app on AWS that uses AI to simulate English job interviews: architecture, speech, scoring, and lessons learned."
 categories:
   - ai
   - aws

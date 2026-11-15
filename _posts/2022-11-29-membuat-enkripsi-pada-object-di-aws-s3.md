@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Membuat Enkripsi pada Object di AWS S3"
+description: "Langkah mengenkripsi objek di Amazon S3 dengan AWS KMS: buat kunci, upload file, atur bucket policy, lalu uji aksesnya."
 date: 2022-11-29 02:04:57 +0000
 categories: []
 tags: [aws-s3, s3-encryption]

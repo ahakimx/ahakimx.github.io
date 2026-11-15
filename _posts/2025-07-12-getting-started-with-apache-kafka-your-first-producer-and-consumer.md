@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Getting Started with Apache Kafka: Your First Producer and Consumer"
+description: "Get started with Apache Kafka: core concepts like topics and partitions, then write your first producer and consumer."
 date: 2025-07-12 15:12:07 +0000
 categories: []
 tags: [kafka]

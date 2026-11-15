@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "AWS — Launch an Instance"
+description: "Step-by-step guide to launching your first Amazon EC2 instance: choose an AMI and instance type, set up a key pair, and launch it."
 date: 2021-01-01 21:38:20 +0000
 categories: []
 tags: []

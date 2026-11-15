@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Deploy Website Statis menggunakan AWS"
+description: "Hosting website statis di AWS dengan S3 dan CloudFront: buat bucket, atur akses, upload file, lalu sajikan lewat CDN."
 date: 2022-11-15 10:38:40 +0000
 categories: []
 tags: [aws, cloudfront, aws-s3]

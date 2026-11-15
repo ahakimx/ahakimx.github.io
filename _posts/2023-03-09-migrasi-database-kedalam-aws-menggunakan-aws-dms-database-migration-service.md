@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Migrasi Database kedalam AWS menggunakan AWS DMS (Database Migration Service)"
+description: "Simulasi migrasi database aplikasi web dari on-premises ke AWS menggunakan AWS Database Migration Service (DMS)."
 date: 2023-03-09 05:56:55 +0000
 categories: []
 tags: [aws, aws-database, aws-dms]

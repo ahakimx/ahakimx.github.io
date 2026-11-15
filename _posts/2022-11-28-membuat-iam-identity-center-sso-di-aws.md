@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Membuat IAM Identity Center (SSO) di AWS"
+description: "Menyiapkan IAM Identity Center (SSO) di AWS: buat permission set Administrator dan ViewOnly, lalu beri akses pengguna ke akun di organisasi."
 date: 2022-11-28 15:51:45 +0000
 categories: []
 tags: [aws, aws-sso, aws-identity-center]

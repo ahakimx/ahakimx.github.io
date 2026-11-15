@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Membuat Amazon Machine Images (AMI) pada AWS"
+description: "Membuat Amazon Machine Image (AMI) dari instance yang sudah terpasang WordPress, lalu meluncurkan instance baru dari image tersebut."
 date: 2022-12-09 23:37:26 +0000
 categories: []
 tags: [aws, aws-ami]

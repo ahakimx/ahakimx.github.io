@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Install Kubernetes High Availabilty with Multi Master"
+description: "Build a highly available Kubernetes cluster with kubeadm: three control-plane nodes behind HAProxy, plus worker nodes."
 date: 2020-10-04 11:46:43 +0000
 categories: []
 tags: []

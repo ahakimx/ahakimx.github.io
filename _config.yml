@@ -37,6 +37,9 @@ webmaster_verifications:
   google: kwyA2jqdgjISfJvWYQ8EOBjgU9PRXYBom2Lhfi5qApQ
 
 avatar: "https://github.com/ahakimx.png"
+
+# Gambar pratinjau saat dibagikan (LinkedIn, X, WhatsApp) untuk halaman dan post yang tidak punya `image`.
+social_preview_image: /assets/img/social-preview.png
 toc: true
 
 comments:

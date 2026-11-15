@@ -2,7 +2,7 @@
 layout: post
 title: 'Build SRE Agent: Incident Response & ChatOps on EKS'
 date: 2026-05-25T18:54:00+0700
-description: Guide to building a Python based SRE Agent and ChatOps commands
+description: "Build a Python SRE agent on Amazon EKS that scans cluster health, auto-remediates common issues, and answers ChatOps commands."
 categories:
   - ai agent
   - sre

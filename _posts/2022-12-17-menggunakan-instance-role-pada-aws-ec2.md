@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Menggunakan Instance Role pada AWS EC2"
+description: "Memberi instance EC2 akses baca ke Amazon S3 dengan IAM role (instance profile), tanpa menyimpan access key di dalam server."
 date: 2022-12-17 08:09:03 +0000
 categories: []
 tags: [aws]

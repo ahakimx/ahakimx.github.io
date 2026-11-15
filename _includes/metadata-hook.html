@@ -18,3 +18,27 @@
   </section>
 </template>
 {% endif %}
+{% if page.layout == 'post' %}
+{%- assign pair = page.lab.pair | default: page.pair -%}
+{%- if pair -%}
+{%- assign other = nil -%}
+{%- for p in site.posts -%}{%- assign pp = p.lab.pair | default: p.pair -%}{%- if pp == pair and p.url != page.url -%}{%- assign other = p -%}{%- endif -%}{%- endfor -%}
+{%- if other -%}
+{%- assign my_lang = page.lab.lang | default: page.lang | default: site.lang -%}
+{%- assign other_lang = other.lab.lang | default: other.lang | default: site.lang -%}
+<!-- Post dua bahasa: alternatif untuk mesin pencari, dan pilihan bahasa di bawah judul (dipasang assets/js/lab.js). -->
+<link rel="alternate" hreflang="{{ my_lang }}" href="{{ page.url | absolute_url }}">
+<link rel="alternate" hreflang="{{ other_lang }}" href="{{ other.url | absolute_url }}">
+<template id="lang-switch">
+  <nav class="lang-switch" aria-label="Language / Bahasa">
+    <span class="lang-switch__icon" aria-hidden="true">🌐</span>
+    {%- if my_lang == 'en' -%}
+    <span aria-current="page" lang="en">English</span><a href="{{ other.url | relative_url }}" hreflang="{{ other_lang }}" lang="id">Bahasa Indonesia</a>
+    {%- else -%}
+    <a href="{{ other.url | relative_url }}" hreflang="{{ other_lang }}" lang="en">English</a><span aria-current="page" lang="id">Bahasa Indonesia</span>
+    {%- endif -%}
+  </nav>
+</template>
+{%- endif -%}
+{%- endif -%}
+{% endif %}

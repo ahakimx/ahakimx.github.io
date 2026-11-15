@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "How to Install AWS Load Balancer Controller using Helm in Amazon EKS Cluster"
+description: "Install the AWS Load Balancer Controller on Amazon EKS with Helm, including the IAM policy and service account it needs."
 date: 2023-12-17 17:00:00 +0000
 categories: []
 tags: [aws-eks]

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Introduction ELK Stack — to Get Logs"
+description: "Collect and search logs with the ELK stack: install Elasticsearch and Kibana on a server and ship logs from Ubuntu and CentOS clients."
 date: 2020-10-04 04:57:22 +0000
 categories: []
 tags: []

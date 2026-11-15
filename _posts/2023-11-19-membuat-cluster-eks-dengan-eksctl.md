@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Membuat Cluster EKS dengan eksctl"
+description: "Membuat cluster Amazon EKS dengan eksctl: siapkan tools, buat cluster dan node group, lalu akses cluster dengan kubectl."
 date: 2023-11-19 02:29:35 +0000
 categories: []
 tags: [aws, kubernetes, aws-eks]

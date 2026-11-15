@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Create IAM User and Policy in AWS"
+description: "Create an IAM user in AWS, attach a policy, and understand how IAM users, groups, and policies fit together."
 date: 2024-01-05 10:54:40 +0000
 categories: []
 tags: [aws, aws-iam, iam-policy]

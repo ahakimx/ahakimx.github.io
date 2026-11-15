@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Implementasi Subnet VPC Multi-Tier di AWS"
+description: "Membangun VPC multi-tier di AWS secara manual: rancang CIDR, buat subnet per tier di beberapa AZ, dan pahami fungsi tiap lapisan."
 date: 2022-11-29 07:54:50 +0000
 categories: []
 tags: [aws, aws-vpc]

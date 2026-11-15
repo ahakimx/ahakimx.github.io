@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Membuat Bucket dengan Versioning pada Amazon S3"
+description: "Mengaktifkan versioning di bucket Amazon S3 untuk menyimpan, mengambil, dan memulihkan versi lama objek yang terhapus atau tertimpa."
 date: 2022-11-27 17:08:57 +0000
 categories: []
 tags: [aws-s3, aws-s3-versioning]

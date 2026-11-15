@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Membuat User dengan Spesifik Home Direktori dan User ID (UID)
+description: "Membuat user Linux dengan home directory dan UID tertentu menggunakan useradd -u dan -d, lalu memverifikasinya."
 date: 2020-03-22T06:00:00.000+00:00
 categories: linux
 comments: 'true'

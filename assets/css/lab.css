@@ -1569,3 +1569,105 @@ details.lab-fold > .lab-fold__body {
     padding-left: 1.1rem;
   }
 }
+
+/* ================= pilihan bahasa di post dua bahasa (dipasang lab.js) ================= */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: -0.5rem 0 1.25rem;
+  padding: 0.2rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+.lang-switch__icon {
+  padding: 0 0.35rem 0 0.45rem;
+  color: var(--text-muted-color);
+}
+.lang-switch a,
+.lang-switch span[aria-current] {
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text-muted-color);
+}
+.lang-switch span[aria-current] {
+  background: var(--lab-accent, #ff9900);
+  color: #1a1206;
+}
+.lang-switch a:hover {
+  color: var(--heading-color);
+  background: var(--main-border-color);
+}
+.lang-switch a:focus-visible {
+  outline: 2px solid var(--lab-accent, #ff9900);
+  outline-offset: 2px;
+}
+
+/* ================= halaman Series: kartu per series (dipasang lab.js) ================= */
+.series-card {
+  margin: 1.25rem 0 1.5rem;
+  padding: 1.25rem 1.4rem 1.35rem;
+  border: 1px solid var(--main-border-color);
+  border-left: 4px solid var(--lab-accent, #ff9900);
+  border-radius: var(--lab-radius, 14px);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+.series-card__kicker {
+  margin: 0 0 0.3rem !important;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lab-accent, #ff9900);
+}
+.content .series-card h2 {
+  margin: 0 0 0.6rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.3rem;
+}
+.series-card__body > :last-child {
+  margin-bottom: 0.9rem;
+}
+.series-card__list {
+  margin: 0 0 1rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 10px;
+}
+.series-card__list > summary {
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.series-card__list[open] > summary {
+  border-bottom: 1px solid var(--main-border-color);
+}
+.series-card__list > :not(summary) {
+  margin: 0.75rem 0.9rem;
+}
+.series-card__list h3 {
+  font-size: 0.95rem;
+}
+.series-card__cta {
+  display: inline-block;
+  padding: 0.5rem 1.05rem;
+  border-radius: 8px;
+  background: var(--lab-accent, #ff9900);
+  color: #1a1206 !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+.series-card__cta::after {
+  content: " →";
+}
+.series-card__cta:focus-visible {
+  outline: 2px solid var(--lab-accent, #ff9900);
+  outline-offset: 2px;
+}

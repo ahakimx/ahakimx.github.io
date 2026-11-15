@@ -5,6 +5,7 @@ categories:
 - reset password
 layout: post
 title: Cara Reset Password Root di MariaDB Linux
+description: "Cara reset password root MariaDB di Linux: hentikan service, jalankan mysqld_safe dengan --skip-grant-tables, lalu set password baru."
 date: 2018-04-25 05:01:00 +0000
 comments: 'true'
 

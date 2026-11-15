@@ -5,6 +5,7 @@ categories:
 - docker
 layout: post
 title: How to Run Jenkins from Docker
+description: "Run Jenkins from the official Docker image on CentOS 7: install Docker, then start Jenkins in a container with a persistent volume."
 date: 2020-03-29 16:58:00 +0000
 comments: 'true'
 

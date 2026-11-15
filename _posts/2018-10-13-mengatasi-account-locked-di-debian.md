@@ -4,6 +4,7 @@ categories:
 - locked
 layout: post
 title: Mengatasi Account Locked di Debian
+description: "Catatan pengalaman menghadapi akun yang terkunci (account locked) di Debian setelah harddisk beberapa kali crash."
 date: 2018-10-13 05:01:00 +0000
 comments: 'true'
 lang: id

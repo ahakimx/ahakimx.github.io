@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Deploy Aplikasi PHP Sederhana ke Heroku"
+description: "Langkah demi langkah deploy aplikasi PHP sederhana ke Heroku: buat akun dan project, hubungkan repo, lalu deploy dari menu Deploy."
 date: 2019-07-19 17:55:58 +0000
 categories: []
 tags: []

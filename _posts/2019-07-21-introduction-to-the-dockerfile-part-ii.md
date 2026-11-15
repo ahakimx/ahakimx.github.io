@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Introduction to the Dockerfile Part II
+description: "Containerize a small Python web app with a Dockerfile: WORKDIR, ADD, pip install, and EXPOSE, then build and run the image."
 date: 2019-07-21T05:01:00.000+00:00
 categories: docker dockerfile
 comments: 'true'

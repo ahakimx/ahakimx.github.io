@@ -3,6 +3,7 @@ categorie:
 - linux
 layout: post
 title: Membuka Port Menggunakan Firewalld Linux
+description: "Membuka port aplikasi dengan firewalld di Linux: tambahkan port ke zone public secara permanen, lalu verifikasi hasilnya."
 date: 2020-03-25 05:01:00 +0000
 comments: 'true'
 categories:

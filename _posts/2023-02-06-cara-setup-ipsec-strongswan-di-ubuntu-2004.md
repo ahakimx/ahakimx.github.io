@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Cara Setup IPSec Strongswan di Ubuntu 20.04"
+description: "Membuat VPN site-to-site IPsec antara dua server Ubuntu 20.04 dengan strongSwan: buka port UDP 500/4500, konfigurasi, lalu uji koneksi."
 date: 2023-02-06 19:02:31 +0000
 categories: []
 tags: [vpn, ipsec]

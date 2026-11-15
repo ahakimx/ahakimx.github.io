@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Membuat dan Mengonfigurasi AWS Organizations"
+description: "Membuat AWS Organizations untuk mengelola banyak akun AWS sekaligus: management account, akun anggota, dan organizational unit."
 date: 2022-11-17 03:10:19 +0000
 categories: []
 tags: [aws, aws-organizations]

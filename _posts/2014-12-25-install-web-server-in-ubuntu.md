@@ -4,6 +4,7 @@ categories:
 - apache
 layout: post
 title: Install Web Server on Ubuntu
+description: "Set up a basic LAMP web server on Ubuntu: install Apache, PHP, and MySQL, then verify PHP works with a phpinfo page."
 date: 2014-12-25 05:01:00 +0000
 comments: 'true'
 

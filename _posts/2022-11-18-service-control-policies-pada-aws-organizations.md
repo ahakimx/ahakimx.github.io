@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Service Control Policies pada AWS Organizations"
+description: "Membatasi apa yang boleh dilakukan akun di AWS Organizations dengan Service Control Policies untuk OU production dan development."
 date: 2022-11-18 12:24:31 +0000
 categories: []
 tags: [aws-organizations, aws-service-control-policies]

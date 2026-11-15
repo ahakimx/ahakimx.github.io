@@ -377,4 +377,67 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', onScroll);
     update();
   }
+  /* ---------- post dua bahasa: pilihan English / Bahasa Indonesia di bawah judul ---------- */
+  // Template-nya dibuat _includes/metadata-hook.html untuk post yang punya pasangan (lab.pair / pair).
+  // Tautan lama di dalam artikel (p.lab-lang) disembunyikan karena sudah digantikan pilihan ini.
+  const ls = document.getElementById('lang-switch');
+  const postHead = document.querySelector('article header');
+  if (ls && postHead && !postHead.querySelector('.lang-switch')) {
+    const node = ls.content.cloneNode(true);
+    const anchor = postHead.querySelector('.post-desc') || postHead.querySelector('h1');
+    anchor.after(node);
+    document.querySelectorAll('.content .lab-lang').forEach((p) => p.remove());
+  }
+
+  /* ---------- halaman Series: tiap bagian "## Nama series" jadi kartu ---------- */
+  // Isi tetap ditulis biasa di _tabs/series.md: judul (h2), deskripsi, tabel daftar artikel (opsional), lalu tautan "Mulai Series".
+  // Di sini bagian itu dibungkus kartu; tabel dilipat ke "Daftar artikel (N)" dan tautan terakhir jadi tombol.
+  if (/^\/series\/?$/.test(location.pathname)) {
+    const content = document.querySelector('article .content') || document.querySelector('.content');
+    const heads = content ? [...content.querySelectorAll(':scope > h2')] : [];
+    heads.forEach((h2) => {
+      const card = document.createElement('section');
+      card.className = 'series-card';
+      h2.before(card);
+      const parts = [];
+      let n = h2.nextElementSibling;
+      while (n && !['H2', 'HR'].includes(n.tagName) && !(n.tagName === 'BLOCKQUOTE' && n.className.includes('prompt-'))) {
+        parts.push(n);
+        n = n.nextElementSibling;
+      }
+      if (n && n.tagName === 'HR') n.remove();
+      const prevHr = card.previousElementSibling;
+      if (prevHr && prevHr.tagName === 'HR') prevHr.remove();
+      const body = document.createElement('div');
+      body.className = 'series-card__body';
+      const list = [];
+      let cta = null;
+      parts.forEach((el) => {
+        const links = el.matches('p') ? el.querySelectorAll('a') : [];
+        if (el.matches('p') && links.length === 1 && el.textContent.trim() === links[0].textContent.trim()) cta = links[0];
+        else if (el.matches('table, h3, .table-wrapper') || el.querySelector('table')) list.push(el);
+        else body.append(el);
+      });
+      const nPosts = list.reduce((s, el) => s + (el.matches('h3') ? 0 : el.querySelectorAll('tbody a, td a').length), 0);
+      const kicker = document.createElement('p');
+      kicker.className = 'series-card__kicker';
+      kicker.textContent = nPosts ? `Series · ${nPosts} artikel` : 'Series';
+      card.append(kicker, h2, body);
+      if (list.length) {
+        const det = document.createElement('details');
+        det.className = 'series-card__list';
+        const sum = document.createElement('summary');
+        sum.textContent = nPosts ? `Daftar artikel (${nPosts})` : 'Daftar artikel';
+        det.append(sum, ...list);
+        card.append(det);
+      }
+      if (cta) {
+        const a = cta.cloneNode(true);
+        a.className = 'series-card__cta';
+        a.textContent = a.textContent.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').trim() || 'Mulai';
+        card.append(a);
+        cta.closest('p').remove();
+      }
+    });
+  }
 });

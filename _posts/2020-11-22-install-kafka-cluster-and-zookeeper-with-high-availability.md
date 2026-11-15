@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Install Kafka Cluster and Zookeeper with High Availability"
+description: "Install a highly available Apache Kafka cluster with ZooKeeper across multiple nodes, from prerequisites to a running cluster."
 date: 2020-11-22 15:38:24 +0000
 categories: []
 tags: []

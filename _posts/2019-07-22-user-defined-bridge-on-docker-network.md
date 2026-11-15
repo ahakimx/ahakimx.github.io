@@ -1,6 +1,7 @@
 ---
 layout: post
 title: User Defined Bridge on Docker Network
+description: "User-defined bridge networks in Docker: better isolation, DNS by container name, and how they differ from the default bridge."
 date: 2019-07-22T05:02:00.000+00:00
 categories: docker networking
 comments: 'true'

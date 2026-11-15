@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Mengelola AWS EC2 Menggunakan Lambda"
+description: "Menyalakan dan mematikan instance EC2 dengan fungsi AWS Lambda (start_instances dan stop_instances), tanpa mengelola server sendiri."
 date: 2024-03-18 17:00:00 +0000
 categories: []
 tags: [ec2, aws, aws-lambda]

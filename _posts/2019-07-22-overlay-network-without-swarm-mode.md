@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Overlay Network without Swarm mode
+description: "Connect containers across multiple Docker hosts with an overlay network, without running Swarm services."
 date: 2019-07-22T05:03:00.000+00:00
 categories: docker networking
 comments: 'true'
