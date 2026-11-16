@@ -497,15 +497,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isLab && content && steps.length) {
     const firstCode = sectionOf(0).find((el) => el.matches('div.highlighter-rouge, figure.highlight') || el.querySelector('pre'));
     const pre = firstCode && (firstCode.querySelector('td.rouge-code pre') || firstCode.querySelector('pre'));
-    const assign = /^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)=([A-Za-z0-9][A-Za-z0-9._:/-]{2,})\s*$/;
+    // Nilai boleh dikutip ("..." atau '...'); nilai dinamis seperti $(...) atau ${...} tidak dijadikan isian.
+    const assign = /^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)=(["']?)([A-Za-z0-9][A-Za-z0-9._:/-]{2,})\2\s*$/;
     const fields = [];
     if (pre) {
       pre.textContent.split('\n').forEach((line) => {
         const m = line.match(assign);
         if (!m) return;
-        const same = fields.find((f) => f.value === m[2]);
+        const same = fields.find((f) => f.value === m[3]);
         if (same) same.names.push(m[1]);
-        else fields.push({ names: [m[1]], value: m[2], current: m[2] });
+        else fields.push({ names: [m[1]], value: m[3], current: m[3] });
       });
     }
     if (fields.length) {
