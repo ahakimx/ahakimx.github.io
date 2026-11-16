@@ -615,3 +615,7 @@ Kalau ada user yang sudah ditambahkan ke group, keluarkan dulu dengan `aws iam r
 - Controlling network access (security groups): <https://docs.aws.amazon.com/efs/latest/ug/network-access.html>
 - AWS CLI `efs` reference: <https://docs.aws.amazon.com/cli/latest/reference/efs/>
 - PosixProfile (Uid, Gid, SecondaryGids) untuk akses EFS: <https://docs.aws.amazon.com/sdk-for-kotlin/api/latest/transfer/aws.sdk.kotlin.services.transfer.model/-create-user-request/posix-profile.html>
+
+<!-- lab-next:start -->
+<section class="lab-next" aria-label="Lab berikutnya"><div class="lab-next__kicker">Lab berikutnya</div><div class="lab-next__grid"><a class="lab-next__card" href="/posts/lab-route-53-failover-dns-untuk-portal-reservasi/"><span class="lab-next__img" style="background-image:url('/assets/img/posts/lab-route-53-failover-dns-untuk-portal-reservasi/cover.png')" aria-hidden="true"></span><span class="lab-next__body"><span class="lab-next__title">Failover DNS untuk Portal Reservasi</span><span class="lab-next__meta">Intermediate · 60–75 menit</span><span class="lab-next__go">Mulai lab →</span></span></a></div></section>
+<!-- lab-next:end -->

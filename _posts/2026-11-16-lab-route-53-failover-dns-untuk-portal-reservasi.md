@@ -5,13 +5,13 @@ date: 2026-11-16T09:00:00+0700
 description: "Bangun DNS active-passive. Matikan server utama, buktikan jawaban DNS pindah ke server cadangan, lalu uji failback."
 categories:
   - aws
+  - networking
 tags:
   - aws
-  - soa-c03
-  - hands-on
-  - route-53
-  - failover-routing
-  - hybrid
+  - route53
+  - ec2
+  - dns
+  - failover
 image:
   path: /assets/img/posts/lab-route-53-failover-dns-untuk-portal-reservasi/cover.png
 toc: true
@@ -24,13 +24,18 @@ lab:
   pair: "mwimtasu-b999be"
 ---
 <section class="lab-card" data-lang="id" aria-label="Ringkasan lab">
-<ul class="lab-stats"><li><span>Level</span><b>Intermediate</b></li><li><span>Durasi</span><b>60–75 menit</b></li><li><span>Biaya</span><b>~5</b></li></ul>
-<ul class="lab-services"><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/route53.svg')" aria-hidden="true"></span>Route 53</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/ec2.svg')" aria-hidden="true"></span>Amazon EC2</li></ul>
+<div class="lab-card__kicker">Hasil lab</div>
+<p class="lab-card__result">DNS active-passive yang terbukti pindah ke server cadangan saat server utama mati, lalu kembali otomatis setelah pulih.</p>
+<ul class="lab-stats"><li><span>Level</span><b>Intermediate</b></li><li><span>Durasi</span><b>60–75 menit</b></li><li><span>Region</span><b>ap-southeast-3</b></li></ul>
+<ul class="lab-services"><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/route53.svg')" aria-hidden="true"></span>Route 53</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/cloudformation.svg')" aria-hidden="true"></span>CloudFormation</li><li><span class="lab-svc-ic" style="background-image:url('/assets/img/aws/ec2.svg')" aria-hidden="true"></span>Amazon EC2</li></ul>
 <div class="lab-actions"><a class="lab-btn" href="#langkah-1">Langsung ke langkah ↓</a></div>
 </section>
 
-> Bangun DNS active-passive. Matikan server utama, buktikan jawaban DNS pindah ke server cadangan, lalu uji failback.  
-> Estimasi waktu: 45–60 menit · Level: Associate
+> **Ringkasan**
+> - **Masalah:** portal reservasi harus tetap bisa diakses saat server utama mati, tanpa mengganti alamat secara manual.
+> - **Solusi:** pasangan record *Failover routing* (PRIMARY dan SECONDARY) di public hosted zone, dengan HTTP health check pada primary.
+> - **Bukti:** setelah primary dihentikan, name server Route 53 menjawab IP secondary; setelah primary hidup lagi, jawaban kembali ke primary (automatic failback).
+{: .prompt-info }
 
 ## Tujuan belajar
 
@@ -578,9 +583,7 @@ Jika masih muncul IP secondary, periksa status health check dan tunggu stabil se
 
 ### 1. Buktikan kondisi normal
 
-![Console](/assets/img/posts/lab-route-53-failover-dns-untuk-portal-reservasi/lab-route-53-failover-dns-untuk-portal-reservasi-alur-2.svg){: .light }
-![Console](/assets/img/posts/lab-route-53-failover-dns-untuk-portal-reservasi/lab-route-53-failover-dns-untuk-portal-reservasi-alur-2-dark.svg){: .dark }
-*Console*
+**Console:** Route 53 → Health checks, lalu pastikan health check primary berstatus sehat.
 
 ```bash
 aws route53 get-health-check-status \
@@ -604,9 +607,7 @@ curl --fail --silent --show-error \
 
 ### 2. Hentikan primary
 
-![Console](/assets/img/posts/lab-route-53-failover-dns-untuk-portal-reservasi/lab-route-53-failover-dns-untuk-portal-reservasi-alur-3.svg){: .light }
-![Console](/assets/img/posts/lab-route-53-failover-dns-untuk-portal-reservasi/lab-route-53-failover-dns-untuk-portal-reservasi-alur-3-dark.svg){: .dark }
-*Console*
+**Console:** EC2 → Instances → pilih instance primary → Instance state → Stop instance. Alternatif lewat CLI:
 
 > Perintah berikut menghentikan instance primary lab. Pastikan `PRIMARY_ID` bukan instance produksi. Public IPv4 otomatis dapat berubah ketika instance dinyalakan kembali.
 
@@ -859,6 +860,13 @@ rmdir "$LAB_ID"
 ```
 
 Output yang diharapkan: tidak ada output.
+
+<section class="lab-quiz" aria-label="Kuis">
+<div class="lab-quiz__head"><strong>Uji pemahaman</strong><span>3 soal</span><span class="lab-quiz__score">0/3</span></div>
+<div class="lab-q"><p>1. Health check primary berstatus tidak sehat. Apa yang dijawab Route 53 untuk record failover ini?</p><button type="button">Tidak menjawab sama sekali sampai primary pulih</button><button type="button" data-right="1">IP pada record SECONDARY</button><button type="button">Kedua IP sekaligus, lalu klien memilih</button><div class="lab-q__why">pada Failover routing, Route 53 menjawab record PRIMARY selama health check-nya sehat, dan beralih ke record SECONDARY saat primary dinilai tidak sehat.</div></div>
+<div class="lab-q"><p>2. Record SECONDARY di lab ini tidak punya health check. Bagaimana Route 53 memperlakukannya?</p><button type="button" data-right="1">Selalu dianggap sehat, jadi tetap dijawab walau servernya sedang mati</button><button type="button">Selalu dianggap tidak sehat, jadi tidak pernah dijawab</button><button type="button">Route 53 menolak membuat record failover tanpa health check</button><div class="lab-q__why">record tanpa health check dianggap sehat. Itu sebabnya secondary di lab ini selalu bisa menjadi jawaban cadangan; di produksi, pertimbangkan health check juga untuk secondary.</div></div>
+<div class="lab-q"><p>3. Setelah failover, sebagian pengguna masih diarahkan ke primary selama beberapa saat. Penyebab yang paling mungkin?</p><button type="button">Health check butuh restart manual</button><button type="button">Route 53 memindahkan koneksi aktif secara bertahap</button><button type="button" data-right="1">Resolver dan klien masih memakai jawaban DNS lama sampai TTL-nya habis</button><div class="lab-q__why">Route 53 hanya mengubah jawaban DNS. Jawaban lama yang sudah di-cache tetap dipakai sampai TTL habis, dan koneksi yang sudah terbuka tidak ikut dipindahkan.</div></div>
+</section>
 
 ## Poin penting untuk ujian
 
