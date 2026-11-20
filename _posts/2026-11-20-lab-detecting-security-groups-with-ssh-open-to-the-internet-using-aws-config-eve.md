@@ -39,7 +39,7 @@ lab:
 
 ## Learning objectives
 
-- Understand why **AWS Config** is the right answer for "detect resource configuration that violates policy + send notifications." CloudWatch metrics, Trusted Advisor, and in-instance scanners are not the right tools for this.
+- Understand why **AWS Config** fits policy-based configuration checks with notifications.
 - Use the managed rule **`restricted-ssh`** (identifier `INCOMING_SSH_DISABLED`). This rule only checks port 22 open to `0.0.0.0/0` or `::/0`.
 - See the **blind spot** firsthand: SSH on a custom port (e.g., 2202) open to the public remains COMPLIANT under `restricted-ssh`. For this case, use **`vpc-sg-open-only-to-authorized-ports`**.
 - Send notifications via **EventBridge** (event `Config Rules Compliance Change`) to **SNS**, filtered to only `NON_COMPLIANT`. This approach is quieter than sending all delivery channel notifications to SNS.
