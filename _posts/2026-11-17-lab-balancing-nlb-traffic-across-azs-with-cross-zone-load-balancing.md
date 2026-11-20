@@ -33,6 +33,7 @@ lab:
 </section>
 
 > **Summary**
+>
 > A courier tracking app has uneven targets (1 instance in AZ-a, 3 in AZ-b), so one instance absorbs half the traffic. This lab enables cross-zone load balancing on a Network Load Balancer, then proves through direct requests to each node that traffic becomes evenly distributed and the service stays up when one AZ loses its target.
 {: .prompt-info }
 
@@ -700,21 +701,6 @@ aws ec2 describe-vpcs --filters "Name=tag:Project,Values=${LAB_ID}" --query 'Vpc
 ```
 
 Expected output: empty.
-
-## Key exam takeaways
-
-- The phrase "each load balancer node distributes traffic to registered targets in **all enabled AZs**" is the definition of **cross-zone load balancing**.
-- HA + even distribution requires **two** things: targets spread across **multiple AZs** and **cross-zone enabled**.
-- Defaults:
-  - **ALB**: always on at the LB level, cannot be turned off at the LB level; can be turned off per target group.
-  - **NLB/GWLB**: default **off** at the LB level.
-- A target group can override: `true`, `false`, or `use_load_balancer_configuration`. The target group setting determines the effective behavior.
-- An NLB with cross-zone on incurs **cross-AZ data transfer** charges.
-- One enabled AZ = one node. Targets in an AZ that is not enabled receive **no traffic** even if registered.
-- Common distractors:
-  - Deregistration delay (connection draining) only applies to in-flight connections when a target is removed, not traffic distribution.
-  - ELB is **regional** and cannot span Regions. For multi-Region, use **Route 53** or **Global Accelerator**.
-- Cross-zone off is a legitimate choice for zonal isolation, as long as each AZ has enough capacity.
 
 ## References
 
