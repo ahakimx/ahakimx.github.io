@@ -32,9 +32,8 @@ lab:
 <div class="lab-actions"><a class="lab-btn" href="#step-1">Jump to the steps ↓</a></div>
 </section>
 
-# Lab: Detecting Security Groups with SSH Open to the Internet Using AWS Config + EventBridge/SNS Notifications
-
 > **Summary**
+>
 > Developers often open SSH to `0.0.0.0/0` or move it to a custom port and leave it publicly accessible. This lab sets up AWS Config rules to detect those violations, sends email only when a resource is NON_COMPLIANT, and automatically revokes public port 22 rules. You'll verify the results through compliance status, email alerts, and the changed contents of the security group.
 {: .prompt-info }
 
@@ -848,17 +847,6 @@ aws configservice describe-config-rules --region "$REGION" \
 Expected output: empty. Rules may remain in `DELETING` status for a while before fully disappearing.
 
 The service-linked role `AWSServiceRoleForConfig` can be left in place; it costs nothing and may be used by other Config features.
-
-## Key exam takeaways
-
-- The keyword "resource configuration violates policy + automatic notification" points to **AWS Config rules**. CloudWatch custom metrics can't read SG configuration, Trusted Advisor refreshes periodically and isn't based on your own policy rules, and third-party scanners add operational overhead.
-- `restricted-ssh` = identifier `INCOMING_SSH_DISABLED`, resource `AWS::EC2::SecurityGroup`, trigger configuration change + periodic, **no parameters**, only port 22 from `0.0.0.0/0` or `::/0`.
-- Custom port policies (SSH moved to another port) or "only specific ports may be public" use `vpc-sg-open-only-to-authorized-ports` or a custom rule (Lambda/Guard).
-- Notifications: delivery channel + SNS sends **all** types of Config notifications. To filter NON_COMPLIANT only, use EventBridge with `detail-type` `Config Rules Compliance Change`. The SNS topic must be in the same Region as Config.
-- Auto-remediation uses Config remediation + **SSM Automation** (`AWS-DisablePublicAccessForSecurityGroup` for ports 22/3389).
-- Multi-account uses **Conformance packs** or organization rules via AWS Organizations.
-- Long-term solution: eliminate SSH entirely with **Session Manager**.
-- Config costs are billed per configuration item + rule evaluation. Limit recording to relevant resource types.
 
 ## References
 
